@@ -12,18 +12,14 @@ class StartView extends View {
   private readonly LOGO_PVP_PATH = '../../../assets/icons/pvp.svg';
   private readonly BUTTON_NAME_SOLO = 'Против машины';
   private readonly BUTTON_NAME_PVP = 'Против человека';
+  protected _component = document.createElement(AppTag.DIV);
 
   constructor() {
     super();
     this.createComponent();
   }
 
-  getComponent() {
-    return this._component;
-  }
-
-  protected createComponent() {
-    this._component = document.createElement(AppTag.DIV);
+  protected createComponent(): void {
     this._component.className = AppCssClass.FIRST_VIEW;
     const h1 = document.createElement(AppTag.H1);
     h1.textContent = this.MAIN_HEADING;
@@ -53,7 +49,7 @@ class StartView extends View {
     switch (type) {
       case this.SOLO:
         btn.textContent = this.BUTTON_NAME_SOLO;
-        img.src = require('../../../assets/icons/solo.svg') as string; //не заводится с конст-ми
+        img.src = require('../../../assets/icons/solo.svg') as string;
         img.classList.add(AppCssClass.BUTTON_DIV_IMG, AppCssClass.BUTTON_DIV_IMG_LEFT);
         break;
       case this.PVP:

@@ -1,5 +1,5 @@
 abstract class View {
-  protected _component!: Element;
+  protected abstract _component: Element;
 
   getComponent() {
     return this._component;

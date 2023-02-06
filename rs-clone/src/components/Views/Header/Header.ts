@@ -1,6 +1,7 @@
 import AbstractView from '../View';
 import AppCssClass from '../enums/app-css-class';
 import AppTag from '../enums/app-tag';
+import AccountMenus from '../enums/account-menus';
 import './header.scss';
 
 class Header extends AbstractView {
@@ -13,6 +14,7 @@ class Header extends AbstractView {
   private readonly LOGIN = 'login';
   private readonly LOGIN_RU = 'Войти';
   private appMenu = document.createElement(AppTag.DIV);
+  protected _component = document.createElement(AppTag.HEADER);
 
   constructor() {
     super();
@@ -20,7 +22,6 @@ class Header extends AbstractView {
   }
 
   protected createComponent(): void {
-    this._component = document.createElement(AppTag.HEADER);
     this._component.classList.add(AppCssClass.HEADER, AppCssClass.WRAPPER);
 
     const link = document.createElement(AppTag.LINK);
@@ -66,7 +67,9 @@ class Header extends AbstractView {
   private createLoginDropMenu(accName: string) {
     this.appMenu.classList.add(AppCssClass.ACC_MENU, AppCssClass.ACC_MENU_HIDDEN);
 
-    const menuPoints = [accName, 'Изменить никнейм', 'Изменить аватар', 'Изменить пароль', 'Выйти'];
+    const tempAccName = 'wave103';
+    const menuPoints = Object.keys(AccountMenus).filter((elem) => isNaN(Number(elem)))
+    menuPoints.unshift(tempAccName);
 
     for (let elem of menuPoints) {
       if (elem === accName) {
