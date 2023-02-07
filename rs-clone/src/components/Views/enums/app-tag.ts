@@ -8,6 +8,8 @@ const enum AppTag {
   NAV = 'nav',
   P = 'p',
   MAIN = 'main',
+  INPUT = 'input',
+  LABEL = 'label',
 }
 
 export default AppTag;
