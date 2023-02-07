@@ -1,4 +1,6 @@
 const enum AppCssClass {
+  BUTTON = "button",
+
   LOGO = 'logo',
   HEADER = 'header',
   WRAPPER = 'wrapper',
@@ -18,6 +20,18 @@ const enum AppCssClass {
   BUTTON_DIV_IMG_RIGHT = 'button-div__img_right',
   BUTTON_DIV = 'first-view__button-div',
   BUTTON_BIG = 'button_big',
+
+  PREGAME = "pregame",
+  BOARD_CONTAINER = "pregame__board-container",
+  BOARD_CONTAINER_TEXT = "pregame__board-text",
+  CONTROL_CONTAINER = "pregame__control-container",
+  CONTROL_HEADER = "pregame__header",
+  DIFFICULT = "pregame__difficult",
+  DIFFICULT_ACTIVE = "pregame__difficult_active",
+  DIFFICULT_HEADER = "pregame__difficult-header",
+  DIFFICULT_FEATURES = "pregame__difficult-features",
+
+
 }
 
 export default AppCssClass;
