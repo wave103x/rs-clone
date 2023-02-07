@@ -6,6 +6,7 @@ const enum AppTag {
   H1 = 'h1',
   NAV = 'nav',
   P = 'p',
+  MAIN = 'main',
 }
 
 export default AppTag;
