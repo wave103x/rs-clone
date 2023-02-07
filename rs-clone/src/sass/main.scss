@@ -1,0 +1,24 @@
+@import './base/typography';
+@import './base/vars';
+@import './elements/button';
+
+html, button {
+  font-family: 'Unbounded', 'Verdana', sans-serif;
+}
+
+body,html {
+  margin: 0;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-image: radial-gradient(
+    farthest-corner at 0 0,
+    #89F7FE,
+    #66A6FF
+  );
+}
