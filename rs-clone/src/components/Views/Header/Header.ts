@@ -1,7 +1,7 @@
 import AbstractView from '../View';
-import AppCssClass from '../enums/app-css-class';
-import AppTag from '../enums/app-tag';
-import AccountMenus from '../enums/account-menus';
+import AppCssClass from '../../../enums/app-css-class';
+import AppTag from '../../../enums/app-tag';
+import AccountMenus from '../../../enums/account-menus';
 import './header.scss';
 
 class Header extends AbstractView {
@@ -68,7 +68,7 @@ class Header extends AbstractView {
     this.appMenu.classList.add(AppCssClass.ACC_MENU, AppCssClass.ACC_MENU_HIDDEN);
 
     const tempAccName = 'wave103';
-    const menuPoints = Object.keys(AccountMenus).filter((elem) => isNaN(Number(elem)))
+    const menuPoints = Object.keys(AccountMenus).filter((elem) => isNaN(Number(elem)));
     menuPoints.unshift(tempAccName);
 
     for (let elem of menuPoints) {

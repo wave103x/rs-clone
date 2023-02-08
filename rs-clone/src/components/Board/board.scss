@@ -1,0 +1,52 @@
+.board__markup {
+  display: flex;
+  width: 495px;
+  height: 495px;
+  flex-wrap: wrap;
+}
+
+.board__empty-block {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+}
+
+.empty-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.board {
+  width: 450px;
+  height: 450px;
+  position: relative;
+}
+
+.board_img {
+  background-image: url('../../assets/icons/board450.svg');
+}
+
+@media (max-width: 768px) {
+  .board__markup {
+    width: 330px;
+    height: 330px;
+  }
+
+  .board__empty-block {
+    width: 30px;
+    height: 30px;
+  }
+
+  .board {
+    width: 300px;
+    height: 300px;
+  }
+
+  .board_img {
+    background-image: url('../../assets/icons/board300.svg');
+  }
+}

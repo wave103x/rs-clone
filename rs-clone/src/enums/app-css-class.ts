@@ -1,5 +1,5 @@
 const enum AppCssClass {
-  BUTTON = "button",
+  BUTTON = 'button',
 
   LOGO = 'logo',
   HEADER = 'header',
@@ -21,17 +21,26 @@ const enum AppCssClass {
   BUTTON_DIV = 'first-view__button-div',
   BUTTON_BIG = 'button_big',
 
-  PREGAME = "pregame",
-  BOARD_CONTAINER = "pregame__board-container",
-  BOARD_CONTAINER_TEXT = "pregame__board-text",
-  CONTROL_CONTAINER = "pregame__control-container",
-  CONTROL_HEADER = "pregame__header",
-  DIFFICULT = "pregame__difficult",
-  DIFFICULT_ACTIVE = "pregame__difficult_active",
-  DIFFICULT_HEADER = "pregame__difficult-header",
-  DIFFICULT_FEATURES = "pregame__difficult-features",
+  PREGAME = 'pregame',
+  BOARD_CONTAINER = 'pregame__board-container',
+  BOARD_CONTAINER_TEXT = 'pregame__board-text',
+  CONTROL_CONTAINER = 'pregame__control-container',
+  CONTROL_HEADER = 'pregame__header',
+  DIFFICULT = 'pregame__difficult',
+  DIFFICULT_ACTIVE = 'pregame__difficult_active',
+  DIFFICULT_HEADER = 'pregame__difficult-header',
+  DIFFICULT_FEATURES = 'pregame__difficult-features',
 
+  BOARD_MARKUP = 'board__markup',
+  BOARD_EMPTY_BLOCK = 'board__empty-block',
+  EMPTY_CONTAINER = 'empty-container',
+  BOARD = 'board',
+  BOARD_IMG = 'board_img',
+  HIT_IMG = 'hit_img',
+  MISS_IMG = 'miss_img',
+  EMPTY_IMG = 'empty_img',
 
+  SHIP = 'ship',
 }
 
 export default AppCssClass;

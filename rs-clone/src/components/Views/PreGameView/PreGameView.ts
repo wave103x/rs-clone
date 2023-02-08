@@ -1,14 +1,15 @@
 import AbstractView from '../View';
-import AppCssClass from '../enums/app-css-class';
-import AppTag from '../enums/app-tag';
+import Board from '../../Board/Board';
+import AppCssClass from '../../../enums/app-css-class';
+import AppTag from '../../../enums/app-tag';
+import Difficulties from '../../../enums/difficulties';
+import Player from '../../../enums/player';
 import './pregame-view.scss';
-import Difficulties from '../enums/difficulties';
 
 class PreGameView extends AbstractView {
-  //private _board = new Board();
   protected _component = document.createElement(AppTag.DIV);
-
   private difficult: string = Difficulties.normal;
+  private _board = new Board(this.difficult, Player.ally);
 
   private readonly SHUFFLE_BUTTON_TEXT = 'Перемешать';
   private readonly SHUFFLE_TEXT = 'ПКМ для поворота';
@@ -43,15 +44,16 @@ class PreGameView extends AbstractView {
     const shuffleButton = document.createElement(AppTag.BUTTON);
     shuffleButton.classList.add(AppCssClass.BUTTON);
     shuffleButton.innerText = this.SHUFFLE_BUTTON_TEXT;
-    // shuffleButton.addEventListener("click", () => {
-    //   this._board.shuffle();
-    // });
+    shuffleButton.addEventListener('click', () => {
+      this._board.clear();
+      this._board.randomPlaceShips();
+    });
 
     const buttonText = document.createElement(AppTag.P);
     buttonText.classList.add(AppCssClass.BOARD_CONTAINER_TEXT);
     buttonText.innerText = this.SHUFFLE_TEXT;
 
-    container.append(shuffleButton, buttonText);
+    container.append(this._board.getComponent(), shuffleButton, buttonText);
 
     return container;
   }
