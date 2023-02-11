@@ -11,6 +11,7 @@ import ShipInfo from '../../types/ShipInfo';
 import Squadron from '../../types/Squadron';
 import Side from './SideData';
 import Difficulties from '../../enums/difficulties';
+import Cell from '../../types/Cell';
 
 class Board extends AbstractView {
   public board: HTMLElement = document.createElement(AppTag.DIV);
@@ -19,6 +20,7 @@ class Board extends AbstractView {
   public squadron: Squadron;
   public shipSide: number;
   public difficult: string;
+  public markedCells: Cell[] = [];
 
   public canMoving: boolean = true;
   public playerTurn: boolean = false;

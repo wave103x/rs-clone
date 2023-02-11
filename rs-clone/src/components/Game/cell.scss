@@ -1,0 +1,14 @@
+.noship-cell {
+  position: absolute;
+  background-image: url('../../assets/icons/empty45.svg');
+  height: 45px;
+  width: 45px;
+}
+
+@media (max-width: 768px) {
+  .empty-cell {
+    background-image: url('../../assets/icons/empty30.svg');
+    height: 30px;
+    width: 30px;
+  }
+}
