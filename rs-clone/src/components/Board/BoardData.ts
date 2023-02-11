@@ -1,4 +1,8 @@
-const BoardData = {
+import BoardDataType from '../../types/BoardDataType';
+
+const BoardData: {
+  [index: string]: BoardDataType;
+} = {
   easy: {
     length: 6,
     ships: {

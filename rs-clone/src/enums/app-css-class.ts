@@ -32,15 +32,25 @@ const enum AppCssClass {
   DIFFICULT_FEATURES = 'pregame__difficult-features',
 
   BOARD_MARKUP = 'board__markup',
+  BOARD_MARKUP_EASY = 'board__markup_easy',
   BOARD_EMPTY_BLOCK = 'board__empty-block',
   EMPTY_CONTAINER = 'empty-container',
   BOARD = 'board',
+  BOARD_EASY = 'board_easy',
   BOARD_IMG = 'board_img',
   HIT_IMG = 'hit_img',
   MISS_IMG = 'miss_img',
   EMPTY_IMG = 'empty_img',
 
   SHIP = 'ship',
+
+  GAME = 'game',
+  GAME_CONTAINER = 'game__container',
+  GAME_BOARD_NAME = 'game__board-name',
+  GAME_SHIP = 'game__ship',
+  GAME_SQUADRON = 'game__squadron',
+  GAME_SQUADRON_ROW = 'game__squadron-row',
+  GAME_SQUADRON_ROW_RIGHT = 'game__squadron-row_right',
 }
 
 export default AppCssClass;

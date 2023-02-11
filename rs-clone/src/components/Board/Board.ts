@@ -3,7 +3,6 @@ import Ship from './Ship/Ship';
 import AppCssClass from '../../enums/app-css-class';
 import AppTag from '../../enums/app-tag';
 import CellCondition from '../../enums/cell-condition';
-//import Difficulties from '../../enums/difficulties';
 import BoardDataType from '../../types/BoardDataType';
 import './board.scss';
 import BoardData from './BoardData';
@@ -11,6 +10,7 @@ import BoardUtils from '../../utils/BoardUtils';
 import ShipInfo from '../../types/ShipInfo';
 import Squadron from '../../types/Squadron';
 import Side from './SideData';
+import Difficulties from '../../enums/difficulties';
 
 class Board extends AbstractView {
   public board: HTMLElement = document.createElement(AppTag.DIV);
@@ -18,29 +18,34 @@ class Board extends AbstractView {
   public matrix: number[][];
   public squadron: Squadron;
   public shipSide: number;
+  public difficult: string;
+
+  public canMoving: boolean = true;
+  public playerTurn: boolean = false;
 
   protected _component: HTMLElement = document.createElement(AppTag.DIV);
   private readonly smallClientWidth: number = 768;
   private readonly alphabet: string = 'abcdefghij';
 
   private data: BoardDataType;
-  private difficult: string;
-  private boardSide: number;
-  private playerTurn: boolean = false;
+  //private boardSide: number;
 
+  //Протестить для легкой
   constructor(difficult: string, player: string, matrix?: number[][], squadron?: Squadron) {
     super();
 
     this.difficult = difficult;
     this.player = player;
 
-    difficult === 'normal' ? (this.data = BoardData.normal) : (this.data = BoardData.easy);
+    difficult === Difficulties.normal
+      ? (this.data = BoardData.normal)
+      : (this.data = BoardData.easy);
     if (document.documentElement.clientWidth > this.smallClientWidth) {
       this.shipSide = Side.large.ship;
-      this.boardSide = Side.large.board;
+      //this.boardSide = Side.large.board;
     } else {
       this.shipSide = Side.small.ship;
-      this.boardSide = Side.small.board;
+      //this.boardSide = Side.small.board;
     }
 
     if (matrix && squadron) {
@@ -59,6 +64,10 @@ class Board extends AbstractView {
 
   protected createComponent(): void {
     this._component.classList.add(AppCssClass.BOARD_MARKUP);
+    if (this.difficult === Difficulties.easy) {
+      this._component.classList.add(AppCssClass.BOARD_MARKUP_EASY);
+    }
+
     this._component.append(createEmptyBlock());
 
     for (let i = 0; i < this.data.length; i++) {
@@ -72,6 +81,9 @@ class Board extends AbstractView {
     }
 
     this.board.classList.add(AppCssClass.BOARD, AppCssClass.BOARD_IMG);
+    if (this.difficult === Difficulties.easy) {
+      this.board.classList.add(AppCssClass.BOARD_EASY);
+    }
 
     this._component.append(emptyContainer, this.board);
 
@@ -90,16 +102,21 @@ class Board extends AbstractView {
   }
 
   randomPlaceShips() {
-    for (let type in this.data.ships) {
-      let shipsCount = this.data.ships[type][0];
-      let decksCount = this.data.ships[type][1];
+    try {
+      for (let type in this.data.ships) {
+        let shipsCount = this.data.ships[type][0];
+        let decksCount = this.data.ships[type][1];
 
-      for (let i = 0; i < shipsCount; i++) {
-        let coords = randomShipCoords(decksCount, this);
-        const shipName = type + (i + 1).toString();
-        const ship = new Ship(this, coords, shipName);
-        ship.createShip();
+        for (let i = 0; i < shipsCount; i++) {
+          let coords = randomShipCoords(decksCount, this);
+          const shipName = type + (i + 1).toString();
+          const ship = new Ship(this, coords, shipName);
+          ship.createShip();
+        }
       }
+    } catch {
+      this.clear();
+      this.randomPlaceShips();
     }
 
     function randomShipCoords(decksCount: number, board: Board): ShipInfo {

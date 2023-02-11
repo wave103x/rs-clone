@@ -5,6 +5,11 @@
   flex-wrap: wrap;
 }
 
+.board__markup_easy {
+  width: 315px;
+  height: 315px;
+}
+
 .board__empty-block {
   width: 45px;
   height: 45px;
@@ -26,6 +31,11 @@
   position: relative;
 }
 
+.board_easy {
+  width: 270px;
+  height: 270px;
+}
+
 .board_img {
   background-image: url('../../assets/icons/board450.svg');
 }
@@ -36,6 +46,11 @@
     height: 330px;
   }
 
+  .board__markup_easy {
+    width: 210px;
+    height: 210px;
+  }
+
   .board__empty-block {
     width: 30px;
     height: 30px;
@@ -44,6 +59,11 @@
   .board {
     width: 300px;
     height: 300px;
+  }
+
+  .board_easy {
+    width: 180px;
+    height: 1800px;
   }
 
   .board_img {

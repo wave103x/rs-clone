@@ -1,9 +1,11 @@
 @import '../../../sass/main.scss';
 
 .pregame {
+  width: 80%;
+  margin: 0 auto;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  align-items: flex-start;
+  justify-content: space-between;
   padding-top: 4rem;
 }
 
@@ -14,6 +16,11 @@
   gap: 3rem;
 }
 
+.pregame__board-container:has(.board__markup_easy) {
+  margin-left: 10%;
+  margin-top: 3rem;
+}
+
 .pregame__board-text {
   color: white;
   margin-top: -2.5rem;
@@ -21,7 +28,7 @@
 }
 
 .pregame__control-container {
-  width: 20%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;

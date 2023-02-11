@@ -1,15 +1,19 @@
 import AbstractView from '../View';
 import Board from '../../Board/Board';
+import GameView from '../GameView/GameView';
 import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
 import Difficulties from '../../../enums/difficulties';
 import Player from '../../../enums/player';
+import GameType from '../../../enums/game-type';
 import './pregame-view.scss';
 
 class PreGameView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
   private difficult: string = Difficulties.normal;
   private _board = new Board(this.difficult, Player.ally);
+  private gameType: string;
+  private boardContainer!: HTMLElement;
 
   private readonly SHUFFLE_BUTTON_TEXT = 'Перемешать';
   private readonly SHUFFLE_TEXT = 'ПКМ для поворота';
@@ -26,15 +30,17 @@ class PreGameView extends AbstractView {
     },
   };
 
-  constructor() {
+  constructor(gameType: string) {
     super();
+    this.gameType = gameType;
     this.createComponent();
   }
 
   protected createComponent(): void {
     this._component.classList.add(AppCssClass.PREGAME);
 
-    this._component.append(this.createBoardContainer(), this.createControlPanel());
+    this.boardContainer = this.createBoardContainer();
+    this._component.append(this.boardContainer, this.createControlPanel());
   }
 
   private createBoardContainer(): HTMLElement {
@@ -76,7 +82,9 @@ class PreGameView extends AbstractView {
     const buttonPlay = document.createElement(AppTag.BUTTON);
     buttonPlay.classList.add(AppCssClass.BUTTON_BIG, AppCssClass.BUTTON);
     buttonPlay.innerText = this.PLAY_BUTTON_TEXT;
-    //buttonPlay.addEventListener();
+    buttonPlay.addEventListener('click', () => {
+      startGame(this);
+    });
 
     controlContainer.append(controlHeader, easyDifficult, normalDifficult, buttonPlay);
 
@@ -105,6 +113,12 @@ class PreGameView extends AbstractView {
           difficultBlock.classList.add(AppCssClass.DIFFICULT_ACTIVE);
 
           control.difficult = difficult;
+
+          //Возможно вынести в отдельную функцию
+          control.boardContainer.remove();
+          control._board = new Board(control.difficult, Player.ally);
+          control.boardContainer = control.createBoardContainer();
+          control._component.prepend(control.boardContainer);
         }
       }
     }
@@ -128,6 +142,14 @@ class PreGameView extends AbstractView {
       });
 
       return ol;
+    }
+
+    //Переделать в роутинг
+    function startGame(pregameView: PreGameView) {
+      pregameView._component.remove();
+      if (pregameView.gameType === GameType.solo) {
+        document.body.append(new GameView(pregameView._board, pregameView.gameType).getComponent());
+      }
     }
   }
 }

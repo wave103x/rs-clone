@@ -1,11 +1,12 @@
 import Header from './Views/Header/Header';
 import StartView from './Views/StartView/StartView';
 import PreGameView from './Views/PreGameView/PreGameView';
+import GameType from '../enums/game-type';
 
 class App {
   private _header = new Header();
   //private _startView = new StartView();
-  private _pregameView = new PreGameView();
+  private _pregameView = new PreGameView(GameType.solo);
   private _component = document.body;
 
   constructor() {
