@@ -53,7 +53,72 @@ class Ship {
     component.style.left = `${this.shipInfo.shipPlace.y * this.board.shipSide}px`;
     component.style.top = `${this.shipInfo.shipPlace.x * this.board.shipSide}px`;
     this.board.board.append(component);
+
+    component.addEventListener('contextmenu', () => this.shipRotate(component));
+
+    component.draggable = true;
+
+    component.addEventListener('dragstart', (event) => {
+      const coords = component.getBoundingClientRect();
+      const data = {
+        left: Math.round(event.pageX - coords.left),
+        top: Math.round(event.pageY - coords.top),
+        shipInfo: this.shipInfo,
+        name: this.shipName
+      }
+      event.dataTransfer?.setData('clickCoords', JSON.stringify(data));
+    })
   }
+
+  private shipRotate(ship: HTMLElement) {
+    event?.preventDefault();
+    const directionArr = this.shipInfo.shipPlace.direction;
+
+    for (let i = 0; i < this.shipInfo.decksCount; i++) {
+      const x = this.shipInfo.shipPlace.x + i * directionArr[0];
+      const y = this.shipInfo.shipPlace.y + i * directionArr[1];
+      this.board.matrix[x][y] = CellConditions.empty;
+    }
+
+    [directionArr[0], directionArr[1]] = [
+      directionArr[1],
+      directionArr[0],
+    ];
+
+    if (this.board.isValidPlace(this.shipInfo.shipPlace, this.shipInfo.decksCount)) {
+      const tmpWidth = ship.style.width;
+      ship.style.width = ship.style.height;
+      ship.style.height = tmpWidth;
+
+      for (let i = 0; i < this.shipInfo.decksCount; i++) {
+        const x = this.shipInfo.shipPlace.x + i * directionArr[0];
+        const y = this.shipInfo.shipPlace.y + i * directionArr[1];
+        this.board.matrix[x][y] = CellConditions.ship;
+      }
+    }
+    else {
+      ship.className = 'ship';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          ship.className = "ship animation-error";
+        });
+      });
+
+      [directionArr[0], directionArr[1]] = [
+        directionArr[1],
+        directionArr[0],
+      ];
+
+      for (let i = 0; i < this.shipInfo.decksCount; i++) {
+        const x = this.shipInfo.shipPlace.x + i * directionArr[0];
+        const y = this.shipInfo.shipPlace.y + i * directionArr[1];
+        this.board.matrix[x][y] = CellConditions.ship;
+      }
+    }
+  }
+
+
+
 }
 
 export default Ship;
