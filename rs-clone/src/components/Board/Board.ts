@@ -86,50 +86,7 @@ class Board extends AbstractView {
       event?.preventDefault();
     });
 
-    this._component.addEventListener('drop', (event) => this.dropShipHandler(event));
   }
-
-  private dropShipHandler(event: DragEvent) {
-    event.preventDefault();
-    const dataTrans = event.dataTransfer?.getData('clickCoords');
-    if (!dataTrans) return;
-    const data = JSON.parse(dataTrans);
-    const boardOffset = this.board.getBoundingClientRect();
-    const clickLeft = Math.round(event.clientX - boardOffset.left - data?.left);
-    const clickTop = Math.round(event.clientY - boardOffset.top - data?.top);
-    const newY = Math.floor(clickLeft / this.shipSide);
-    const newX = Math.floor(clickTop / this.shipSide);
-    const newShipData = {
-      x: newX,
-      y: newY,
-      direction: data.shipInfo.shipPlace.direction,
-    };
-
-    for (let i = 0; i < data.shipInfo.decksCount; i++) {
-      const x = data.shipInfo.shipPlace.x + i * data.shipInfo.shipPlace.direction[0];
-      const y = data.shipInfo.shipPlace.y + i * data.shipInfo.shipPlace.direction[1];
-      this.matrix[x][y] = CellCondition.empty;
-    }
-
-    if (this.isValidPlace(newShipData, data.shipInfo.decksCount)) {
-      const ship = new Ship(this, {shipPlace: newShipData, decksCount: data.shipInfo.decksCount}, data.name);
-      ship.createShip();
-
-      for (let i = 0; i < data.shipInfo.decksCount; i++) {
-        const x = newX + i * data.shipInfo.shipPlace.direction[0];
-        const y = newY + i * data.shipInfo.shipPlace.direction[1];
-        this.matrix[x][y] = CellCondition.ship;
-      }
-      document.querySelector(`[data-name="${data.name}"]`)?.remove();
-    } else {
-      for (let i = 0; i < data.shipInfo.decksCount; i++) {
-        const x = data.shipInfo.shipPlace.x + i * data.shipInfo.shipPlace.direction[0];
-        const y = data.shipInfo.shipPlace.y + i * data.shipInfo.shipPlace.direction[1];
-        this.matrix[x][y] = CellCondition.ship;
-      }
-    }
-  };
-
 
   clear(): void {
     this.board.replaceChildren();
