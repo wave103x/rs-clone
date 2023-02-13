@@ -28,8 +28,9 @@ const signUpUser = async (req, res) => {
     }
     const hashPassword = await bcrypt.hash(password, 15);
     const newUser = await user.create({ login, nickName, password: hashPassword });
+
     const token = generateAccessToken(newUser.id);
-    res.cookie('token', token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    res.cookie('battleship', token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.json(newUser);
     // return res.json(newUser);
   } catch (e) {
