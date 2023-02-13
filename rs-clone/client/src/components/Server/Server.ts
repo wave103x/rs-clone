@@ -2,8 +2,7 @@ import AppEndPoint from "../utils/enums/app-endpoint";
 import TUser from "../utils/types/TUser";
 
 export default class Server {
-  async postUser(formData:string): Promise<TUser | undefined> {
-    const parsedObj = JSON.parse(formData);
+  async postUser(formData: string): Promise <TUser | undefined> {
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNUP}`, {
         method: 'POST',
@@ -11,12 +10,14 @@ export default class Server {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({login: parsedObj.login, nickName: parsedObj.nickName, password: parsedObj.password}),
+        body: formData,
       });
       const data = await response.json();
       return data;
     } catch (error) {
-      throw new Error('No');
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
     }
   }
 }

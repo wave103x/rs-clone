@@ -12,7 +12,7 @@ import View from "../Views/View";
 export default class AuthPage extends View {
   protected _component = document.createElement(AppTag.SECTION);
   private form = this.createBlock(AppTag.FORM, AppCssClass.REGISTRATION_FORM);
-  private loginInput = this.createInput(AppCssClass.FORM_INPUT, AppType.TEXT, AppID.USER_NAME);
+  private loginInput = this.createInput(AppCssClass.FORM_INPUT, AppType.TEXT, AppID.LOGIN);
   private nickNameInput = this.createInput(AppCssClass.FORM_INPUT, AppType.TEXT, AppID.NICK_NAME)
   private passWordInput = this.createInput(AppCssClass.FORM_INPUT, AppType.PASSWORD, AppID.PASSWORD)
   private imageInput = this.createInput(AppCssClass.FORM_INPUT, AppType.FILE, AppID.IMAGE)
@@ -42,7 +42,7 @@ export default class AuthPage extends View {
     const loginBlock = this.createInputBlock(
       AppTag.DIV,
       AppCssClass.FORM_INPUT_BLOCK,
-      AppID.USER_NAME,
+      AppID.LOGIN,
       AppTextContent.LOGIN
     )
 

@@ -1,6 +1,6 @@
 enum AppID {
-  USER_NAME = 'user-name',
-  NICK_NAME = 'nick-name',
+  LOGIN = 'login',
+  NICK_NAME = 'nickName',
   PASSWORD = 'password',
   IMAGE = 'image'
 }
