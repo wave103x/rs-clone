@@ -8,7 +8,7 @@ class BoardUtils {
   }
 
   static createCoordMatrix(n: number): number[][] {
-    const arr = new Array(n * n);
+    const arr: number[][] = [];
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++) {
         arr.push([i, j]);
@@ -25,16 +25,16 @@ class BoardUtils {
   static getMatrixCoords(e: MouseEvent, board: Board): number[] {
     const boardX = board.board.getBoundingClientRect().left + +window.pageXOffset;
     const boardY = board.board.getBoundingClientRect().top + +window.pageYOffset;
-    const x = Math.floor((e.pageX - boardX) / board.shipSide);
-    const y = Math.floor((e.pageY - boardY) / board.shipSide);
+    const x = Math.floor((e.pageY - boardY) / board.shipSide);
+    const y = Math.floor((e.pageX - boardX) / board.shipSide);
     return [x, y];
   }
 
   static addMarker(board: Board, coords: number[], cssClass: string): void {
     const markedCell = document.createElement(AppTag.DIV);
     markedCell.classList.add(cssClass);
-    markedCell.style.left = `${coords[0] * board.shipSide}px`;
-    markedCell.style.top = `${coords[1] * board.shipSide}px`;
+    markedCell.style.left = `${coords[1] * board.shipSide}px`;
+    markedCell.style.top = `${coords[0] * board.shipSide}px`;
 
     board.board.append(markedCell);
 

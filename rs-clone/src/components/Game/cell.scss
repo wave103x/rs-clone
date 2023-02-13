@@ -5,9 +5,35 @@
   width: 45px;
 }
 
+.miss-cell {
+  position: absolute;
+  background-image: url('../../assets/icons/miss45.svg');
+  height: 45px;
+  width: 45px;
+}
+
+.hit-cell {
+  position: absolute;
+  background-image: url('../../assets/icons/hit45.svg');
+  height: 45px;
+  width: 45px;
+}
+
 @media (max-width: 768px) {
   .empty-cell {
     background-image: url('../../assets/icons/empty30.svg');
+    height: 30px;
+    width: 30px;
+  }
+
+  .miss-cell {
+    background-image: url('../../assets/icons/miss30.svg');
+    height: 30px;
+    width: 30px;
+  }
+
+  .hit-cell {
+    background-image: url('../../assets/icons/hit30.svg');
     height: 30px;
     width: 30px;
   }

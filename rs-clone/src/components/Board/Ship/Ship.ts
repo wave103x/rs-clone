@@ -52,9 +52,9 @@ class Ship {
 
     component.style.left = `${this.shipInfo.shipPlace.y * this.board.shipSide}px`;
     component.style.top = `${this.shipInfo.shipPlace.x * this.board.shipSide}px`;
+
     this.board.board.append(component);
   }
-
 }
 
 export default Ship;

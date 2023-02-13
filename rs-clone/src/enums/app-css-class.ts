@@ -53,6 +53,8 @@ const enum AppCssClass {
   GAME_SQUADRON_ROW_RIGHT = 'game__squadron-row_right',
 
   NOSHIP_CELL = 'noship-cell',
+  MISS_CELL = "miss-cell",
+  HIT_CELL = "hit-cell",
 }
 
 export default AppCssClass;

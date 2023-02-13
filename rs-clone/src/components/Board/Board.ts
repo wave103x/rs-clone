@@ -126,7 +126,7 @@ class Board extends AbstractView {
       const direction: number[] = [directionX, directionX === 0 ? 1 : 0];
 
       let x, y: number;
-      if (directionX == 0) {
+      if (direction[0] === 0) {
         x = BoardUtils.getRandomNumber(board.data.length - 1);
         y = BoardUtils.getRandomNumber(board.data.length - decksCount);
       } else {
@@ -134,7 +134,7 @@ class Board extends AbstractView {
         y = BoardUtils.getRandomNumber(board.data.length - 1);
       }
 
-      const shipPlace = { x, y, direction };
+      const shipPlace = { y, x, direction };
       if (!isValidPlace(shipPlace, decksCount)) return randomShipCoords(decksCount, board);
 
       return {
