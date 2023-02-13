@@ -20,12 +20,18 @@ const signUpUser = async (req, res) => {
       login, nickName, password,
     } = req.body;
     const currentUser = await user.findOne({ where: { login } });
+    const currentUserNick = await user.findAll({ where: { nickName } });
     if (currentUser) {
       return res.status(400).json({ message: `Пользователь с логином ${login} существует` });
+    } if (currentUserNick.length > 0) {
+      return res.status(400).json({ message: `Никнейм ${nickName} занят` });
     }
     const hashPassword = await bcrypt.hash(password, 15);
     const newUser = await user.create({ login, nickName, password: hashPassword });
+    const token = generateAccessToken(newUser.id);
+    res.cookie('token', token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.json(newUser);
+    // return res.json(newUser);
   } catch (e) {
     console.log(e);
     res.send({ message: 'Ошибка при регистрации' });
@@ -46,6 +52,7 @@ const signInUser = async (req, res) => {
       return res.status(400).json({ message: 'Неверный пароль!' });
     }
     const token = generateAccessToken(currentUser.id);
+    res.cookie('token', token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.json({ id: currentUser.id, token });
   } catch (e) {
     console.log(e);
@@ -74,6 +81,16 @@ const getUser = async (req, res) => {
   }
 };
 
+const logOut = async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    res.clearCookie('token');
+    return res.status(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
 module.exports = {
-  getUser, getAllUsers, signUpUser, signInUser,
+  getUser, getAllUsers, signUpUser, signInUser, logOut,
 };

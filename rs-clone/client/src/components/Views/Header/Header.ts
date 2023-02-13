@@ -30,7 +30,6 @@ class Header extends AbstractView {
   }
   renderRegistrationPage() {
     const main = document.querySelector('main')
-    console.log('hey', this.authPage.getComponent(), main);
     main?.append(this.authPage.getComponent())
   }
 

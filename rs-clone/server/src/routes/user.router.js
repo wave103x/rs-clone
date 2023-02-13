@@ -2,7 +2,7 @@
 const router = require('express').Router();
 const { check } = require('express-validator');
 const {
-  getUser, signUpUser, signInUser, getAllUsers,
+  getUser, signUpUser, signInUser, getAllUsers, logOut,
 } = require('../controllers/userController');
 const authMiddleware = require('../middleWares/authMiddleware');
 
@@ -13,7 +13,8 @@ router.post('/signUp', [
   check('password', 'Пароль от 6 символов').isLength({ min: 4 }),
 ], signUpUser);
 router.post('/signIn', signInUser);
-router.get('/', authMiddleware, getAllUsers);
+router.post('/logout', logOut);
+router.get('/users', authMiddleware, getAllUsers);
 router.get('/:id', getUser);
 
 module.exports = router;

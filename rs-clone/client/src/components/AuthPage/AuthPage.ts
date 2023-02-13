@@ -26,7 +26,6 @@ export default class AuthPage extends View {
 
   sendForm(event: Event) {
     event.preventDefault()
-
     if(this.form instanceof HTMLFormElement) {
       const dataObj = JSON.stringify(Object.fromEntries(new FormData(this.form)));
       this.server.postUser(dataObj)

@@ -1,6 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const { Sequelize } = require('sequelize');
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const userRouter = require('./src/routes/user.router');
 const winnerRouter = require('./src/routes/winner.router');
@@ -39,7 +41,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/', userRouter);
-// app.use('/winners', winnerRouter);
+app.use(cookieParser());
+app.use('/api', userRouter);
 
 app.listen(PORT, () => console.log('Success'));

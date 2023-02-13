@@ -1,5 +1,5 @@
 enum AppEndPoint {
   HOST = 'http://localhost:3001',
-  SIGNUP = "/signUp",
+  SIGNUP = "/api/signUp",
 }
 export default AppEndPoint

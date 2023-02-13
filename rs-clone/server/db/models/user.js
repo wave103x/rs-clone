@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       field: 'image',
     },
+    refreshToken: {
+      type: DataTypes.STRING,
+      field: 'refresh_token',
+    },
   }, {
     sequelize,
     modelName: 'user',

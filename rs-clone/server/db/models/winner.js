@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'alive_cells',
     },
+    mode: {
+      type: DataTypes.STRING,
+      field: 'mode',
+    },
   }, {
     sequelize,
     modelName: 'winner',
