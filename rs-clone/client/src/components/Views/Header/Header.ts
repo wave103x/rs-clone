@@ -1,8 +1,11 @@
 import AbstractView from '../View';
-import AppCssClass from '../enums/app-css-class';
-import AppTag from '../enums/app-tag';
-import AccountMenus from '../enums/account-menus';
+import AppCssClass from '../../utils/enums/app-css-class';
+import AppTag from '../../utils/enums/app-tag';
+import AccountMenus from '../../utils/enums/account-menus';
 import './header.scss';
+import AuthPage from '../../AuthPage/AuthPage';
+import Server from '../../Server/Server';
+
 
 class Header extends AbstractView {
   private readonly LOGO_MAIN = '../../../assets/icons/logo-main.svg';
@@ -13,12 +16,22 @@ class Header extends AbstractView {
   private readonly LEADERS_RU = 'Лидеры';
   private readonly LOGIN = 'login';
   private readonly LOGIN_RU = 'Войти';
+  private authPage: AuthPage;
+  private server = new Server();
   private appMenu = document.createElement(AppTag.DIV);
+  private loginBtn = this.createButton(this.LOGIN)
   protected _component = document.createElement(AppTag.HEADER);
+
 
   constructor() {
     super();
     this.createComponent();
+    this.authPage = new AuthPage()
+  }
+  renderRegistrationPage() {
+    const main = document.querySelector('main')
+    console.log('hey', this.authPage.getComponent(), main);
+    main?.append(this.authPage.getComponent())
   }
 
   protected createComponent(): void {
@@ -33,7 +46,8 @@ class Header extends AbstractView {
 
     const buttons = document.createElement(AppTag.DIV);
     buttons.className = AppCssClass.HEADER_BUTTONS;
-    buttons.append(this.createButton(this.LEADERS), this.createButton(this.LOGIN));
+    this.loginBtn.addEventListener('click', () => this.renderRegistrationPage())
+    buttons.append(this.createButton(this.LEADERS), this.loginBtn);
 
     this.createLoginDropMenu('wave103');
 
@@ -55,7 +69,8 @@ class Header extends AbstractView {
         svg.src = require('../../../assets/icons/login-icon.svg') as string;
 
         btn.addEventListener('click', () => {
-          this.appMenu.classList.toggle(AppCssClass.ACC_MENU_HIDDEN);
+          this.renderRegistrationPage()
+          // this.appMenu.classList.toggle(AppCssClass.ACC_MENU_HIDDEN);
         });
         break;
     }

@@ -2,11 +2,13 @@
 @import './base/vars';
 @import './elements/button';
 
-html, button {
+html,
+button {
   font-family: 'Unbounded', 'Verdana', sans-serif;
 }
 
-body,html {
+body,
+html {
   margin: 0;
   padding: 0;
 }
@@ -16,9 +18,16 @@ body,html {
 
 body {
   min-height: 100vh;
-  background-image: radial-gradient(
-    farthest-corner at 0 0,
-    #89F7FE,
-    #66A6FF
-  );
+  background-image: radial-gradient(farthest-corner at 0 0, #89f7fe, #66a6ff);
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
+
+main {
+  position: relative;
+  flex-basis: 100%;
+  flex-grow: 1;
+}
+
+@import '../components/AuthPage/authPage.scss';

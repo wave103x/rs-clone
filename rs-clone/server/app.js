@@ -39,7 +39,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use('/users', userRouter);
+app.use('/', userRouter);
 // app.use('/winners', winnerRouter);
 
 app.listen(PORT, () => console.log('Success'));

@@ -1,6 +1,6 @@
 import View from '../View';
-import AppCssClass from '../enums/app-css-class';
-import AppTag from '../enums/app-tag';
+import AppCssClass from '../../utils/enums/app-css-class';
+import AppTag from '../../utils/enums/app-tag';
 import './start-view.scss';
 
 class StartView extends View {
