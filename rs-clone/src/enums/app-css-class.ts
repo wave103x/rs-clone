@@ -20,6 +20,7 @@ const enum AppCssClass {
   BUTTON_DIV_IMG_RIGHT = 'button-div__img_right',
   BUTTON_DIV = 'first-view__button-div',
   BUTTON_BIG = 'button_big',
+  BUTTON_BLUE = "button_blue",
 
   PREGAME = 'pregame',
   BOARD_CONTAINER = 'pregame__board-container',
@@ -53,8 +54,14 @@ const enum AppCssClass {
   GAME_SQUADRON_ROW_RIGHT = 'game__squadron-row_right',
 
   NOSHIP_CELL = 'noship-cell',
-  MISS_CELL = "miss-cell",
-  HIT_CELL = "hit-cell",
+  MISS_CELL = 'miss-cell',
+  HIT_CELL = 'hit-cell',
+
+  WIN = 'win',
+  WIN_TITLE = 'win__title',
+  WIN_TEXT = 'win__text',
+  WIN_POSITION = 'win__position',
+  WIN_HOME = 'win__home',
 }
 
 export default AppCssClass;

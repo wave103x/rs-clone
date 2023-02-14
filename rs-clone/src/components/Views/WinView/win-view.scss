@@ -1,0 +1,50 @@
+@import '../../../sass/main.scss';
+
+.win {
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  padding: 1.5rem;
+  width: 15%;
+  border-radius: 1rem;
+
+  &__title {
+    position: absolute;
+    top: -30%;
+    z-index: 1001;
+    width: 300%;
+
+    color: $main-yellow;
+    font-size: 4rem;
+    text-align: center;
+    text-shadow: $text-shadow-big;
+  }
+
+  &__text {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    text-align: center;
+  }
+
+  &__position {
+    display: block;
+    font-weight: 500;
+  }
+
+  &__home {
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    color: rgba(49, 109, 201, 1);
+    margin-bottom: 1rem;
+  }
+}

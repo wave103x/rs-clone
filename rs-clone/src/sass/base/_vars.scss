@@ -5,6 +5,11 @@ $text-shadow-normal: 0 2px 2px
     $color: #000000,
     $alpha: 0.2,
   );
+$text-shadow-big: 0 4px 8px
+  rgba(
+    $color: #000000,
+    $alpha: 0.45,
+  );
 $text-shadow-blue: 0 2px 2px
   rgba(
     $color: #2672b5,

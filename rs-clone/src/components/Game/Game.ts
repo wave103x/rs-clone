@@ -4,6 +4,7 @@ import GameType from '../../enums/game-type';
 import BoardUtils from '../../utils/BoardUtils';
 import Board from '../Board/Board';
 import Ship from '../Board/Ship/Ship';
+import WinView from '../Views/WinView/WinView';
 import Computer from '../Computer/Computer';
 import './cell.scss';
 
@@ -14,6 +15,8 @@ class Game {
   private _secondPlayer: Board;
   private _gameType: string;
   private computer!: Computer;
+
+  private readonly winText = ['Победа!', 'Поражение!'];
 
   constructor(firstPlayer: Board, secondPlayer: Board, gameType: string) {
     this._firstPlayer = firstPlayer;
@@ -54,7 +57,7 @@ class Game {
 
   private toggleNoShipCell(e: MouseEvent): void {
     e.preventDefault();
-    if (!this._secondPlayer.playerTurn) return;
+    if (!this._secondPlayer.playerTurn || this.end) return;
 
     const coords = BoardUtils.getMatrixCoords(e, this._secondPlayer);
     const type = this._secondPlayer.matrix[coords[0]][coords[1]];
@@ -81,7 +84,7 @@ class Game {
   }
 
   private shot(e: MouseEvent): void {
-    if (!this._secondPlayer.playerTurn) return;
+    if (!this._secondPlayer.playerTurn || this.end) return;
 
     const coords = BoardUtils.getMatrixCoords(e, this._secondPlayer);
 
@@ -221,24 +224,32 @@ class Game {
   private checkWin() {
     const yourSquadron = Object.keys(this._firstPlayer.squadron).length;
     const enemySquadron = Object.keys(this._secondPlayer.squadron).length;
-    if (this.computer) {
-      //Игра против компьютера
-      if (enemySquadron === 0) {
-        console.log('Вы победили');
-        this.end = true;
-      } else if (yourSquadron === 0) {
-        //Машина одержала верх над человеком
-        console.log('Машина одержала верх над человеком');
-        for (let ship in this._secondPlayer.squadron) this._secondPlayer.squadron[ship].showShip();
-        this.end = true;
+    let winBlock: WinView | undefined;
+    let text: string = '';
+    if (yourSquadron === 0 || enemySquadron === 0) {
+      this.end = true;
+      if (this.computer) {
+        if (enemySquadron === 0) {
+          //console.log('Вы победили');
+          text = this.winText[0];
+        } else if (yourSquadron === 0) {
+          //Машина одержала верх над человеком
+          //console.log('Машина одержала верх над человеком');
+          text = this.winText[1];
+          for (let ship in this._secondPlayer.squadron)
+            this._secondPlayer.squadron[ship].showShip();
+        }
+      } else {
+        if (enemySquadron === 0) {
+          //Вы победили
+          text = this.winText[0];
+        } else if (yourSquadron === 0) {
+          //Ваш оппонент победил
+          text = this.winText[1];
+        }
       }
-    } else {
-      //Игра против человека
-      if (enemySquadron === 0) {
-        //Вы победили
-      } else if (yourSquadron === 0) {
-        //Ваш оппонент победил
-      }
+      winBlock = new WinView(text);
+      if (winBlock) document.body.append(winBlock.getComponent());
     }
   }
 }
