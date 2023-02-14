@@ -44,6 +44,7 @@ class BoardUtils {
       cell: markedCell,
     });
   }
+
 }
 
 export default BoardUtils;

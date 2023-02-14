@@ -95,6 +95,11 @@ class Board extends AbstractView {
       if (text) block.innerText = text;
       return block;
     }
+
+    this._component.addEventListener('dragover', (event) => {
+      event?.preventDefault();
+    });
+
   }
 
   clear(): void {
@@ -134,66 +139,67 @@ class Board extends AbstractView {
         y = BoardUtils.getRandomNumber(board.data.length - 1);
       }
 
-      const shipPlace = { y, x, direction };
-      if (!isValidPlace(shipPlace, decksCount)) return randomShipCoords(decksCount, board);
+
+      const shipPlace = { x, y, direction };
+
+      if (!board.isValidPlace(shipPlace, decksCount)) return randomShipCoords(decksCount, board);
 
       return {
         shipPlace: shipPlace,
         decksCount: decksCount,
       };
-
-      function isValidPlace(
-        shipPlace: { x: number; y: number; direction: number[] },
-        decksCount: number
-      ): boolean {
-        let toX!: number;
-        let toY!: number;
-
-        const fromX: number = shipPlace.x == 0 ? shipPlace.x : shipPlace.x - 1;
-
-        if (
-          shipPlace.x + shipPlace.direction[0] * decksCount == board.data.length &&
-          shipPlace.direction[0] == 1
-        )
-          toX = shipPlace.x + shipPlace.direction[0] * decksCount;
-        else if (
-          shipPlace.x + shipPlace.direction[0] * decksCount < board.data.length &&
-          shipPlace.direction[0] == 1
-        )
-          toX = shipPlace.x + shipPlace.direction[0] * decksCount + 1;
-        else if (shipPlace.x == board.data.length - 1 && shipPlace.direction[0] == 0)
-          toX = shipPlace.x + 1;
-        else if (shipPlace.x < board.data.length - 1 && shipPlace.direction[0] == 0)
-          toX = shipPlace.x + 2;
-
-        const fromY: number = shipPlace.y == 0 ? shipPlace.y : shipPlace.y - 1;
-
-        if (
-          shipPlace.y + shipPlace.direction[1] * decksCount == board.data.length &&
-          shipPlace.direction[1] == 1
-        )
-          toY = shipPlace.y + shipPlace.direction[1] * decksCount;
-        else if (
-          shipPlace.y + shipPlace.direction[1] * decksCount < board.data.length &&
-          shipPlace.direction[1] == 1
-        )
-          toY = shipPlace.y + shipPlace.direction[1] * decksCount + 1;
-        else if (shipPlace.y == board.data.length - 1 && shipPlace.direction[1] == 0)
-          toY = shipPlace.y + 1;
-        else if (shipPlace.y < board.data.length - 1 && shipPlace.direction[1] == 0)
-          toY = shipPlace.y + 2;
-
-        if (!toX || !toY) return false;
-
-        if (
-          board.matrix
-            .slice(fromX, toX)
-            .filter((arr) => arr.slice(fromY, toY).includes(CellCondition.ship)).length > 0
-        )
-          return false;
-        return true;
-      }
     }
+  }
+
+  isValidPlace(
+    shipPlace: { x: number; y: number; direction: number[] },
+    decksCount: number
+  ): boolean {
+    let toX!: number;
+    let toY!: number;
+    const fromX: number = shipPlace.x == 0 ? shipPlace.x : shipPlace.x - 1;
+    if (
+      shipPlace.x + shipPlace.direction[0] * decksCount == this.data.length &&
+      shipPlace.direction[0] == 1
+    )
+      toX = shipPlace.x + shipPlace.direction[0] * decksCount;
+    else if (
+      shipPlace.x + shipPlace.direction[0] * decksCount < this.data.length &&
+      shipPlace.direction[0] == 1
+    )
+      toX = shipPlace.x + shipPlace.direction[0] * decksCount + 1;
+    else if (shipPlace.x == this.data.length - 1 && shipPlace.direction[0] == 0)
+      toX = shipPlace.x + 1;
+    else if (shipPlace.x < this.data.length - 1 && shipPlace.direction[0] == 0)
+      toX = shipPlace.x + 2;
+
+    const fromY: number = shipPlace.y == 0 ? shipPlace.y : shipPlace.y - 1;
+
+    if (
+      shipPlace.y + shipPlace.direction[1] * decksCount == this.data.length &&
+      shipPlace.direction[1] == 1
+    )
+      toY = shipPlace.y + shipPlace.direction[1] * decksCount;
+    else if (
+      shipPlace.y + shipPlace.direction[1] * decksCount < this.data.length &&
+      shipPlace.direction[1] == 1
+    )
+      toY = shipPlace.y + shipPlace.direction[1] * decksCount + 1;
+    else if (shipPlace.y == this.data.length - 1 && shipPlace.direction[1] == 0)
+      toY = shipPlace.y + 1;
+    else if (shipPlace.y < this.data.length - 1 && shipPlace.direction[1] == 0)
+      toY = shipPlace.y + 2;
+    if (!toX || !toY) return false;
+
+    if (
+      this.matrix
+        .slice(fromX, toX)
+        .filter((arr) => arr.slice(fromY, toY).includes(CellCondition.ship)).length > 0
+    ) {
+      return false;
+    }
+
+    return true;
   }
 }
 
