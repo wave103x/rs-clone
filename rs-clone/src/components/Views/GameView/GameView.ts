@@ -19,6 +19,12 @@ class GameView extends AbstractView {
   private _board: Board;
   private _enemyBoard!: Board;
   private gameType: string;
+  private _gameTime = document.createElement(AppTag.P);
+  private _turnAnons = document.createElement(AppTag.P);
+  private _playerTurns!: string;
+  private _enemyTurns!: string;
+  private readonly PLAYER_TURN = 'Стреляйте!';
+  private readonly ENEMY_TURN = 'Враг атакует';
 
   constructor(board: Board, gameType: string) {
     super();
@@ -36,7 +42,13 @@ class GameView extends AbstractView {
   protected createComponent(): void {
     this._component.classList.add(AppCssClass.GAME);
 
-    this._component.append(createContainer(this._board));
+    this._gameTime.textContent = '1:12';
+    this._turnAnons.textContent = this.ENEMY_TURN;
+    this._enemyTurns = '12';
+    this._playerTurns = '23';
+    const stats = this.createStats();
+
+    this._component.append(createContainer(this._board), stats);
 
     //Переделать под таблицу игрока
     if (this._enemyBoard) {
@@ -94,6 +106,24 @@ class GameView extends AbstractView {
 
       return container;
     }
+  }
+
+  private createStats() {
+    const container = document.createElement(AppTag.DIV);
+    const playerTurns = document.createElement(AppTag.P);
+    const enemyTurns = document.createElement(AppTag.P);
+
+    container.className = AppCssClass.GAME_STATS;
+    this._gameTime.className = AppCssClass.GAME_STATS_TIMER;
+    this._turnAnons.className = AppCssClass.GAME_STATS_ANONS;
+    playerTurns.className = AppCssClass.GAME_STATS_TURNS_COUNT;
+    enemyTurns.className = AppCssClass.GAME_STATS_TURNS_COUNT;
+
+    playerTurns.textContent = `ваших выстрелов: ${this._playerTurns}`;
+    enemyTurns.textContent = `выстрелов врага: ${this._enemyTurns}`;
+
+    container.append(this._gameTime, this._turnAnons, playerTurns, enemyTurns);
+    return container;
   }
 }
 

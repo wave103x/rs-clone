@@ -55,6 +55,11 @@ const enum AppCssClass {
   GAME_SQUADRON = 'game__squadron',
   GAME_SQUADRON_ROW = 'game__squadron-row',
   GAME_SQUADRON_ROW_RIGHT = 'game__squadron-row_right',
+  GAME_STATS = 'game-stats',
+  GAME_STATS_TIMER = 'game-stats__timer',
+  GAME_STATS_ANONS = 'game-stats__anons',
+  GAME_STATS_TURNS_COUNT = 'game-stats__turns-count',
+
 
   NOSHIP_CELL = 'noship-cell',
   MISS_CELL = 'miss-cell',
