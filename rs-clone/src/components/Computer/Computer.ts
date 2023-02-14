@@ -52,7 +52,7 @@ class Computer {
     this.tacticHitCoords = this.getTacticCoords();
   }
 
-  shot() {
+  shot(): number[][] | undefined {
     if (this._game.end) return;
     let coords: number[] = this.getCoords();
 
@@ -73,6 +73,7 @@ class Computer {
         this.removeCoords(coord);
       }
     }
+    return hit;
   }
 
   private getTacticCoords(): number[][] {

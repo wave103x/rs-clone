@@ -92,13 +92,21 @@ class Game {
     if (cell) return;
 
     const board = this._secondPlayer;
-    this.makeHitOrMiss(board, coords);
+    const result = this.makeHitOrMiss(board, coords);
 
-    this._secondPlayer.playerTurn = false;
-    if (this.computer) {
-      this.computer.shot();
-      this._secondPlayer.playerTurn = true;
-    } else {
+    if (!result) this._secondPlayer.playerTurn = false;
+
+    if (this.computer && this._secondPlayer.playerTurn === false) {
+      let compResult: number[][] | undefined;
+
+      const interval = setInterval(() => {
+        compResult = this.computer.shot();
+        if (compResult === undefined) {
+          this._secondPlayer.playerTurn = true;
+          clearInterval(interval);
+        }
+      }, 800);
+    } else if (this._secondPlayer.playerTurn === false) {
       //Код для онлайна
     }
   }
@@ -137,8 +145,6 @@ class Game {
 
           arr = setNoShipCellsOnDead(board.squadron[ship]);
           delete board.squadron[ship];
-
-          console.log(board.squadron, board);
         }
       }
       return arr;
