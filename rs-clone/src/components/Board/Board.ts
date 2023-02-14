@@ -28,6 +28,7 @@ class Board extends AbstractView {
   protected _component: HTMLElement = document.createElement(AppTag.DIV);
   private readonly smallClientWidth: number = 768;
   private readonly alphabet: string = 'abcdefghij';
+  private readonly EVENT_DRAGOVER = 'dragover';
 
   private data: BoardDataType;
   //private boardSide: number;
@@ -96,7 +97,7 @@ class Board extends AbstractView {
       return block;
     }
 
-    this._component.addEventListener('dragover', (event) => {
+    this.board.addEventListener(this.EVENT_DRAGOVER, (event) => {
       event?.preventDefault();
     });
 
@@ -155,6 +156,8 @@ class Board extends AbstractView {
     shipPlace: { x: number; y: number; direction: number[] },
     decksCount: number
   ): boolean {
+    if (shipPlace.x < 0 || shipPlace.y < 0) return false;
+
     let toX!: number;
     let toY!: number;
     const fromX: number = shipPlace.x == 0 ? shipPlace.x : shipPlace.x - 1;
