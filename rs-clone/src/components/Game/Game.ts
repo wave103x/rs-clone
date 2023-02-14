@@ -8,6 +8,8 @@ import Computer from '../Computer/Computer';
 import './cell.scss';
 
 class Game {
+  private readonly DRUG_LOCK = 'remove';
+  private readonly DRUG_UNLOCK = 'add';
   end = false;
 
   private _firstPlayer: Board;
@@ -22,7 +24,10 @@ class Game {
   }
 
   start(): void {
-    //Возможно изменить запрет на перетаскивание
+
+   for (const ship of Object.values(this._firstPlayer.squadron)) {
+    ship.changeDrugable(this.DRUG_LOCK);
+   }
     this._firstPlayer.canMoving = false;
     if ((this._gameType = GameType.solo))
       this.computer = new Computer(this._secondPlayer.difficult, this._firstPlayer, this);

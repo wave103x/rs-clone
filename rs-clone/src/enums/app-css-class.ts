@@ -43,6 +43,9 @@ const enum AppCssClass {
   EMPTY_IMG = 'empty_img',
 
   SHIP = 'ship',
+  PLACING_ERROR = 'placing-error',
+  ANIMATION_ERROR = 'animation-error',
+  SHIP_DRAG_LOCK = 'ship_locked',
 
   GAME = 'game',
   GAME_CONTAINER = 'game__container',
