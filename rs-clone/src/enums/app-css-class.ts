@@ -13,6 +13,8 @@ const enum AppCssClass {
   ACC_MENU_NAME = 'acc-menu__login-name',
   ACC_MENU_BTN = 'acc-menu__button',
 
+  PAGE_HEADING = 'page-heading',
+
   FIRST_VIEW_LOGO = 'first-view__logo',
   FIRST_VIEW_BUTTONS = 'fist-view__buttons',
   BUTTON_DIV_IMG = 'button-div__img',
