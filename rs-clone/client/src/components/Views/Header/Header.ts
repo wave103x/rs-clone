@@ -1,13 +1,7 @@
 import AbstractView from '../View';
-<<<<<<< HEAD:rs-clone/client/src/components/Views/Header/Header.ts
-import AppCssClass from '../../utils/enums/app-css-class';
-import AppTag from '../../utils/enums/app-tag';
-import AccountMenus from '../../utils/enums/account-menus';
-=======
 import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
 import AccountMenus from '../../../enums/account-menus';
->>>>>>> feat/routing:rs-clone/src/components/Views/Header/Header.ts
 import './header.scss';
 import AuthPage from '../../AuthPage/AuthPage';
 import Server from '../../Server/Server';
@@ -33,13 +27,11 @@ class Header extends AbstractView {
   constructor() {
     super();
     this.createComponent();
-<<<<<<< HEAD:rs-clone/client/src/components/Views/Header/Header.ts
     this.authPage = new AuthPage()
   }
   renderRegistrationPage() {
     const main = document.querySelector('main')
     main?.append(this.authPage.getComponent())
-=======
     this._heading.className = AppCssClass.PAGE_HEADING;
   }
 
@@ -47,7 +39,6 @@ class Header extends AbstractView {
     this._heading.textContent = str;
     this._heading.hidden = false;
     if (hide) this._heading.hidden = true;
->>>>>>> feat/routing:rs-clone/src/components/Views/Header/Header.ts
   }
 
   protected createComponent(): void {

@@ -72,6 +72,16 @@ const enum AppCssClass {
   WIN_TEXT = 'win__text',
   WIN_POSITION = 'win__position',
   WIN_HOME = 'win__home',
+
+  REGISTRATION = 'registration',
+  REGISTRATION_FORM = "registration__form",
+  FORM = "form",
+  FORM_INPUT_BLOCK = 'form__input-block',
+  FORM_LABEL = "form__label",
+  FORM_INPUT = 'form__input',
+  IMAGE_LABEL = 'image-label',
+  FORM_FILE_BTN = 'form__file-btn',
+  FORM_SUBMIT_BTN = 'form__submit-btn'
 }
 
 export default AppCssClass;

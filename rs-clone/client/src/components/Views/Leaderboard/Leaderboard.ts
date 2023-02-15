@@ -1,7 +1,7 @@
-import LeaderSorts from '../../types/leadersSorts';
+import LeaderSorts from '../../../types/leadersSorts';
 import View from '../View';
 import Header from '../Header/Header';
-import AppCssClass from '../enums/app-css-class';
+import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
 import './leaderboard.scss';
 

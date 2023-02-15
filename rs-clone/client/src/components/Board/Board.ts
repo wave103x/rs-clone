@@ -6,7 +6,7 @@ import CellCondition from '../../enums/cell-condition';
 import BoardDataType from '../../types/BoardDataType';
 import './board.scss';
 import BoardData from './BoardData';
-import BoardUtils from '../../../../src/utils/BoardUtils';
+import BoardUtils from '../../utils/BoardUtils';
 import ShipInfo from '../../types/ShipInfo';
 import Squadron from '../../types/Squadron';
 import Side from './SideData';

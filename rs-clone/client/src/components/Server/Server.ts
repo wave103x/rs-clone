@@ -1,5 +1,5 @@
-import AppEndPoint from "../utils/enums/app-endpoint";
-import TUser from "../utils/types/TUser";
+import AppEndPoint from "../../enums/app-endpoint";
+import TUser from "../../types/TUser";
 
 export default class Server {
   async postUser(formData: string): Promise <TUser | undefined> {

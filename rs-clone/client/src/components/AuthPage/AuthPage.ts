@@ -1,12 +1,12 @@
 import Server from "../Server/Server";
-import AppAttribute from "../utils/enums/app-attribute";
-import AppCssClass from "../utils/enums/app-css-class";
-import AppEndPoint from "../utils/enums/app-endpoint";
-import AppID from "../utils/enums/app-id";
-import AppMethod from "../utils/enums/app-method";
-import AppTag from "../utils/enums/app-tag";
-import AppTextContent from "../utils/enums/app-text-content";
-import AppType from "../utils/enums/app-type";
+import AppAttribute from "../../enums/app-attribute";
+import AppCssClass from "../../enums/app-css-class";
+import AppEndPoint from "../../enums/app-endpoint";
+import AppID from "../../enums/app-id";
+import AppMethod from "../../enums/app-method";
+import AppTag from "../../enums/app-tag";
+import AppTextContent from "../../enums/app-text-content";
+import AppType from "../../enums/app-type";
 import View from "../Views/View";
 
 export default class AuthPage extends View {

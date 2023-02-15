@@ -1,12 +1,7 @@
 import View from '../View';
-<<<<<<< HEAD:rs-clone/client/src/components/Views/StartView/StartView.ts
-import AppCssClass from '../../utils/enums/app-css-class';
-import AppTag from '../../utils/enums/app-tag';
-=======
-import AppCssClass from '../enums/app-css-class';
+import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
 import Routing from '../../Routing/Routing';
->>>>>>> feat/routing:rs-clone/src/components/Views/StartView/StartView.ts
 import './start-view.scss';
 
 class StartView extends View {

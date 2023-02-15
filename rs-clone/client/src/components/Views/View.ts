@@ -1,6 +1,6 @@
-import AppAttribute from "../utils/enums/app-attribute";
-import AppCssClass from "../utils/enums/app-css-class";
-import AppTag from "../utils/enums/app-tag";
+import AppAttribute from "../../enums/app-attribute";
+import AppCssClass from "../../enums/app-css-class";
+import AppTag from "../../enums/app-tag";
 
 abstract class View {
   protected abstract _component: Element;
