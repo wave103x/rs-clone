@@ -5,6 +5,7 @@ import AccountMenus from '../../utils/enums/account-menus';
 import './header.scss';
 import AuthPage from '../../AuthPage/AuthPage';
 import Server from '../../Server/Server';
+import LoginPage from '../../LoginPage/loginPage';
 
 
 class Header extends AbstractView {
@@ -15,11 +16,15 @@ class Header extends AbstractView {
   private readonly LEADERS = 'leaders';
   private readonly LEADERS_RU = 'Лидеры';
   private readonly LOGIN = 'login';
+  private readonly SIGNUP = 'signUp';
   private readonly LOGIN_RU = 'Войти';
+  private readonly SIGNUP_RU = 'Регистрация';
   private authPage: AuthPage;
+  private loginPage: LoginPage;
   private server = new Server();
   private appMenu = document.createElement(AppTag.DIV);
   private loginBtn = this.createButton(this.LOGIN)
+  private signUpBtn = this.createButton(this.SIGNUP)
   protected _component = document.createElement(AppTag.HEADER);
 
 
@@ -27,15 +32,25 @@ class Header extends AbstractView {
     super();
     this.createComponent();
     this.authPage = new AuthPage()
+    this.loginPage = new LoginPage()
   }
-  renderRegistrationPage() {
+  setName() {
+    if (this.authPage.nickName) {
+      this.loginBtn.textContent = this.authPage.nickName;
+    } else {
+      this.loginBtn.textContent = this.LOGIN_RU;
+    }
+  }
+  renderLoginPage() {
+    const main = document.querySelector('main')
+    main?.append(this.loginPage.getComponent())
+  }
+  renderAuthPage() {
     const main = document.querySelector('main')
     main?.append(this.authPage.getComponent())
   }
-
   protected createComponent(): void {
     this._component.classList.add(AppCssClass.HEADER, AppCssClass.WRAPPER);
-
     const link = document.createElement(AppTag.LINK);
     link.href = this.HASH;
     const logo = new Image();
@@ -45,15 +60,14 @@ class Header extends AbstractView {
 
     const buttons = document.createElement(AppTag.DIV);
     buttons.className = AppCssClass.HEADER_BUTTONS;
-    this.loginBtn.addEventListener('click', () => this.renderRegistrationPage())
-    buttons.append(this.createButton(this.LEADERS), this.loginBtn);
-
+    this.loginBtn.addEventListener('click', () => this.renderLoginPage())
+    this.signUpBtn.addEventListener('click', () => this.renderAuthPage())
+    buttons.append(this.createButton(this.LEADERS), this.loginBtn, this.signUpBtn);
     this.createLoginDropMenu('wave103');
-
     this._component.append(link, buttons, this.appMenu);
   }
 
-  private createButton(type: 'leaders' | 'login'): HTMLElement {
+  private createButton(type: 'leaders' | 'login' | 'signUp'): HTMLElement {
     const btn = document.createElement(AppTag.BUTTON);
     btn.className = AppCssClass.HEADER_BTN;
     const svg = new Image();
@@ -66,12 +80,18 @@ class Header extends AbstractView {
       case this.LOGIN:
         btn.textContent = this.LOGIN_RU;
         svg.src = require('../../../assets/icons/login-icon.svg') as string;
-
         btn.addEventListener('click', () => {
-          this.renderRegistrationPage()
+          // this.renderRegistrationPage()
           // this.appMenu.classList.toggle(AppCssClass.ACC_MENU_HIDDEN);
         });
         break;
+      case this.SIGNUP:
+        btn.textContent = this.SIGNUP_RU;
+        svg.src = require('../../../assets/icons/login-icon.svg') as string;
+        btn.addEventListener('click', () => {
+          // this.renderRegistrationPage()
+          // this.appMenu.classList.toggle(AppCssClass.ACC_MENU_HIDDEN);
+        });
     }
 
     btn.append(svg);

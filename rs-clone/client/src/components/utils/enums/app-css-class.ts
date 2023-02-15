@@ -29,7 +29,9 @@ const enum AppCssClass {
   FORM_INPUT = 'form__input',
   IMAGE_LABEL = 'image-label',
   FORM_FILE_BTN = 'form__file-btn',
-  FORM_SUBMIT_BTN = 'form__submit-btn'
+  FORM_SUBMIT_BTN = 'form__submit-btn',
+  FORM_SPAN = 'form__span',
+  HIDDEN = 'hidden'
 }
 
 export default AppCssClass;

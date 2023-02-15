@@ -31,6 +31,13 @@
   flex-direction: column;
   gap: 0.8em;
 }
+.registration .form__input-block.hidden {
+  display: none;
+}
+.registration .form__span {
+  font-size: 0.5rem;
+  color: red;
+}
 .registration .form__label {
   font-family: "Unbounded", cursive;
   font-size: 1em;

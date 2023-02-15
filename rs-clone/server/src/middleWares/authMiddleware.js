@@ -2,7 +2,6 @@
 /* eslint-disable func-names */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const jwt = require('jsonwebtoken');
-const { secret } = require('../../config');
 
 module.exports = function (req, res, next) {
   if (req.method === 'OPTIONS') {
@@ -14,7 +13,7 @@ module.exports = function (req, res, next) {
     if (!token) {
       return res.status(400).json({ message: 'User is not authorized' });
     }
-    const decodedData = jwt.verify(token, secret);
+    const decodedData = jwt.verify(token, process.env.SECRET);
     req.user = decodedData;
     next();
   } catch (error) {
