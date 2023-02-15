@@ -12,6 +12,9 @@ const enum AppTag {
   LI = "li",
   SPAN = "span",
   A = "a",
+  INPUT = 'input',
+  LABEL = 'label',
+  MAIN = 'main',
 }
 
 export default AppTag;

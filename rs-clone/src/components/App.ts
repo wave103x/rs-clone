@@ -12,6 +12,7 @@ class App {
   constructor() {
     //this._component.append(this._header.getComponent(), this._startView.getComponent());
     this._component.append(this._header.getComponent(), this._pregameView.getComponent());
+
   }
 }
 

@@ -1,0 +1,84 @@
+@import '../../../sass/main.scss';
+
+.wrapper-leaders {
+  max-width: min(95%, 1200px);
+  padding-top: 2rem;
+  margin: 0 auto;
+}
+
+
+.leader-table__line {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  text-align: center;
+  align-items: center;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.5rem;
+}
+
+.leader-table__line_body {
+  background-color: #fff;
+  border-radius: 1rem;
+}
+
+.leader-table__line_head {
+  margin-top: 3rem;
+  background-color: rgba($color: #000000, $alpha: 0.1);
+  border-radius: 1rem;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+.leader-table__head-cell {
+  padding: 1rem;
+}
+
+.leader-table__cell {
+  padding: 1rem;
+  color: $main-blue;
+  font-size: 1.25rem;
+  text-align: center;
+  &:first-child {
+    width: 100px;
+  }
+}
+
+.table-contols__line {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  transition: 0.2s;
+  transform: scale(1);
+  transform-origin: left center;
+
+}
+
+.controls-label {
+  font-size: 2rem;
+  font-weight: 500;
+  color: $blue-gray;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s;
+  &:hover {
+    color: $dark-gray;
+  }
+  &:has(input:checked) {
+    color: #fff;
+    text-shadow: $text-shadow-big;
+  }
+}
+
+.controls-radio {
+  appearance: none;
+}
+
+.line-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  transform: scale(0.8);
+}

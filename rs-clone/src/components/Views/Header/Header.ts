@@ -15,10 +15,18 @@ class Header extends AbstractView {
   private readonly LOGIN_RU = 'Войти';
   private appMenu = document.createElement(AppTag.DIV);
   protected _component = document.createElement(AppTag.HEADER);
+  private _heading = document.createElement(AppTag.H2);
 
   constructor() {
     super();
     this.createComponent();
+    this._heading.className = AppCssClass.PAGE_HEADING;
+  }
+
+  setHeading(str: string, hide?: boolean): void {
+    this._heading.textContent = str;
+    this._heading.hidden = false;
+    if (hide) this._heading.hidden = true;
   }
 
   protected createComponent(): void {
@@ -31,13 +39,16 @@ class Header extends AbstractView {
     logo.className = AppCssClass.LOGO;
     link.append(logo);
 
+    this._heading.className = AppCssClass.PAGE_HEADING;
+    this._heading.hidden = true;
+
     const buttons = document.createElement(AppTag.DIV);
     buttons.className = AppCssClass.HEADER_BUTTONS;
     buttons.append(this.createButton(this.LEADERS), this.createButton(this.LOGIN));
 
     this.createLoginDropMenu('wave103');
 
-    this._component.append(link, buttons, this.appMenu);
+    this._component.append(link, this._heading, buttons, this.appMenu);
   }
 
   private createButton(type: 'leaders' | 'login'): HTMLElement {
