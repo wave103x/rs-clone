@@ -22,7 +22,6 @@ class Board extends AbstractView {
   public difficult: string;
   public markedCells: Cell[] = [];
 
-  public canMoving: boolean = true;
   public playerTurn: boolean = false;
 
   protected _component: HTMLElement = document.createElement(AppTag.DIV);

@@ -7,6 +7,7 @@ import Ship from '../Board/Ship/Ship';
 import WinView from '../Views/WinView/WinView';
 import Computer from '../Computer/Computer';
 import './cell.scss';
+import GameView from '../Views/GameView/GameView';
 
 class Game {
   private readonly DRUG_LOCK = 'remove';
@@ -17,21 +18,24 @@ class Game {
   private _secondPlayer: Board;
   private _gameType: string;
   private computer!: Computer;
+  private _playerTurns: number = 0;
+  private _enemyTurns: number = 0;
+  private _gameView: GameView;
 
   private readonly winText = ['Победа!', 'Поражение!'];
 
-  constructor(firstPlayer: Board, secondPlayer: Board, gameType: string) {
+  constructor(firstPlayer: Board, secondPlayer: Board, gameType: string, gameView: GameView) {
     this._firstPlayer = firstPlayer;
     this._secondPlayer = secondPlayer;
     this._gameType = gameType;
+    this._gameView = gameView;
   }
 
   start(): void {
+    for (const ship of Object.values(this._firstPlayer.squadron)) {
+      ship.changeDruggable(this.DRUG_LOCK);
+    }
 
-   for (const ship of Object.values(this._firstPlayer.squadron)) {
-    ship.changeDrugable(this.DRUG_LOCK);
-   }
-    this._firstPlayer.canMoving = false;
     if ((this._gameType = GameType.solo))
       this.computer = new Computer(this._secondPlayer.difficult, this._firstPlayer, this);
 
@@ -91,6 +95,8 @@ class Game {
   private shot(e: MouseEvent): void {
     if (!this._secondPlayer.playerTurn || this.end) return;
 
+    this._gameView.setTurnCount(++this._playerTurns, 'player');
+
     const coords = BoardUtils.getMatrixCoords(e, this._secondPlayer);
 
     const cell = this._secondPlayer.markedCells.find(
@@ -106,11 +112,14 @@ class Game {
 
     if (this.computer && this._secondPlayer.playerTurn === false) {
       let compResult: number[][] | undefined;
+      this._gameView.setTurn();
 
       const interval = setInterval(() => {
         compResult = this.computer.shot();
+        this._gameView.setTurnCount(++this._enemyTurns, 'enemy');
         if (compResult === undefined) {
           this._secondPlayer.playerTurn = true;
+          this._gameView.setTurn();
           clearInterval(interval);
         }
       }, 800);

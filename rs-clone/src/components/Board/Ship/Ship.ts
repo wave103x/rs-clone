@@ -148,7 +148,7 @@ class Ship {
     this.shipInMatrix(this.ADD);
   }
 
-  changeDrugable(value: 'add' | 'remove') {
+  changeDruggable(value: 'add' | 'remove') {
     switch (value) {
       case 'remove':
         this._component.draggable = false;
