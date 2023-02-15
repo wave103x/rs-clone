@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-extraneous-dependencies */
 const { Sequelize } = require('sequelize');
 const express = require('express');
@@ -5,7 +8,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const userRouter = require('./src/routes/user.router');
-const winnerRouter = require('./src/routes/winner.router');
+// const winnerRouter = require('./src/routes/winner.router');
 
 const app = express();
 require('dotenv').config();

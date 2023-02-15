@@ -1,6 +1,4 @@
 const enum AppCssClass {
-  BUTTON = 'button',
-
   LOGO = 'logo',
   HEADER = 'header',
   WRAPPER = 'wrapper',
@@ -21,8 +19,9 @@ const enum AppCssClass {
   BUTTON_DIV_IMG_LEFT = 'button-div__img_left',
   BUTTON_DIV_IMG_RIGHT = 'button-div__img_right',
   BUTTON_DIV = 'first-view__button-div',
+  BUTTON = 'button',
   BUTTON_BIG = 'button_big',
-  BUTTON_BLUE = "button_blue",
+  BUTTON_BLUE = 'button_blue',
 
   PREGAME = 'pregame',
   BOARD_CONTAINER = 'pregame__board-container',
@@ -81,7 +80,9 @@ const enum AppCssClass {
   FORM_INPUT = 'form__input',
   IMAGE_LABEL = 'image-label',
   FORM_FILE_BTN = 'form__file-btn',
-  FORM_SUBMIT_BTN = 'form__submit-btn'
+  FORM_SUBMIT_BTN = 'form__submit-btn',
+  FORM_SPAN = 'form__span',
+  HIDDEN = 'hidden'
 }
 
 export default AppCssClass;

@@ -6,6 +6,9 @@ abstract class View {
   protected abstract _component: Element;
 
   getComponent() {
+    if(this._component.classList.contains(AppCssClass.HIDDEN)) {
+      this._component.classList.remove(AppCssClass.HIDDEN)
+    }
     return this._component;
   }
 
