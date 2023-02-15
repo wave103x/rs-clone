@@ -1,7 +1,13 @@
 import AbstractView from '../View';
+<<<<<<< HEAD:rs-clone/client/src/components/Views/Header/Header.ts
 import AppCssClass from '../../utils/enums/app-css-class';
 import AppTag from '../../utils/enums/app-tag';
 import AccountMenus from '../../utils/enums/account-menus';
+=======
+import AppCssClass from '../../../enums/app-css-class';
+import AppTag from '../../../enums/app-tag';
+import AccountMenus from '../../../enums/account-menus';
+>>>>>>> feat/routing:rs-clone/src/components/Views/Header/Header.ts
 import './header.scss';
 import AuthPage from '../../AuthPage/AuthPage';
 import Server from '../../Server/Server';
@@ -21,16 +27,27 @@ class Header extends AbstractView {
   private appMenu = document.createElement(AppTag.DIV);
   private loginBtn = this.createButton(this.LOGIN)
   protected _component = document.createElement(AppTag.HEADER);
+  private _heading = document.createElement(AppTag.H2);
 
 
   constructor() {
     super();
     this.createComponent();
+<<<<<<< HEAD:rs-clone/client/src/components/Views/Header/Header.ts
     this.authPage = new AuthPage()
   }
   renderRegistrationPage() {
     const main = document.querySelector('main')
     main?.append(this.authPage.getComponent())
+=======
+    this._heading.className = AppCssClass.PAGE_HEADING;
+  }
+
+  setHeading(str: string, hide?: boolean): void {
+    this._heading.textContent = str;
+    this._heading.hidden = false;
+    if (hide) this._heading.hidden = true;
+>>>>>>> feat/routing:rs-clone/src/components/Views/Header/Header.ts
   }
 
   protected createComponent(): void {
@@ -43,6 +60,9 @@ class Header extends AbstractView {
     logo.className = AppCssClass.LOGO;
     link.append(logo);
 
+    this._heading.className = AppCssClass.PAGE_HEADING;
+    this._heading.hidden = true;
+
     const buttons = document.createElement(AppTag.DIV);
     buttons.className = AppCssClass.HEADER_BUTTONS;
     this.loginBtn.addEventListener('click', () => this.renderRegistrationPage())
@@ -50,7 +70,7 @@ class Header extends AbstractView {
 
     this.createLoginDropMenu('wave103');
 
-    this._component.append(link, buttons, this.appMenu);
+    this._component.append(link, this._heading, buttons, this.appMenu);
   }
 
   private createButton(type: 'leaders' | 'login'): HTMLElement {
@@ -82,7 +102,7 @@ class Header extends AbstractView {
     this.appMenu.classList.add(AppCssClass.ACC_MENU, AppCssClass.ACC_MENU_HIDDEN);
 
     const tempAccName = 'wave103';
-    const menuPoints = Object.keys(AccountMenus).filter((elem) => isNaN(Number(elem)))
+    const menuPoints = Object.keys(AccountMenus).filter((elem) => isNaN(Number(elem)));
     menuPoints.unshift(tempAccName);
 
     for (let elem of menuPoints) {

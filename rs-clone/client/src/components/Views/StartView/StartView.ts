@@ -1,6 +1,12 @@
 import View from '../View';
+<<<<<<< HEAD:rs-clone/client/src/components/Views/StartView/StartView.ts
 import AppCssClass from '../../utils/enums/app-css-class';
 import AppTag from '../../utils/enums/app-tag';
+=======
+import AppCssClass from '../enums/app-css-class';
+import AppTag from '../../../enums/app-tag';
+import Routing from '../../Routing/Routing';
+>>>>>>> feat/routing:rs-clone/src/components/Views/StartView/StartView.ts
 import './start-view.scss';
 
 class StartView extends View {
@@ -12,10 +18,13 @@ class StartView extends View {
   private readonly LOGO_PVP_PATH = '../../../assets/icons/pvp.svg';
   private readonly BUTTON_NAME_SOLO = 'Против машины';
   private readonly BUTTON_NAME_PVP = 'Против человека';
+  private readonly EVENT_CLICK = 'click';
   protected _component = document.createElement(AppTag.DIV);
+  private _router: Routing;
 
-  constructor() {
+  constructor(router: Routing) {
     super();
+    this._router = router;
     this.createComponent();
   }
 
@@ -30,6 +39,9 @@ class StartView extends View {
 
     const leftBtn = this.createBtn(this.SOLO);
     const rightBtn = this.createBtn(this.PVP);
+
+    leftBtn.addEventListener(this.EVENT_CLICK, this.toGameBtnHandler.bind(this))
+    rightBtn.addEventListener(this.EVENT_CLICK, this.toGameBtnHandler.bind(this))
     const buttons = document.createElement(AppTag.DIV);
 
     buttons.className = AppCssClass.FIRST_VIEW_BUTTONS;
@@ -38,7 +50,12 @@ class StartView extends View {
     this._component.append(h1, logo, buttons);
   }
 
-  private createBtn(type: 'solo' | 'pvp') {
+  private toGameBtnHandler() {
+    this._router.startSoloGame();
+
+  }
+
+  private createBtn(type: 'solo' | 'pvp'): HTMLDivElement {
     const img = new Image();
     const btn = document.createElement(AppTag.BUTTON);
     btn.classList.add(AppTag.BUTTON, AppCssClass.BUTTON_BIG);

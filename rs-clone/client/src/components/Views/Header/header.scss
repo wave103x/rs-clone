@@ -17,6 +17,7 @@
 .logo {
   width: 100%;
   max-width: 8rem;
+  min-width: 2rem;
 }
 
 .header__buttons {
@@ -81,4 +82,10 @@
 .acc-menu_hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+.page-heading {
+  color: white;
+  text-shadow: $text-shadow-blue;
+  margin-left: 2rem;
 }
