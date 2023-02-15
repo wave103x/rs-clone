@@ -1,3 +1,5 @@
+@import '../../../sass/main.scss';
+
 .game {
   padding-top: 4rem;
   display: flex;
@@ -44,6 +46,12 @@
   height: 22.5px;
   border: 2px solid white;
   background-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+
+  &_marked {
+    border: 2px solid $broken-ship-border;
+    background-color: $broken-ship-background;
+  }
 }
 
 @media (max-width: 768px) {

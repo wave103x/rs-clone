@@ -15,7 +15,6 @@ class App {
   private _component = document.body;
 
   constructor() {
-
       const main = this._startView.createBlock(AppTag.MAIN, AppTag.MAIN);
       main.append(this._startView.getComponent());
       this._component.append(this._header.getComponent(), main);

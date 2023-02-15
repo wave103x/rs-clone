@@ -22,6 +22,7 @@ export default class AuthPage extends View {
   private submitFormBtn = this.createBlock(AppTag.BUTTON, AppCssClass.BUTTON);
   public nickName: string | undefined
   private server:Server;
+  
   constructor() {
     super();
     this.createComponent();

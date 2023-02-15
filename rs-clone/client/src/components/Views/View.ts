@@ -17,6 +17,7 @@ abstract class View {
     elementToCreate.classList.add(className);
     return elementToCreate;
   }
+
   createInput (
     className: string,
     type: string,
@@ -27,7 +28,8 @@ abstract class View {
     input.setAttribute(AppAttribute.NAME, name)
     return input
   }
-  createInputBlock(
+
+  createInputBlock (
     blockTag: string,
     blockClass: string,
     id: string,

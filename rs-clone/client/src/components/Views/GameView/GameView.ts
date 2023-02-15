@@ -21,8 +21,10 @@ class GameView extends AbstractView {
   private gameType: string;
   private _gameTime = document.createElement(AppTag.P);
   private _turnAnons = document.createElement(AppTag.P);
-  private _playerTurns!: string;
-  private _enemyTurns!: string;
+  private playerTurns = document.createElement(AppTag.P);
+  private enemyTurns = document.createElement(AppTag.P);
+  private time = new Date(0);
+  private timer!: NodeJS.Timer;
   private readonly PLAYER_TURN = 'Стреляйте!';
   private readonly ENEMY_TURN = 'Враг атакует';
 
@@ -39,13 +41,24 @@ class GameView extends AbstractView {
     this.createComponent();
   }
 
+  public setTurn() {
+    if (this._turnAnons.textContent === this.PLAYER_TURN) {
+      this._turnAnons.textContent = this.ENEMY_TURN;
+    } else this._turnAnons.textContent = this.PLAYER_TURN;
+  }
+
+  public setTurnCount(turns: number, target: 'enemy' | 'player') {
+    if (target === 'enemy') {
+      this.enemyTurns.textContent = `выстрелов врага: ${turns}`;
+    } else {
+      this.playerTurns.textContent = `ваших выстрелов: ${turns}`;
+    }
+  }
+
   protected createComponent(): void {
     this._component.classList.add(AppCssClass.GAME);
 
-    this._gameTime.textContent = '1:12';
-    this._turnAnons.textContent = this.ENEMY_TURN;
-    this._enemyTurns = '12';
-    this._playerTurns = '23';
+    this._turnAnons.textContent = this.PLAYER_TURN;
     const stats = this.createStats();
 
     this._component.append(createContainer(this._board), stats);
@@ -55,10 +68,9 @@ class GameView extends AbstractView {
       this._component.append(createContainer(this._enemyBoard, GameType.solo));
     }
 
-    const game = new Game(this._board, this._enemyBoard, this.gameType);
+    const game = new Game(this._board, this._enemyBoard, this.gameType, this);
     game.start();
 
-    //Добавить обсервер или типо того на изменение состояния кораблей
     function createContainer(board: Board, gameType?: string): HTMLElement {
       const container = document.createElement(AppTag.DIV);
       container.classList.add(AppCssClass.GAME_CONTAINER);
@@ -93,7 +105,8 @@ class GameView extends AbstractView {
         for (let i = 0; i < data.ships[ship][0]; i++) {
           const shipBlock = document.createElement(AppTag.DIV);
           shipBlock.classList.add(AppCssClass.GAME_SHIP);
-          shipBlock.dataset.name = ship + i;
+          shipBlock.dataset.name = ship + (i + 1);
+          board.squadron[ship + (i + 1)].bottomShipBlock = shipBlock;
 
           shipBlock.style.width = `${(board.shipSide / 2) * data.ships[ship][1]}px`;
 
@@ -110,20 +123,35 @@ class GameView extends AbstractView {
 
   private createStats() {
     const container = document.createElement(AppTag.DIV);
-    const playerTurns = document.createElement(AppTag.P);
-    const enemyTurns = document.createElement(AppTag.P);
 
     container.className = AppCssClass.GAME_STATS;
     this._gameTime.className = AppCssClass.GAME_STATS_TIMER;
     this._turnAnons.className = AppCssClass.GAME_STATS_ANONS;
-    playerTurns.className = AppCssClass.GAME_STATS_TURNS_COUNT;
-    enemyTurns.className = AppCssClass.GAME_STATS_TURNS_COUNT;
+    this.playerTurns.className = AppCssClass.GAME_STATS_TURNS_COUNT;
+    this.enemyTurns.className = AppCssClass.GAME_STATS_TURNS_COUNT;
 
-    playerTurns.textContent = `ваших выстрелов: ${this._playerTurns}`;
-    enemyTurns.textContent = `выстрелов врага: ${this._enemyTurns}`;
+    this.playerTurns.textContent = `ваших выстрелов: 0`;
+    this.enemyTurns.textContent = `выстрелов врага: 0`;
 
-    container.append(this._gameTime, this._turnAnons, playerTurns, enemyTurns);
+    this._gameTime.textContent = this.setTime();
+
+    this.timer = setInterval(() => {
+      this.time.setSeconds(this.time.getSeconds() + 1);
+
+      this._gameTime.textContent = this.setTime();
+    }, 1000);
+
+    container.append(this._gameTime, this._turnAnons, this.playerTurns, this.enemyTurns);
     return container;
+  }
+
+  private setTime(stop?: true) {
+    if (stop) {
+      clearInterval(this.timer);
+    }
+    return `${this.time.getMinutes() < 10 ? '0' : ''}${this.time.getMinutes()}:${
+      this.time.getSeconds() < 10 ? '0' : ''
+    }${this.time.getSeconds()}`;
   }
 }
 
