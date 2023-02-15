@@ -105,7 +105,8 @@ class GameView extends AbstractView {
         for (let i = 0; i < data.ships[ship][0]; i++) {
           const shipBlock = document.createElement(AppTag.DIV);
           shipBlock.classList.add(AppCssClass.GAME_SHIP);
-          shipBlock.dataset.name = ship + i;
+          shipBlock.dataset.name = ship + (i + 1);
+          board.squadron[ship + (i + 1)].bottomShipBlock = shipBlock;
 
           shipBlock.style.width = `${(board.shipSide / 2) * data.ships[ship][1]}px`;
 

@@ -11,7 +11,7 @@ import GameView from '../Views/GameView/GameView';
 
 class Game {
   private readonly DRUG_LOCK = 'remove';
-  private readonly DRUG_UNLOCK = 'add';
+  //private readonly DRUG_UNLOCK = 'add';
   end = false;
 
   private _firstPlayer: Board;
@@ -40,6 +40,7 @@ class Game {
       this.computer = new Computer(this._secondPlayer.difficult, this._firstPlayer, this);
 
     this._secondPlayer.playerTurn = true;
+    this._firstPlayer.switchBlock();
 
     this.addListeners();
   }
@@ -113,6 +114,8 @@ class Game {
     if (this.computer && this._secondPlayer.playerTurn === false) {
       let compResult: number[][] | undefined;
       this._gameView.setTurn();
+      this._firstPlayer.switchBlock();
+      this._secondPlayer.switchBlock();
 
       const interval = setInterval(() => {
         compResult = this.computer.shot();
@@ -120,6 +123,8 @@ class Game {
         if (compResult === undefined) {
           this._secondPlayer.playerTurn = true;
           this._gameView.setTurn();
+          this._firstPlayer.switchBlock();
+          this._secondPlayer.switchBlock();
           clearInterval(interval);
         }
       }, 800);
@@ -160,6 +165,7 @@ class Game {
             break;
           }
 
+          currentShip.markerShip();
           arr = setNoShipCellsOnDead(board.squadron[ship]);
           delete board.squadron[ship];
         }

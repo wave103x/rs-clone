@@ -31,6 +31,18 @@
   position: relative;
 }
 
+.dark-block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 500;
+
+  background-color: rgba(1, 1, 1, 0.25);
+  border: 1px solid white;
+}
+
 .board_easy {
   width: 270px;
   height: 270px;

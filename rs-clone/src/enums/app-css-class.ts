@@ -20,7 +20,7 @@ const enum AppCssClass {
   BUTTON_DIV_IMG_RIGHT = 'button-div__img_right',
   BUTTON_DIV = 'first-view__button-div',
   BUTTON_BIG = 'button_big',
-  BUTTON_BLUE = "button_blue",
+  BUTTON_BLUE = 'button_blue',
 
   PREGAME = 'pregame',
   BOARD_CONTAINER = 'pregame__board-container',
@@ -37,6 +37,7 @@ const enum AppCssClass {
   BOARD_EMPTY_BLOCK = 'board__empty-block',
   EMPTY_CONTAINER = 'empty-container',
   BOARD = 'board',
+  DARK_BLOCK = 'dark-block',
   BOARD_EASY = 'board_easy',
   BOARD_IMG = 'board_img',
   HIT_IMG = 'hit_img',
@@ -52,6 +53,7 @@ const enum AppCssClass {
   GAME_CONTAINER = 'game__container',
   GAME_BOARD_NAME = 'game__board-name',
   GAME_SHIP = 'game__ship',
+  MARKED_SHIP = 'game__ship_marked',
   GAME_SQUADRON = 'game__squadron',
   GAME_SQUADRON_ROW = 'game__squadron-row',
   GAME_SQUADRON_ROW_RIGHT = 'game__squadron-row_right',
@@ -59,7 +61,6 @@ const enum AppCssClass {
   GAME_STATS_TIMER = 'game-stats__timer',
   GAME_STATS_ANONS = 'game-stats__anons',
   GAME_STATS_TURNS_COUNT = 'game-stats__turns-count',
-
 
   NOSHIP_CELL = 'noship-cell',
   MISS_CELL = 'miss-cell',

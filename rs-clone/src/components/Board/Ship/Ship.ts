@@ -5,11 +5,13 @@ import Player from '../../../enums/player';
 import ShipInfo from '../../../types/ShipInfo';
 import Board from '../Board';
 import './ship.scss';
+import '../../Views/GameView/game-view.scss';
 
 class Ship {
   public shipInfo: ShipInfo;
   public hitsCount: number = 0;
   public decksCoords: number[][];
+  public bottomShipBlock!: HTMLElement;
 
   private readonly EVENT_RIGHT_CLICK = 'contextmenu';
   private readonly EVENT_DRAGSTART = 'dragstart';
@@ -29,6 +31,11 @@ class Ship {
     this.shipName = shipName;
     this.shipInfo = coords;
     this.decksCoords = [];
+  }
+
+  markerShip() {
+    console.log(this.bottomShipBlock);
+    this.bottomShipBlock.classList.add(AppCssClass.MARKED_SHIP);
   }
 
   createShip(): void {

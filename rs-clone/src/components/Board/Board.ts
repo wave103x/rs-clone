@@ -21,7 +21,6 @@ class Board extends AbstractView {
   public shipSide: number;
   public difficult: string;
   public markedCells: Cell[] = [];
-
   public playerTurn: boolean = false;
 
   protected _component: HTMLElement = document.createElement(AppTag.DIV);
@@ -30,7 +29,7 @@ class Board extends AbstractView {
   private readonly EVENT_DRAGOVER = 'dragover';
 
   private data: BoardDataType;
-  //private boardSide: number;
+  private darkBlock: HTMLElement | undefined;
 
   //Протестить для легкой
   constructor(difficult: string, player: string, matrix?: number[][], squadron?: Squadron) {
@@ -99,7 +98,6 @@ class Board extends AbstractView {
     this.board.addEventListener(this.EVENT_DRAGOVER, (event) => {
       event?.preventDefault();
     });
-
   }
 
   clear(): void {
@@ -138,7 +136,6 @@ class Board extends AbstractView {
         x = BoardUtils.getRandomNumber(board.data.length - decksCount);
         y = BoardUtils.getRandomNumber(board.data.length - 1);
       }
-
 
       const shipPlace = { x, y, direction };
 
@@ -202,6 +199,17 @@ class Board extends AbstractView {
     }
 
     return true;
+  }
+
+  switchBlock() {
+    if (!this.darkBlock) {
+      this.darkBlock = document.createElement(AppTag.DIV);
+      this.darkBlock.classList.add(AppCssClass.DARK_BLOCK);
+      this.board.append(this.darkBlock);
+    } else {
+      this.darkBlock.remove();
+      this.darkBlock = undefined;
+    }
   }
 }
 
