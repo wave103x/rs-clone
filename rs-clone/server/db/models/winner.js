@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'time',
     },
-    alive_cells: {
+    aliveCells: {
       type: DataTypes.INTEGER,
       field: 'alive_cells',
     },

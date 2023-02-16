@@ -6,7 +6,21 @@ const { user } = require('../../db/models');
 
 const generateAccessToken = (id) => {
   const payload = { id };
-  return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '24h' });
+  const accessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '24h' });
+  const refreshToken = jwt.sign(payload, process.env.SECRET_REFRESH_KEY, { expiresIn: '30d' });
+  return ({ accessToken, refreshToken });
+};
+
+const saveToken = async (id, refreshToken) => {
+  const currentUser = await user.findOne({ where: { id } });
+  console.log(currentUser);
+  if (currentUser.refreshToken) {
+    const newToken = await user.update(
+      { refreshToken },
+      { where: { id } },
+    );
+    return newToken;
+  }
 };
 
 const signUpUser = async (req, res) => {
@@ -28,8 +42,10 @@ const signUpUser = async (req, res) => {
     const hashPassword = await bcrypt.hash(password, 15);
     const newUser = await user.create({ login, nickName, password: hashPassword });
 
-    const token = generateAccessToken(newUser.id);
-    res.cookie('battleship', token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    const tokens = generateAccessToken(newUser.id);
+
+    await saveToken(newUser.id, tokens.refreshToken);
+    res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
       .json(newUser);
   } catch (e) {
@@ -51,10 +67,10 @@ const signInUser = async (req, res) => {
     if (!validPassword) {
       return res.status(402).json({ message: 'Неверный пароль!' });
     }
-    const token = generateAccessToken(currentUser.id);
-    res.cookie('token', token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    const tokens = generateAccessToken(currentUser.id);
+    res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
-      .json({ id: currentUser.id, token });
+      .json(currentUser);
   } catch (e) {
     console.log(e);
     res.send({ message: 'Ошибка входа' });
@@ -85,8 +101,15 @@ const getUser = async (req, res) => {
 const logOut = async (req, res) => {
   try {
     const { token } = req.cookies;
-    res.clearCookie('token');
-    return res.status(200);
+    const { id } = req.body;
+    await user.update(
+      {
+        refreshToken: '',
+      },
+      { where: { id } },
+    );
+    res.clearCookie('refresh');
+    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
