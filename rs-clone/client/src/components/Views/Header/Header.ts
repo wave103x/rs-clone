@@ -57,17 +57,20 @@ class Header extends AbstractView {
       this.logOutBtn.classList.add(AppCssClass.HIDDEN)
     }
   }
-  handleLogOut() {
+  async handleLogOut() {
     const svg = new Image();
-    this.server.logOut(this.id)
-    // .then((response) => {
-    //   if(response.status === 200) {
-    //     this.loginBtn.textContent = this.LOGIN_RU;
-    //     svg.src = require('../../../assets/icons/login-icon.svg') as string;
-    //     this.loginBtn.append(svg)
-    //     this.logOutBtn.classList.add(AppCssClass.HIDDEN)
-    //   }
-    // })
+    return this.server.logOut(this.id)
+    .then((response) => {
+      console.log('====================================');
+      console.log(response);
+      console.log('====================================');
+      if(response && response.status === 200) {
+        this.loginBtn.textContent = this.LOGIN_RU;
+        svg.src = require('../../../assets/icons/login-icon.svg') as string;
+        this.loginBtn.append(svg)
+        this.logOutBtn.classList.add(AppCssClass.HIDDEN)
+      }
+    })
   }
   renderLoginPage() {
     const main = document.querySelector('main')

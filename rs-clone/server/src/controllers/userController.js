@@ -69,6 +69,7 @@ const signInUser = async (req, res) => {
       return res.status(402).json({ message: 'Неверный пароль!' });
     }
     const tokens = generateAccessToken(currentUser.id);
+    await saveToken(currentUser.id, tokens.refreshToken);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
       .json({ id: currentUser.id, nickName: currentUser.nickName });
@@ -90,16 +91,18 @@ const getAllUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   const { refresh } = req.cookies;
-  const decodedData = jwt.verify(refresh, process.env.SECRET_REFRESH_KEY);
-  const { id, exp } = decodedData;
-  if (exp * 1000 > Date.now()) {
-    try {
-      const currentUser = await user.findOne({ where: { id: Number(id) } });
-      return res.status(201)
-        .json({ id: currentUser.id, nickName: currentUser.nickName });
-    } catch (error) {
-      console.log(error);
-      res.sendStatus(500);
+  if (refresh) {
+    const decodedData = jwt.verify(refresh, process.env.SECRET_REFRESH_KEY);
+    const { id, exp } = decodedData;
+    if (exp * 1000 > Date.now()) {
+      try {
+        const currentUser = await user.findOne({ where: { id: Number(id) } });
+        return res.status(201)
+          .json({ id: currentUser.id, nickName: currentUser.nickName });
+      } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+      }
     }
   } else {
     res.sendStatus(404);
@@ -109,20 +112,15 @@ const getUser = async (req, res) => {
 const logOut = async (req, res) => {
   const { refresh } = req.cookies;
   try {
-    console.log('====================================');
-    console.log(req.cookies);
-    console.log('====================================');
     const { id } = req.params;
-    await user.update(
+    const loggedOutUser = await user.update(
       {
         refreshToken: '',
       },
       { where: { id: Number(id) } },
-    )
-      .then(() => {
-        res.clearCookie('refresh');
-        res.sendStatus(200);
-      });
+    );
+    res.clearCookie('refresh');
+    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

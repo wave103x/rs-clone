@@ -51,9 +51,6 @@ export default class LoginPage extends View {
           default: {
               this._component.classList.add('hidden')
               if(response && typeof response !== 'number') {
-                console.log('====================================');
-                console.log(response);
-                console.log('====================================');
                 this._user.update(response.nickName, response.id)
               }
           break;

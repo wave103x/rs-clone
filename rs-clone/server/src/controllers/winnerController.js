@@ -11,10 +11,8 @@ const postWinner = async (req, res) => {
     const existedWinner = await winner.findOne({
       where: { userId: Number(id), mode },
     });
-    console.log('here', existedWinner);
     if (existedWinner) {
       if (existedWinner.score > Number(score)) {
-        console.log('счет меньше');
         const newWinner = await winner.update(
           {
             score, time, aliveCells,

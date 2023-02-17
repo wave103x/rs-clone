@@ -82,18 +82,18 @@ export default class Server {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json')
     const options: RequestInit = {
-      method: 'POST',
+      method: 'GET',
       credentials: 'include',
       mode: 'cors',
       headers: headers,
     }
     try {
-      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`);
+      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`, options);
       const data = await response.json()
       console.log('====================================');
-      console.log('logout', data);
+      console.log('logout', response);
       console.log('====================================');
-      return data
+      return response
     } catch (error) {
 
     }

@@ -15,6 +15,7 @@ export default class User {
         this._nickName =response.nickName;
         this._id =response.id;
       }
+      this.notify();
     })
   }
   update(nickName: string, id: number) {
