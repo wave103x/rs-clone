@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
@@ -88,37 +89,46 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const { id } = req.params;
   const { refresh } = req.cookies;
-  console.log('====================================');
-  console.log(req.cookies);
-  console.log('====================================');
-  try {
-    const currentUser = await user.findOne({ where: { id: Number(id) } });
-    res.json(currentUser);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
+  const decodedData = jwt.verify(refresh, process.env.SECRET_REFRESH_KEY);
+  const { id, exp } = decodedData;
+  if (exp * 1000 > Date.now()) {
+    try {
+      const currentUser = await user.findOne({ where: { id: Number(id) } });
+      return res.status(201)
+        .json({ id: currentUser.id, nickName: currentUser.nickName });
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
+  } else {
+    res.sendStatus(404);
   }
 };
 
 const logOut = async (req, res) => {
+  const { refresh } = req.cookies;
   try {
-    const { refresh } = req.cookies;
+    console.log('====================================');
+    console.log(req.cookies);
+    console.log('====================================');
     const { id } = req.params;
     await user.update(
       {
         refreshToken: '',
       },
       { where: { id: Number(id) } },
-    );
-    res.clearCookie('refresh');
-    res.sendStatus(200);
+    )
+      .then(() => {
+        res.clearCookie('refresh');
+        res.sendStatus(200);
+      });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 };
+
 module.exports = {
   getUser, getAllUsers, signUpUser, signInUser, logOut,
 };

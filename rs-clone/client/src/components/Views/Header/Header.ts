@@ -57,6 +57,18 @@ class Header extends AbstractView {
       this.logOutBtn.classList.add(AppCssClass.HIDDEN)
     }
   }
+  handleLogOut() {
+    const svg = new Image();
+    this.server.logOut(this.id)
+    // .then((response) => {
+    //   if(response.status === 200) {
+    //     this.loginBtn.textContent = this.LOGIN_RU;
+    //     svg.src = require('../../../assets/icons/login-icon.svg') as string;
+    //     this.loginBtn.append(svg)
+    //     this.logOutBtn.classList.add(AppCssClass.HIDDEN)
+    //   }
+    // })
+  }
   renderLoginPage() {
     const main = document.querySelector('main')
     main?.append(this.loginPage.getComponent())
@@ -126,7 +138,7 @@ class Header extends AbstractView {
           svg.src = require('../../../assets/icons/login-icon.svg') as string;
           btn.classList.add(AppCssClass.HIDDEN)
           btn.addEventListener('click', () => {
-            this.server.logOut(this.id)
+            this.handleLogOut()
           });
         break;
     }

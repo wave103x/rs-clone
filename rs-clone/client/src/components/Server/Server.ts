@@ -2,6 +2,7 @@ import AppEndPoint from "../../enums/app-endpoint";
 import TUser from "../../types/TUser";
 import TWinnerObj from "../../types/TWinnerObj";
 import User from "../User/User";
+import Header from "../Views/Header/Header";
 
 export default class Server {
 
@@ -78,17 +79,36 @@ export default class Server {
   }
 
   async logOut(id:number) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json')
+    const options: RequestInit = {
+      method: 'POST',
+      credentials: 'include',
+      mode: 'cors',
+      headers: headers,
+    }
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`);
       const data = await response.json()
+      console.log('====================================');
+      console.log('logout', data);
+      console.log('====================================');
       return data
     } catch (error) {
 
     }
   }
   async getCurrentUser() {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json')
+    const options: RequestInit = {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors',
+      headers: headers,
+    }
     try {
-      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.GETUSER}`);
+      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.GETUSER}`, options);
       const data = await response.json()
       return data
     } catch (error) {
