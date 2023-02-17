@@ -48,7 +48,7 @@ const signUpUser = async (req, res) => {
     await saveToken(newUser.id, tokens.refreshToken);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
-      .json({ id: newUser.id, nickname: newUser.nickName });
+      .json({ id: newUser.id, nickName: newUser.nickName });
   } catch (e) {
     console.log(e);
     res.send({ message: 'Ошибка при регистрации' });

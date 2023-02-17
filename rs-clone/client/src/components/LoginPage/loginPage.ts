@@ -41,9 +41,11 @@ export default class LoginPage extends View {
     event.preventDefault();
     if (this.form instanceof HTMLFormElement) {
       const dataObj = JSON.stringify(Object.fromEntries(new FormData(this.form)));
-      this.server.signInUser(dataObj).then((response) => {
+      this.server.signInUser(dataObj)
+      .then((response) => {
+        
         switch (response) {
-          case 400: {
+          case 402: {
             this.passWordSpan.innerHTML = 'Неверный пароль';
             break;
           }

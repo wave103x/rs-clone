@@ -41,9 +41,6 @@ export default class AuthPage extends View {
       const dataObj = JSON.stringify(Object.fromEntries(new FormData(this.form)));
       this.server.postUser(dataObj)
       .then((response) => {
-        console.log('====================================');
-        console.log(response);
-        console.log('====================================');
         switch (response) {
           case 400: {
             this.loginSpan.innerHTML = "Ошибка регистрации"
@@ -58,14 +55,11 @@ export default class AuthPage extends View {
             break;
           }
           default: {
-            if (response && typeof response==='object') {
-              console.log('====================================');
-              console.log('====================================');
-                // this.nickName = response.login
-                // console.log(response.login, this.nickName);
-            }
+            if (response && typeof response !== 'number') {
+              this.user.update(response.nickName, response.id);
               this._component.classList.add('hidden')
-              break;
+            }
+            break;
           }
 
         }

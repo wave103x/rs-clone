@@ -42,7 +42,7 @@ const postWinner = async (req, res) => {
       }
       res.sendStatus(400);
     } else {
-      const newWinner = winner.create({
+      const newWinner = awinner.create({
         userId: id, score, time, aliveCells, mode,
       });
 
@@ -58,12 +58,12 @@ const postWinner = async (req, res) => {
 const getWinners = async (req, res) => {
   const { mode } = req.params;
   try {
-    if (mode === 'fff' || mode === 'sss') {
+    if (mode === 'solo' || mode === 'online') {
       const allWinners = await winner.findAll({
         where: { mode },
         order: [
-          ['score', 'DESC'],
-          ['alive_cells', 'ASC'],
+          ['score', 'ASC'],
+          ['alive_cells', 'DESC'],
         ],
       });
       return res.status(201)
@@ -71,8 +71,8 @@ const getWinners = async (req, res) => {
     } if (mode === 'all') {
       const allWinners = await winner.findAll({
         order: [
-          ['score', 'DESC'],
-          ['alive_cells', 'ASC'],
+          ['score', 'ASC'],
+          ['alive_cells', 'DESC'],
         ],
       });
       return res.status(201)

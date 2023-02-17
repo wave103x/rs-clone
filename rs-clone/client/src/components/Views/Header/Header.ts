@@ -55,13 +55,11 @@ class Header extends AbstractView {
   async handleLogOut() {
     const svg = new Image();
     return this.server.logOut(this.id).then((response) => {
-      console.log('====================================');
-      console.log(response);
-      console.log('====================================');
       if (response && response.status === 200) {
         this.loginBtn.textContent = this.LOGIN_RU;
         svg.src = require('../../../assets/icons/login-icon.svg') as string;
         this.loginBtn.append(svg);
+        this.signUpBtn.classList.remove(AppCssClass.HIDDEN);
         this.logOutBtn.classList.add(AppCssClass.HIDDEN);
       }
     });

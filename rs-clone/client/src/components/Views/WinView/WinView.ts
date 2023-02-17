@@ -16,7 +16,6 @@ class WinView extends AbstractView {
   //Добавить параметры статистики для запросов
   constructor(text: string) {
     super();
-
     this.text = text;
     this.createComponent();
   }
