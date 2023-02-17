@@ -1,7 +1,8 @@
 type TUser = {
-  login: string,
+  id: number,
+  login?: string,
   nickName: string,
-  password: string,
+  password?: string,
   image?: string
 }
 export default TUser

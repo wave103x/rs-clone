@@ -1,8 +1,10 @@
 import AppEndPoint from "../../enums/app-endpoint";
 import TUser from "../../types/TUser";
 import TWinnerObj from "../../types/TWinnerObj";
+import User from "../User/User";
 
 export default class Server {
+
   async postUser(formData: string): Promise <TUser | number | undefined> {
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNUP}`, {
@@ -13,7 +15,7 @@ export default class Server {
         credentials: 'include',
         body: formData,
       });
-      const data = await response.json();
+      const data: TUser = await response.json();
       switch (response.status) {
         case 201: {
           console.log('201 OK');
@@ -49,26 +51,48 @@ export default class Server {
         credentials: 'include',
         body: formData,
       });
-      const data = await response.json();
-      switch (response.status) {
-        case 201: {
-          console.log('201 OK');
-          return data;
+      return await response.json()
+      .then((data:TUser) => {
+        switch (response.status) {
+          case 201: {
+            console.log('201 OK');
+            return data;
+          }
+          case 400: {
+            console.log('400 Неверный пароль');
+            return response.status;
+          }
+          case 401: {
+            console.log('Логин не найден');
+            return response.status;
+          }
         }
-        case 400: {
-          console.log('400 Неверный пароль');
-          return response.status;
-        }
-        case 401: {
-          console.log('Логин не найден');
-          return response.status;
-        }
-      }
-      return;
+        // return;
+      });
+      return undefined;
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
       }
+    }
+  }
+
+  async logOut(id:number) {
+    try {
+      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`);
+      const data = await response.json()
+      return data
+    } catch (error) {
+
+    }
+  }
+  async getCurrentUser() {
+    try {
+      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.GETUSER}`);
+      const data = await response.json()
+      return data
+    } catch (error) {
+
     }
   }
 

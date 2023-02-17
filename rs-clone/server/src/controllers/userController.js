@@ -47,7 +47,7 @@ const signUpUser = async (req, res) => {
     await saveToken(newUser.id, tokens.refreshToken);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
-      .json(newUser);
+      .json({ id: newUser.id, nickname: newUser.nickName });
   } catch (e) {
     console.log(e);
     res.send({ message: 'Ошибка при регистрации' });
@@ -70,7 +70,7 @@ const signInUser = async (req, res) => {
     const tokens = generateAccessToken(currentUser.id);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
-      .json(currentUser);
+      .json({ id: currentUser.id, nickName: currentUser.nickName });
   } catch (e) {
     console.log(e);
     res.send({ message: 'Ошибка входа' });
@@ -89,6 +89,10 @@ const getAllUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   const { id } = req.params;
+  const { refresh } = req.cookies;
+  console.log('====================================');
+  console.log(req.cookies);
+  console.log('====================================');
   try {
     const currentUser = await user.findOne({ where: { id: Number(id) } });
     res.json(currentUser);
@@ -100,13 +104,13 @@ const getUser = async (req, res) => {
 
 const logOut = async (req, res) => {
   try {
-    const { token } = req.cookies;
-    const { id } = req.body;
+    const { refresh } = req.cookies;
+    const { id } = req.params;
     await user.update(
       {
         refreshToken: '',
       },
-      { where: { id } },
+      { where: { id: Number(id) } },
     );
     res.clearCookie('refresh');
     res.sendStatus(200);
