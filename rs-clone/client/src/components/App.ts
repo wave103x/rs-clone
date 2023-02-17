@@ -17,7 +17,7 @@ class App {
   private _startView = new StartView();
   private _component = document.body;
   private _leaderboard = new Leaderboard();
-  private _router = new Router(this._header, this._startView, this._leaderboard, this._authPage, this._loginPage);
+  private _router = new Router(this._header, this._startView, this._leaderboard, this._authPage, this._loginPage, this._server, this._user);
 
   constructor() {
     // const main = this._startView.createBlock(AppTag.MAIN, AppTag.MAIN);
@@ -33,7 +33,6 @@ class App {
     );
     this._router.init();
     this._user.notify();
-
   }
 }
 

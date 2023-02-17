@@ -9,14 +9,19 @@ class WinView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
 
   private text: string;
+  private win: boolean;
+  private position: number;
+
   private readonly POSITION_TEXT = 'Ваш результат в таблице лидеров ';
   private readonly BUTTON_TEXT = 'Посмотреть';
   private readonly LINK_TEXT = 'В начало';
 
   //Добавить параметры статистики для запросов
-  constructor(text: string) {
+  constructor(text: string, win: boolean, position: number) {
     super();
 
+    this.position = position;
+    this.win = win;
     this.text = text;
     this.createComponent();
   }
@@ -31,9 +36,16 @@ class WinView extends AbstractView {
     const link = document.createElement(AppTag.A);
     link.classList.add(AppCssClass.WIN_HOME);
     link.innerText = this.LINK_TEXT;
+    //Ссылка на лидеров
     link.setAttribute('src', '#');
 
-    this._component.append(title, this.createPositionText(), this.createButton(), link);
+    this._component.append(title);
+
+    if (this.win) {
+      this._component.append(this.createPositionText());
+    }
+
+    this._component.append(this.createButton(), link);
   }
 
   private createPositionText(): HTMLElement {
@@ -41,12 +53,9 @@ class WinView extends AbstractView {
     text.classList.add(AppCssClass.WIN_TEXT);
     text.innerHTML = this.POSITION_TEXT;
 
-    //Запрос
-    const position = undefined;
-
     const positionText = document.createElement(AppTag.SPAN);
     positionText.classList.add(AppCssClass.WIN_POSITION);
-    positionText.innerText = `на ${position} месте`;
+    positionText.innerText = `на ${this.position} месте`;
 
     text.append(positionText);
     return text;
@@ -56,6 +65,7 @@ class WinView extends AbstractView {
     const button = document.createElement(AppTag.BUTTON);
     button.classList.add(AppCssClass.BUTTON, AppCssClass.BUTTON_BLUE);
     button.innerText = this.BUTTON_TEXT;
+    //Ссылка на главную
     //button.addEventListener();
     return button;
   }
