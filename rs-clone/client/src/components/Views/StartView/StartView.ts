@@ -1,25 +1,20 @@
 import View from '../View';
 import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
-import Routing from '../../Routing/Routing';
+import Routing from '../../Router/Router';
 import './start-view.scss';
 
 class StartView extends View {
   private readonly PVP = 'pvp';
   private readonly SOLO = 'solo';
   private readonly MAIN_HEADING = 'Морской бой';
-  private readonly LOGO_MAIN_PATH = '../../../assets/icons/logo-main.svg';
-  private readonly LOGO_SOLO_PATH = '../../../assets/icons/solo.svg';
-  private readonly LOGO_PVP_PATH = '../../../assets/icons/pvp.svg';
   private readonly BUTTON_NAME_SOLO = 'Против машины';
   private readonly BUTTON_NAME_PVP = 'Против человека';
   private readonly EVENT_CLICK = 'click';
   protected _component = document.createElement(AppTag.DIV);
-  private _router: Routing;
 
-  constructor(router: Routing) {
+  constructor() {
     super();
-    this._router = router;
     this.createComponent();
   }
 
@@ -35,8 +30,8 @@ class StartView extends View {
     const leftBtn = this.createBtn(this.SOLO);
     const rightBtn = this.createBtn(this.PVP);
 
-    leftBtn.addEventListener(this.EVENT_CLICK, this.toGameBtnHandler.bind(this))
-    rightBtn.addEventListener(this.EVENT_CLICK, this.toGameBtnHandler.bind(this))
+    leftBtn.addEventListener(this.EVENT_CLICK, this.toSoloGameBtnHandler.bind(this))
+    rightBtn.addEventListener(this.EVENT_CLICK, this.toPVPGameBtnHandler.bind(this))
     const buttons = document.createElement(AppTag.DIV);
 
     buttons.className = AppCssClass.FIRST_VIEW_BUTTONS;
@@ -45,9 +40,21 @@ class StartView extends View {
     this._component.append(h1, logo, buttons);
   }
 
-  private toGameBtnHandler() {
-    this._router.startSoloGame();
-
+  private toSoloGameBtnHandler() {
+    document.dispatchEvent(new CustomEvent('pageChange', {
+      detail: {
+        old: 'start',
+        new: 'pregame-solo',
+      }
+    }))
+  }
+  private toPVPGameBtnHandler() {
+    document.dispatchEvent(new CustomEvent('pageChange', {
+      detail: {
+        old: 'start',
+        new: 'pregame-pvp',
+      }
+    }))
   }
 
   private createBtn(type: 'solo' | 'pvp'): HTMLDivElement {

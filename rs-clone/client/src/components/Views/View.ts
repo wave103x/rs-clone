@@ -1,16 +1,33 @@
-import AppAttribute from "../../enums/app-attribute";
-import AppCssClass from "../../enums/app-css-class";
-import AppTag from "../../enums/app-tag";
+import AppAttribute from '../../enums/app-attribute';
+import AppCssClass from '../../enums/app-css-class';
+import AppTag from '../../enums/app-tag';
 
 abstract class View {
   protected abstract _component: Element;
 
   getComponent() {
-    if(this._component.classList.contains(AppCssClass.HIDDEN)) {
-      this._component.classList.remove(AppCssClass.HIDDEN)
+    if (this._component.classList.contains(AppCssClass.HIDDEN)) {
+      this._component.classList.remove(AppCssClass.HIDDEN);
     }
     return this._component;
   }
+
+  hide() {
+    if (this._component instanceof HTMLElement) {
+      this._component.style.visibility = 'hidden';
+      this._component.style.opacity = '0';
+      this._component.style.position = 'absolute';
+    }
+  }
+
+  show() {
+    if (this._component instanceof HTMLElement) {
+      this._component.style.visibility = 'initial';
+      this._component.style.opacity = '1';
+      this._component.style.position = 'initial';
+    }
+  }
+
 
   createBlock(element: string, className: string): Element {
     const elementToCreate = document.createElement(element);
@@ -18,27 +35,19 @@ abstract class View {
     return elementToCreate;
   }
 
-  createInput (
-    className: string,
-    type: string,
-    name: string,
-  ) {
+  createInput(className: string, type: string, name: string) {
     const input = this.createBlock(AppTag.INPUT, className);
-    input.setAttribute(AppAttribute.TYPE, type)
-    input.setAttribute(AppAttribute.NAME, name)
-    return input
+    input.setAttribute(AppAttribute.TYPE, type);
+    input.setAttribute(AppAttribute.NAME, name);
+    return input;
   }
 
-  createInputBlock (
-    blockTag: string,
-    blockClass: string,
-    id: string,
-    textContent: string): Element {
+  createInputBlock(blockTag: string, blockClass: string, id: string, textContent: string): Element {
     const inputBlock = this.createBlock(blockTag, blockClass);
     const label = this.createBlock(AppTag.LABEL, AppCssClass.FORM_LABEL);
     label.innerHTML = textContent;
-    label.setAttribute(AppAttribute.FOR, id)
-    inputBlock.append(label)
+    label.setAttribute(AppAttribute.FOR, id);
+    inputBlock.append(label);
     return inputBlock;
   }
 

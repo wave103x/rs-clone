@@ -6,7 +6,6 @@ import AppTag from '../../../enums/app-tag';
 import './leaderboard.scss';
 
 class Leaderboard extends View {
-  private _header: Header;
   protected _component = document.createElement(AppTag.MAIN);
   private _table = document.createElement(AppTag.DIV);
   private _tempData: string[][];
@@ -15,11 +14,9 @@ class Leaderboard extends View {
   private _gameDifficlulty = document.createElement(AppTag.DIV);
   private _gameMode = document.createElement(AppTag.DIV);
 
-  constructor(header: Header) {
+  constructor() {
     super();
-    this._header = header;
     this.createComponent();
-    this._header.setHeading('Таблица лидеров');
 
     this._tempData = [
       ['1', 'Igrok1', '21', '2:44', '3', 'Solo'],

@@ -147,9 +147,7 @@ class PreGameView extends AbstractView {
     //Переделать в роутинг
     function startGame(pregameView: PreGameView) {
       pregameView._component.remove();
-      if (pregameView.gameType === GameType.solo) {
-        document.body.append(new GameView(pregameView._board, pregameView.gameType).getComponent());
-      }
+      document.body.append(new GameView(pregameView._board, pregameView.gameType).getComponent());
     }
   }
 }
