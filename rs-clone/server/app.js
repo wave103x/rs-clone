@@ -8,7 +8,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const userRouter = require('./src/routes/user.router');
-// const winnerRouter = require('./src/routes/winner.router');
+const winnerRouter = require('./src/routes/winner.router');
 
 const app = express();
 require('dotenv').config();
@@ -46,5 +46,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', userRouter);
+app.use('/api/winners', winnerRouter);
 
 app.listen(PORT, () => console.log('Success'));

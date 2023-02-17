@@ -8,6 +8,7 @@ import AppTag from "../../enums/app-tag";
 import AppTextContent from "../../enums/app-text-content";
 import AppType from "../../enums/app-type";
 import View from "../Views/View";
+import User from "../User/User";
 
 export default class AuthPage extends View {
   protected _component = document.createElement(AppTag.SECTION);
@@ -20,21 +21,16 @@ export default class AuthPage extends View {
   private passWordSpan = this.createBlock(AppTag.SPAN, AppCssClass.FORM_SPAN)
   private imageInput = this.createInput(AppCssClass.FORM_INPUT, AppType.FILE, AppID.IMAGE)
   private submitFormBtn = this.createBlock(AppTag.BUTTON, AppCssClass.BUTTON);
-  public nickName: string | undefined
-  private server:Server;
-  
-  constructor() {
+  private server: Server;
+  private user: User;
+  constructor(server: Server, user: User) {
     super();
     this.createComponent();
-    this.server = new Server();
-    this.getCookie('battleship')
+    this.server = server;
+    this.user = user;
   }
-  getCookie(name: string) {
-    let matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-  }
+
+
   handleForm() {
     this.loginSpan.innerHTML = "";
     this.nickNameSpan.innerHTML = ""
@@ -65,8 +61,8 @@ export default class AuthPage extends View {
             if (response && typeof response==='object') {
               console.log('====================================');
               console.log('====================================');
-                this.nickName = response.login
-                console.log(response.login, this.nickName);
+                // this.nickName = response.login
+                // console.log(response.login, this.nickName);
             }
               this._component.classList.add('hidden')
               break;

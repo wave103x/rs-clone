@@ -8,6 +8,8 @@ import AppTag from "../../enums/app-tag";
 import AppTextContent from "../../enums/app-text-content";
 import AppType from "../../enums/app-type";
 import View from "../Views/View";
+import User from "../User/User";
+import TUser from "../../types/TUser";
 
 export default class LoginPage extends View {
   protected _component = document.createElement(AppTag.SECTION);
@@ -18,10 +20,13 @@ export default class LoginPage extends View {
   private passWordSpan = this.createBlock(AppTag.SPAN, AppCssClass.FORM_SPAN)
   private submitFormBtn = this.createBlock(AppTag.BUTTON, AppCssClass.BUTTON);
   private server:Server;
-  constructor() {
+  private _user: User;
+
+  constructor(server: Server, user: User) {
     super();
     this.createComponent();
-    this.server = new Server();
+    this.server = server;
+    this._user = user
   }
 
   handleForm() {
@@ -45,7 +50,10 @@ export default class LoginPage extends View {
           }
           default: {
               this._component.classList.add('hidden')
-              break;
+              if(response && typeof response !== 'number') {
+                this._user.update(response.nickName, response.id)
+              }
+          break;
           }
 
         }

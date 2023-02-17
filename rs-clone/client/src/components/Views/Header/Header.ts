@@ -6,35 +6,65 @@ import './header.scss';
 import AuthPage from '../../AuthPage/AuthPage';
 import Server from '../../Server/Server';
 import LoginPage from '../../LoginPage/loginPage';
+import User from '../../User/User';
 
 class Header extends AbstractView {
   private readonly LEADERS = 'leaders';
   private readonly LEADERS_RU = 'Лидеры';
   private readonly LOGIN = 'login';
   private readonly SIGNUP = 'signUp';
+  private readonly LOGOUT = 'logOut';
   private readonly LOGIN_RU = 'Войти';
   private readonly SIGNUP_RU = 'Регистрация';
+  private readonly LOGOUT_RU = 'Выйти';
   private authPage: AuthPage;
   private loginPage: LoginPage;
-  private server = new Server();
+  private server: Server;
+  private id!: number;
   private appMenu = document.createElement(AppTag.DIV);
+
   private loginBtn = this.createButton(this.LOGIN);
   private signUpBtn = this.createButton(this.SIGNUP);
+  private logOutBtn = this.createButton(this.LOGOUT);
   protected _component = document.createElement(AppTag.HEADER);
   private _heading = document.createElement(AppTag.H2);
 
-  constructor() {
+  constructor(server: Server, user: User) {
     super();
     this.createComponent();
-    this.authPage = new AuthPage();
-    this.loginPage = new LoginPage();
+    this.server = server;
+    this.authPage = new AuthPage(server, user);
+    this.loginPage = new LoginPage(server, user);
+    user.subscribe((name: string, id: number) => this.setName(name, id));
   }
-  setName() {
-    if (this.authPage.nickName) {
-      this.loginBtn.textContent = this.authPage.nickName;
+
+  setName(name: string, id: number) {
+    const svg = new Image();
+    if (name) {
+      this.id = id;
+      this.loginBtn.textContent = name;
+      svg.src = require('../../../assets/icons/login-icon.svg') as string;
+      this.loginBtn.append(svg);
+      this.signUpBtn.classList.add(AppCssClass.HIDDEN);
+      this.logOutBtn.classList.remove(AppCssClass.HIDDEN);
     } else {
-      this.loginBtn.textContent = this.LOGIN_RU;
+      this.signUpBtn.classList.remove(AppCssClass.HIDDEN);
+      this.logOutBtn.classList.add(AppCssClass.HIDDEN);
     }
+  }
+  async handleLogOut() {
+    const svg = new Image();
+    return this.server.logOut(this.id).then((response) => {
+      console.log('====================================');
+      console.log(response);
+      console.log('====================================');
+      if (response && response.status === 200) {
+        this.loginBtn.textContent = this.LOGIN_RU;
+        svg.src = require('../../../assets/icons/login-icon.svg') as string;
+        this.loginBtn.append(svg);
+        this.logOutBtn.classList.add(AppCssClass.HIDDEN);
+      }
+    });
   }
   renderLoginPage() {
     const main = document.querySelector('main');
@@ -72,15 +102,16 @@ class Header extends AbstractView {
 
     const buttons = document.createElement(AppTag.DIV);
     buttons.className = AppCssClass.HEADER_BUTTONS;
+
     this.loginBtn.addEventListener('click', () => this.renderLoginPage());
     this.signUpBtn.addEventListener('click', () => this.renderAuthPage());
-    buttons.append(this.createButton(this.LEADERS), this.loginBtn, this.signUpBtn);
+    buttons.append(this.createButton(this.LEADERS), this.loginBtn, this.signUpBtn, this.logOutBtn);
     this.createLoginDropMenu('wave103');
 
     this._component.append(logo, this._heading, buttons, this.appMenu);
   }
 
-  private createButton(type: 'leaders' | 'login' | 'signUp'): HTMLElement {
+  private createButton(type: 'leaders' | 'login' | 'signUp' | 'logOut'): HTMLElement {
     const btn = document.createElement(AppTag.BUTTON);
     btn.className = AppCssClass.HEADER_BTN;
     const svg = new Image();
@@ -115,6 +146,15 @@ class Header extends AbstractView {
           // this.renderRegistrationPage()
           // this.appMenu.classList.toggle(AppCssClass.ACC_MENU_HIDDEN);
         });
+        break;
+      case this.LOGOUT:
+        btn.textContent = this.LOGOUT_RU;
+        svg.src = require('../../../assets/icons/login-icon.svg') as string;
+        btn.classList.add(AppCssClass.HIDDEN);
+        btn.addEventListener('click', () => {
+          this.handleLogOut();
+        });
+        break;
     }
 
     btn.append(svg);

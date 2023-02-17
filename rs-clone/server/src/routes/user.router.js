@@ -13,8 +13,8 @@ router.post('/signUp', [
   check('password', 'Пароль от 6 символов').isLength({ min: 4 }),
 ], signUpUser);
 router.post('/signIn', signInUser);
-router.post('/logout', logOut);
+router.get('/logout/:id', logOut);
 router.get('/users', authMiddleware, getAllUsers);
-router.get('/:id', getUser);
+router.get('/', getUser);
 
 module.exports = router;
