@@ -4,6 +4,8 @@ import Header from '../Header/Header';
 import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
 import './leaderboard.scss';
+import Server from '../../Server/Server';
+import GameType from '../../../enums/game-type';
 
 class Leaderboard extends View {
   protected _component = document.createElement(AppTag.DIV);
@@ -13,10 +15,14 @@ class Leaderboard extends View {
   private _currentSort: LeaderSorts = {};
   private _gameDifficlulty = document.createElement(AppTag.DIV);
   private _gameMode = document.createElement(AppTag.DIV);
+  private _server: Server;
 
-  constructor() {
+  constructor(server: Server) {
     super();
+    this._server = server;
     this.createComponent();
+
+    this._server.getWinnersByMode(GameType.solo).then(res => console.log(res));
 
     this._tempData = [
       ['1', 'Igrok1', '21', '2:44', '3', 'Solo'],
