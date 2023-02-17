@@ -6,7 +6,7 @@ import AppTag from '../../../enums/app-tag';
 import './leaderboard.scss';
 
 class Leaderboard extends View {
-  protected _component = document.createElement(AppTag.MAIN);
+  protected _component = document.createElement(AppTag.DIV);
   private _table = document.createElement(AppTag.DIV);
   private _tempData: string[][];
   private _tempData2: string[][];

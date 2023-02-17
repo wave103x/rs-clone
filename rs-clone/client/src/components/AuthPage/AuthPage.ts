@@ -79,6 +79,12 @@ export default class AuthPage extends View {
     this.form.setAttribute(AppAttribute.ENCTYPE, AppAttribute.FORM_ENCTYPE);
     this.form.classList.add(AppCssClass.FORM);
 
+    // const closeIcon = document.createElement(AppTag.DIV);
+    const closeIcon = new Image();
+    closeIcon.src = require('../../assets/icons/close.svg') as string;
+    closeIcon.className = 'close-icon';
+    closeIcon.addEventListener('click', this.clonseHandler.bind(this));
+
     const loginBlock = this.createInputBlock(
       AppTag.DIV,
       AppCssClass.FORM_INPUT_BLOCK,
@@ -123,7 +129,11 @@ export default class AuthPage extends View {
     this.submitFormBtn.setAttribute(AppAttribute.TYPE, AppType.SUBMIT)
     this.submitFormBtn.innerHTML = AppTextContent.SUBMIT;
     this.submitFormBtn.addEventListener('click', (event) => this.sendForm(event))
-    this.form.append(loginBlock, nickNameBlock, passwordBlock, fileLoadBlock, this.submitFormBtn)
+    this.form.append(loginBlock, nickNameBlock, passwordBlock, fileLoadBlock, this.submitFormBtn, closeIcon)
     this._component.append(this.form)
+  }
+
+  private clonseHandler() {
+    this.hide();
   }
 }

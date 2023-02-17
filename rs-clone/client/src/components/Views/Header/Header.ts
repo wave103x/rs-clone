@@ -67,13 +67,31 @@ class Header extends AbstractView {
     });
   }
   renderLoginPage() {
-    const main = document.querySelector('main');
-    main?.append(this.loginPage.getComponent());
+    document.dispatchEvent(
+      new CustomEvent('pageChange', {
+        detail: {
+          old: 'auth',
+          new: 'login',
+        },
+      })
+    );
+    // const main = document.querySelector('main');
+    // main?.append(this.loginPage.getComponent());
+    // document.body.append(this.loginPage.getComponent());
   }
   renderAuthPage() {
-    const main = document.querySelector('main');
-    main?.append(this.authPage.getComponent());
-    this._heading.className = AppCssClass.PAGE_HEADING;
+    document.dispatchEvent(
+      new CustomEvent('pageChange', {
+        detail: {
+          old: 'login',
+          new: 'auth',
+        },
+      })
+    );
+    // const main = document.querySelector('main');
+    // main?.append(this.authPage.getComponent());
+    // document.body.append(this.authPage.getComponent());
+    // this._heading.className = AppCssClass.PAGE_HEADING;
   }
 
   setHeading(str: string, hide?: boolean): void {
@@ -106,7 +124,7 @@ class Header extends AbstractView {
     this.loginBtn.addEventListener('click', () => this.renderLoginPage());
     this.signUpBtn.addEventListener('click', () => this.renderAuthPage());
     buttons.append(this.createButton(this.LEADERS), this.loginBtn, this.signUpBtn, this.logOutBtn);
-    this.createLoginDropMenu('wave103');
+    // this.createLoginDropMenu('wave103');
 
     this._component.append(logo, this._heading, buttons, this.appMenu);
   }

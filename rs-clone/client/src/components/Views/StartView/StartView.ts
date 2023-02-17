@@ -1,7 +1,6 @@
 import View from '../View';
 import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
-import Routing from '../../Router/Router';
 import './start-view.scss';
 
 class StartView extends View {
