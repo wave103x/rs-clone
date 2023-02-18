@@ -43,18 +43,18 @@ class Board extends AbstractView {
       : (this.data = BoardData.easy);
     if (document.documentElement.clientWidth > this.smallClientWidth) {
       this.shipSide = Side.large.ship;
-      //this.boardSide = Side.large.board;
     } else {
       this.shipSide = Side.small.ship;
-      //this.boardSide = Side.small.board;
     }
 
     if (matrix && squadron) {
       this.matrix = matrix;
       this.squadron = squadron;
+
       for (let ship in squadron) {
-        squadron[ship].createShip();
+        squadron[ship].board = this;
       }
+
     } else {
       this.squadron = {};
       this.matrix = BoardUtils.createZeroMatrix(this.data.length);

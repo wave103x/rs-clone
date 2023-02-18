@@ -80,10 +80,24 @@ class PreGameView extends AbstractView {
     controlHeader.classList.add(AppCssClass.CONTROL_HEADER);
     controlHeader.innerText = this.CONTROL_TEXT;
 
-    const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
+    controlContainer.append(controlHeader);
 
-    const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
-    normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+    if (this.gameType === GameType.solo) {
+      const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
+
+      const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
+      normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+
+      controlContainer.append(easyDifficult, normalDifficult);
+    } else {
+      const randomEnemy = createDifficult(
+        { name: 'Случайный противник', features: [] },
+        Difficulties.normal,
+        this
+      );
+      randomEnemy.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+      controlContainer.append(randomEnemy);
+    }
 
     const buttonPlay = document.createElement(AppTag.BUTTON);
     buttonPlay.classList.add(AppCssClass.BUTTON_BIG, AppCssClass.BUTTON);
@@ -92,13 +106,13 @@ class PreGameView extends AbstractView {
       startGame(this);
     });
 
-    controlContainer.append(controlHeader, easyDifficult, normalDifficult, buttonPlay);
+    controlContainer.append(buttonPlay);
 
     return controlContainer;
 
     function createDifficult(
       features: { name: string; features: string[] },
-      difficult: Difficulties,
+      difficult: string,
       control: PreGameView
     ): HTMLElement {
       const difficultBlock = document.createElement(AppTag.BUTTON);
@@ -106,10 +120,11 @@ class PreGameView extends AbstractView {
       difficultBlock.classList.add(AppCssClass.DIFFICULT);
       difficultBlock.addEventListener('click', toggleDifficult);
 
-      difficultBlock.append(
-        createDifficultHeader(features.name),
-        creteDifficultFeatures(features.features)
-      );
+      difficultBlock.append(createDifficultHeader(features.name));
+
+      if (features.features.length != 0) {
+        difficultBlock.append(creteDifficultFeatures(features.features));
+      }
 
       return difficultBlock;
 
@@ -151,13 +166,23 @@ class PreGameView extends AbstractView {
     }
 
     function startGame(pregameView: PreGameView) {
+      let socket: undefined;
+      if (false) {
+        //Экран ожидания
+        //Открытие подключение
+        //зарандомить чей первый ход на сервере
+      }
       pregameView._component.remove();
+      //Передать сокет
+      //Передать первый ход
+
       document.body.append(
         new GameView(
           pregameView._board,
           pregameView.gameType,
           pregameView._server,
-          pregameView._user
+          pregameView._user,
+          socket
         ).getComponent()
       );
     }
