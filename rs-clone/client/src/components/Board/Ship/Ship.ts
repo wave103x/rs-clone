@@ -34,7 +34,6 @@ class Ship {
   }
 
   markerShip() {
-    console.log(this.bottomShipBlock);
     this.bottomShipBlock.classList.add(AppCssClass.MARKED_SHIP);
   }
 

@@ -59,7 +59,7 @@ export default class Server {
             console.log('201 OK');
             return data;
           }
-          case 400: {
+          case 402: {
             console.log('400 Неверный пароль');
             return response.status;
           }
@@ -89,10 +89,6 @@ export default class Server {
     }
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`, options);
-      const data = await response.json()
-      console.log('====================================');
-      console.log('logout', response);
-      console.log('====================================');
       return response
     } catch (error) {
 

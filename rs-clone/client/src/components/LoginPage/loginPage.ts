@@ -43,7 +43,7 @@ export default class LoginPage extends View {
       const dataObj = JSON.stringify(Object.fromEntries(new FormData(this.form)));
       this.server.signInUser(dataObj).then((response) => {
         switch (response) {
-          case 400: {
+          case 402: {
             this.passWordSpan.innerHTML = 'Неверный пароль';
             break;
           }
@@ -52,7 +52,8 @@ export default class LoginPage extends View {
             break;
           }
           default: {
-            this._component.classList.add('hidden');
+            this.hide();
+            // this._component.classList.add('hidden');
             if (response && typeof response !== 'number') {
               this._user.update(response.nickName, response.id);
             }
