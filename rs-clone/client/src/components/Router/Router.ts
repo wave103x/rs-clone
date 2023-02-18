@@ -50,6 +50,8 @@ export default class Routing {
         this._startView.hide();
         const game = document.querySelector('.game');
         game?.remove();
+        const win = document.querySelector('.win');
+        win?.remove();
         const pregame = document.querySelector('.pregame');
         pregame?.remove();
         this._authPage.hide();

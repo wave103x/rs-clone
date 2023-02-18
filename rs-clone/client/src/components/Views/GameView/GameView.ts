@@ -85,7 +85,7 @@ class GameView extends AbstractView {
       let boardName: string = '';
       switch (gameType) {
         case undefined:
-          boardName = 'You'; //имя игрока
+          boardName = 'Вы'; //имя игрока
           break;
         case GameType.solo:
           boardName = 'Компьютер';
