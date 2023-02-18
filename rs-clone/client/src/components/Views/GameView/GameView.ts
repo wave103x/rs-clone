@@ -7,11 +7,12 @@ import AppTag from '../../../enums/app-tag';
 import Difficulties from '../../../enums/difficulties';
 import Player from '../../../enums/player';
 import GameType from '../../../enums/game-type';
-
 import BoardData from '../../Board/BoardData';
 import BoardDataType from '../../../types/BoardDataType';
 
 import './game-view.scss';
+import AppEndPoint from '../../../enums/app-endpoint';
+import { ClientToServerEvents, ServerToClientEvents } from '../../../interfaces/Socket';
 
 class GameView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
@@ -32,7 +33,6 @@ class GameView extends AbstractView {
     super();
     this._board = board;
     this.gameType = gameType;
-
     if (gameType === GameType.solo) {
       this._enemyBoard = new Board(this._board.difficult, Player.enemy);
     } else {
@@ -153,6 +153,7 @@ class GameView extends AbstractView {
       this.time.getSeconds() < 10 ? '0' : ''
     }${this.time.getSeconds()}`;
   }
+
 }
 
 export default GameView;

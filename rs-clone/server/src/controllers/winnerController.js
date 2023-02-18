@@ -35,14 +35,13 @@ const postWinner = async (req, res) => {
           const updatedWinner = await winner.findOne({
             where: { userId: Number(id), mode },
           });
-          console.log(updatedWinner);
           return res.status(201)
             .json(updatedWinner);
         }
       }
       res.sendStatus(400);
     } else {
-      const newWinner = awinner.create({
+      const newWinner = await winner.create({
         userId: id, score, time, aliveCells, mode,
       });
 

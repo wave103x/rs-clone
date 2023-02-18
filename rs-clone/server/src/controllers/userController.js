@@ -14,7 +14,6 @@ const generateAccessToken = (id) => {
 
 const saveToken = async (id, refreshToken) => {
   const currentUser = await user.findOne({ where: { id } });
-  console.log(currentUser);
   if (currentUser.refreshToken) {
     const newToken = await user.update(
       { refreshToken },
@@ -49,8 +48,8 @@ const signUpUser = async (req, res) => {
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
       .json({ id: newUser.id, nickName: newUser.nickName });
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     res.send({ message: 'Ошибка при регистрации' });
   }
 };
