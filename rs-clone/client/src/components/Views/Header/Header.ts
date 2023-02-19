@@ -35,16 +35,16 @@ class Header extends AbstractView {
     this.server = server;
     this.authPage = new AuthPage(server, user);
     this.loginPage = new LoginPage(server, user);
-    user.subscribe((name: string, id: number) => this.setName(name, id));
+    user.subscribe((name: string, id: number, image: string) => this.setName(name, id, image));
   }
 
-  setName(name: string, id: number) {
-    const svg = new Image();
+  setName(name: string, id: number, image: string) {
+    const img = new Image();
     if (name) {
       this.id = id;
       this.loginBtn.textContent = name;
-      svg.src = require('../../../assets/icons/login-icon.svg') as string;
-      this.loginBtn.append(svg);
+      img.src = image;
+      this.loginBtn.append(img);
       this.signUpBtn.classList.add(AppCssClass.HIDDEN);
       this.logOutBtn.classList.remove(AppCssClass.HIDDEN);
     } else {
@@ -64,6 +64,8 @@ class Header extends AbstractView {
       }
     });
   }
+
+
   renderLoginPage() {
     document.dispatchEvent(
       new CustomEvent('pageChange', {

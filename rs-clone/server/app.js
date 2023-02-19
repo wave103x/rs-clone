@@ -12,9 +12,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const http = require('http');
-
 const { Server } = require('socket.io');
-
+const formidable = require('express-formidable');
 const userRouter = require('./src/routes/user.router');
 const winnerRouter = require('./src/routes/winner.router');
 
@@ -49,6 +48,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
+app.use(formidable());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', userRouter);
@@ -61,6 +61,7 @@ const io = new Server(server, {
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   },
 });
+// Multer
 
 const connections = [null, null];
 io.on('connection', (socket) => {

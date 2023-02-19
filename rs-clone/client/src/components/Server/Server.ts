@@ -6,13 +6,11 @@ import Header from "../Views/Header/Header";
 
 export default class Server {
 
-  async postUser(formData: string): Promise <TUser | number | undefined> {
+  async postUser(formData: FormData): Promise <TUser | number | undefined> {
+
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNUP}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
         body: formData,
       });

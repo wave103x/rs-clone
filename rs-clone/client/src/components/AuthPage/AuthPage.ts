@@ -20,6 +20,7 @@ export default class AuthPage extends View {
   private passWordInput = this.createInput(AppCssClass.FORM_INPUT, AppType.PASSWORD, AppID.PASSWORD)
   private passWordSpan = this.createBlock(AppTag.SPAN, AppCssClass.FORM_SPAN)
   private imageInput = this.createInput(AppCssClass.FORM_INPUT, AppType.FILE, AppID.IMAGE)
+  private imageSpan = this.createBlock(AppTag.SPAN, AppCssClass.FORM_SPAN)
   private submitFormBtn = this.createBlock(AppTag.BUTTON, AppCssClass.BUTTON);
   private server: Server;
   private user: User;
@@ -35,35 +36,60 @@ export default class AuthPage extends View {
     this.loginSpan.innerHTML = "";
     this.nickNameSpan.innerHTML = ""
   }
+  checkAvatar(fileObj:FileList) {
+    const file = fileObj[0]
+    const fileSize = file.size
+    const extentionMatch = file.name.match(/\.(.+)$/)
+    let extention = ''
+    if (extentionMatch) {
+      extention = extentionMatch[0]
+      if (extention !== '.png' && extention !== '.jpg' && extention !== '.jpeg') {
+        this.imageSpan.textContent = AppTextContent.AVATAR_FORMAT_ERROR
+      } else if(fileSize > 500000) {
+        this.imageSpan.textContent = AppTextContent.AVATAR_SIZE_ERROR
+      } else {
+        return file
+      }
+    }
+  }
   sendForm(event: Event) {
     event.preventDefault()
     if(this.form instanceof HTMLFormElement) {
-      const dataObj = JSON.stringify(Object.fromEntries(new FormData(this.form)));
-      this.server.postUser(dataObj)
-      .then((response) => {
-        switch (response) {
-          case 400: {
-            this.loginSpan.innerHTML = "Ошибка регистрации"
-            break;
-          }
-          case 401: {
-            this.loginSpan.innerHTML = "Такой пользователь уже есть"
-            break;
-          }
-          case 403: {
-            this.nickNameSpan.innerHTML = "Никнейм занят"
-            break;
-          }
-          default: {
-            if (response && typeof response !== 'number') {
-              this.user.update(response.nickName, response.id);
-              this._component.classList.add('hidden')
-            }
-            break;
-          }
+      const dataObj = new FormData(this.form);
+      if (this.imageInput && this.imageInput instanceof HTMLInputElement) {
+        const fileObj = this.imageInput?.files;
+        if(fileObj) {
+          const file = this.checkAvatar(fileObj)
+          if(file) {
+            this.server.postUser(dataObj)
+            .then((response) => {
+              switch (response) {
+                case 400: {
+                  this.loginSpan.innerHTML = "Ошибка регистрации"
+                  break;
+                }
+                case 401: {
+                  this.loginSpan.innerHTML = "Такой пользователь уже есть"
+                  break;
+                }
+                case 403: {
+                  this.nickNameSpan.innerHTML = "Никнейм занят"
+                  break;
+                }
+                default: {
+                  this.hide();
+                  if (response && typeof response !== 'number' && response.image) {
+                    this.user.update(response.nickName, response.id, response.image);
+                  }
+                  break;
+                }
 
+              }
+            })
+          }
         }
-      })
+      }
+
     }
   }
   protected createComponent(): void {
@@ -99,7 +125,7 @@ export default class AuthPage extends View {
       AppID.PASSWORD,
       AppTextContent.PASSWORD
     )
-    const fileLoadBlock = this.createBlock(AppTag.FORM, AppCssClass.FORM_INPUT_BLOCK)
+    const fileLoadBlock = this.createBlock(AppTag.DIV, AppCssClass.FORM_INPUT_BLOCK)
 
     const imageLabelSpan = this.createBlock(AppTag.SPAN, AppCssClass.FORM_LABEL);
     imageLabelSpan.classList.add(AppCssClass.IMAGE_LABEL)
@@ -116,7 +142,8 @@ export default class AuthPage extends View {
     this.loginInput.addEventListener('input', () => this.handleForm())
     this.nickNameInput.addEventListener('input', () => this.handleForm())
     this.passWordInput.addEventListener('input', () => this.handleForm())
-    fileLoadBlock.append(imageLabelSpan, imageBtnSpan, this.imageInput)
+    this.imageInput.setAttribute('name', AppID.IMAGE)
+    fileLoadBlock.append(imageLabelSpan, this.imageSpan, imageBtnSpan, this.imageInput)
     // fileLoadBlock.classList.add(AppCssClass.HIDDEN)
     this.submitFormBtn.classList.add(AppCssClass.BUTTON_BLUE)
     this.submitFormBtn.classList.add(AppCssClass.FORM_SUBMIT_BTN)

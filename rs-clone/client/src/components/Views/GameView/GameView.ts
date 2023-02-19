@@ -13,8 +13,14 @@ import BoardDataType from '../../../types/BoardDataType';
 import './game-view.scss';
 import AppEndPoint from '../../../enums/app-endpoint';
 import { ClientToServerEvents, ServerToClientEvents } from '../../../interfaces/Socket';
+import User from '../../User/User';
+import Server from '../../Server/Server';
 
 class GameView extends AbstractView {
+  public time = new Date(0);
+  public server: Server;
+  public user: User;
+
   protected _component = document.createElement(AppTag.DIV);
 
   private _board: Board;
@@ -24,15 +30,17 @@ class GameView extends AbstractView {
   private _turnAnons = document.createElement(AppTag.P);
   private playerTurns = document.createElement(AppTag.P);
   private enemyTurns = document.createElement(AppTag.P);
-  private time = new Date(0);
   private timer!: NodeJS.Timer;
   private readonly PLAYER_TURN = 'Стреляйте!';
   private readonly ENEMY_TURN = 'Враг атакует';
 
-  constructor(board: Board, gameType: string) {
+  constructor(board: Board, gameType: string, server: Server, user: User) {
     super();
     this._board = board;
     this.gameType = gameType;
+    this.server = server;
+    this.user = user;
+
     if (gameType === GameType.solo) {
       this._enemyBoard = new Board(this._board.difficult, Player.enemy);
     } else {
@@ -78,7 +86,7 @@ class GameView extends AbstractView {
       let boardName: string = '';
       switch (gameType) {
         case undefined:
-          boardName = 'You'; //имя игрока
+          boardName = 'Вы'; //имя игрока
           break;
         case GameType.solo:
           boardName = 'Компьютер';
@@ -145,7 +153,7 @@ class GameView extends AbstractView {
     return container;
   }
 
-  private setTime(stop?: true) {
+  public setTime(stop?: true) {
     if (stop) {
       clearInterval(this.timer);
     }

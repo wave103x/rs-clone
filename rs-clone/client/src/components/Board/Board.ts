@@ -25,7 +25,7 @@ class Board extends AbstractView {
 
   protected _component: HTMLElement = document.createElement(AppTag.DIV);
   private readonly smallClientWidth: number = 768;
-  private readonly alphabet: string = 'abcdefghij';
+  private readonly alphabet: string = 'абвгдежзик';
   private readonly EVENT_DRAGOVER = 'dragover';
 
   private data: BoardDataType;

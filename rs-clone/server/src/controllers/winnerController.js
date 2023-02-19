@@ -64,6 +64,10 @@ const getWinners = async (req, res) => {
           ['score', 'ASC'],
           ['alive_cells', 'DESC'],
         ],
+        include: [{
+          model: user,
+          attributes: ['nickName'],
+        }],
       });
       return res.status(201)
         .json(allWinners);
@@ -73,6 +77,10 @@ const getWinners = async (req, res) => {
           ['score', 'ASC'],
           ['alive_cells', 'DESC'],
         ],
+        include: [{
+          model: user,
+          attributes: ['nickName'],
+        }],
       });
       return res.status(201)
         .json(allWinners);
