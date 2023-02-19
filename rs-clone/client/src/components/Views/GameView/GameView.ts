@@ -34,7 +34,15 @@ class GameView extends AbstractView {
   private readonly ENEMY_TURN = 'Враг атакует';
 
   //Добавить сокет в конструктор
-  constructor(board: Board, gameType: string, server: Server, user: User, socket: undefined) {
+  constructor(
+    board: Board,
+    gameType: string,
+    server: Server,
+    user: User,
+    socket?: undefined,
+    turn?: boolean,
+    enemyBoard?: Board
+  ) {
     super();
     this._board = board;
     this.gameType = gameType;
@@ -45,7 +53,7 @@ class GameView extends AbstractView {
       this._enemyBoard = new Board(this._board.difficult, Player.enemy);
     } else {
       //Таблица врага
-      //Передать матрицу и сквадрон
+      //Получить матрицу и сквадрон
     }
     this.createComponent();
   }

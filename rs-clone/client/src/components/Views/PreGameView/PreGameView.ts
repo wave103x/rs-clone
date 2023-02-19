@@ -166,23 +166,36 @@ class PreGameView extends AbstractView {
     }
 
     function startGame(pregameView: PreGameView) {
-      let socket: undefined;
       if (false) {
         //Экран ожидания
-        //Открытие подключение
+        //Открытие подключения
         //зарандомить чей первый ход на сервере
+        //Отправить данные по сквадрону и матрице
+        //Создать вражескую таблицу
+
+        pregameView._component.remove();
+        //Передать сокет
+        //Передать первый ход
+        //Передать вражескую таблицу
+
+        document.body.append(
+          new GameView(
+            pregameView._board,
+            pregameView.gameType,
+            pregameView._server,
+            pregameView._user
+          ).getComponent()
+        );
+      } else {
       }
       pregameView._component.remove();
-      //Передать сокет
-      //Передать первый ход
 
       document.body.append(
         new GameView(
           pregameView._board,
           pregameView.gameType,
           pregameView._server,
-          pregameView._user,
-          socket
+          pregameView._user
         ).getComponent()
       );
     }
