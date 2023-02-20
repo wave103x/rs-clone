@@ -9,6 +9,7 @@ import GameType from '../../../enums/game-type';
 import './pregame-view.scss';
 import User from '../../User/User';
 import Server from '../../Server/Server';
+import AppAttribute from '../../../enums/app-attribute';
 
 class PreGameView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
@@ -19,6 +20,7 @@ class PreGameView extends AbstractView {
   private _server: Server;
   private _user: User;
 
+  private readonly LOAD_TEXT = 'Поиск соперника';
   private readonly SHUFFLE_BUTTON_TEXT = 'Перемешать';
   private readonly SHUFFLE_TEXT = 'ПКМ для поворота';
   private readonly CONTROL_TEXT = 'Режим игры';
@@ -166,19 +168,31 @@ class PreGameView extends AbstractView {
     }
 
     function startGame(pregameView: PreGameView) {
-      if (false) {
-        //TODO:
-        //Экран ожидания
-        //Открытие подключения
-        //зарандомить чей первый ход на сервере
-        //Отправить чей первый ход (у одного будет первый игрок, у другого второй игрок)
-        //Отправить объект таблицы
-        //Когда все данные получены - создать GameView и убрать экран ожидания
-
+      console.log(pregameView, pregameView.gameType);
+      if (pregameView.gameType === GameType.online) {
+        const loadBlock = pregameView.createLoadingBlock();
+        document.body.append(loadBlock);
+        // //TODO:
+        // //Экран ожидания
+        // //Открытие подключения
+        // //зарандомить чей первый ход на сервере
+        // //Отправить чей первый ход (у одного будет первый игрок, у другого второй игрок)
+        // //Отправить объект таблицы
+        // //Когда все данные получены - создать GameView и убрать экран ожидания
+        // pregameView._component.remove();
+        // //Передать сокет
+        // //Передать первый ход
+        // //Передать вражескую таблицу
+        // document.body.append(
+        //   new GameView(
+        //     pregameView._board,
+        //     pregameView.gameType,
+        //     pregameView._server,
+        //     pregameView._user
+        //   ).getComponent()
+        // );
+      } else {
         pregameView._component.remove();
-        //Передать сокет
-        //Передать первый ход
-        //Передать вражескую таблицу
 
         document.body.append(
           new GameView(
@@ -188,19 +202,30 @@ class PreGameView extends AbstractView {
             pregameView._user
           ).getComponent()
         );
-      } else {
       }
-      pregameView._component.remove();
-
-      document.body.append(
-        new GameView(
-          pregameView._board,
-          pregameView.gameType,
-          pregameView._server,
-          pregameView._user
-        ).getComponent()
-      );
     }
+  }
+
+  private createLoadingBlock(): HTMLElement {
+    const container = document.createElement(AppTag.DIV);
+    container.classList.add(AppCssClass.LOAD_BLOCK_CONTAINER);
+
+    const block = document.createElement(AppTag.DIV);
+    block.classList.add(AppCssClass.LOAD_BLOCK);
+
+    container.append(block);
+
+    const img = new Image();
+    img.classList.add(AppCssClass.LOAD_BLOCK_IMG);
+    img.src = require('../../../assets/icons/load-ship.svg') as string;
+
+    const title = document.createElement(AppTag.P);
+    title.classList.add(AppCssClass.LOAD_BLOCK_TITLE);
+    title.innerText = this.LOAD_TEXT;
+
+    block.append(img, title);
+
+    return container;
   }
 }
 

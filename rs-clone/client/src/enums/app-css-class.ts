@@ -33,6 +33,11 @@ const enum AppCssClass {
   DIFFICULT_HEADER = 'pregame__difficult-header',
   DIFFICULT_FEATURES = 'pregame__difficult-features',
 
+  LOAD_BLOCK = "load-block",
+  LOAD_BLOCK_CONTAINER = "load-block__container",
+  LOAD_BLOCK_IMG = "load-block__img",
+  LOAD_BLOCK_TITLE = "load-block__title",
+
   BOARD_MARKUP = 'board__markup',
   BOARD_MARKUP_EASY = 'board__markup_easy',
   BOARD_EMPTY_BLOCK = 'board__empty-block',

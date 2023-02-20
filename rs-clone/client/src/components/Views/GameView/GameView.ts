@@ -39,7 +39,6 @@ class GameView extends AbstractView {
     gameType: string,
     server: Server,
     user: User,
-    socket?: undefined,
     turn?: boolean,
     enemyBoard?: Board
   ) {
