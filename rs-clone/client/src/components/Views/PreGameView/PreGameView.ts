@@ -84,13 +84,16 @@ class PreGameView extends AbstractView {
 
     controlContainer.append(controlHeader);
 
+    const difficultContainer = document.createElement(AppTag.DIV);
+    difficultContainer.classList.add(AppCssClass.DIFFICULT_CONTAINER);
+
     if (this.gameType === GameType.solo) {
       const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
 
       const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
       normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
 
-      controlContainer.append(easyDifficult, normalDifficult);
+      difficultContainer.append(easyDifficult, normalDifficult);
     } else {
       const randomEnemy = createDifficult(
         { name: 'Случайный противник', features: [] },
@@ -98,8 +101,10 @@ class PreGameView extends AbstractView {
         this
       );
       randomEnemy.classList.add(AppCssClass.DIFFICULT_ACTIVE);
-      controlContainer.append(randomEnemy);
+      difficultContainer.append(randomEnemy);
     }
+
+    controlContainer.append(difficultContainer);
 
     const buttonPlay = document.createElement(AppTag.BUTTON);
     buttonPlay.classList.add(AppCssClass.BUTTON_BIG, AppCssClass.BUTTON);
@@ -168,7 +173,7 @@ class PreGameView extends AbstractView {
     }
 
     function startGame(pregameView: PreGameView) {
-      console.log(pregameView, pregameView.gameType);
+      
       if (pregameView.gameType === GameType.online) {
         const loadBlock = pregameView.createLoadingBlock();
         document.body.append(loadBlock);

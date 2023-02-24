@@ -30,6 +30,9 @@ class Game {
     this._secondPlayer = secondPlayer;
     this._gameType = gameType;
     this._gameView = gameView;
+
+    this._secondPlayer.squadron = {};
+    this.checkWin();
   }
 
   start(): void {

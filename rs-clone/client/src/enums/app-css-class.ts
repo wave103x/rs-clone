@@ -28,6 +28,7 @@ const enum AppCssClass {
   BOARD_CONTAINER_TEXT = 'pregame__board-text',
   CONTROL_CONTAINER = 'pregame__control-container',
   CONTROL_HEADER = 'pregame__header',
+  DIFFICULT_CONTAINER = "pregame__difficult-container",
   DIFFICULT = 'pregame__difficult',
   DIFFICULT_ACTIVE = 'pregame__difficult_active',
   DIFFICULT_HEADER = 'pregame__difficult-header',
