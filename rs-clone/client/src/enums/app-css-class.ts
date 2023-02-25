@@ -70,6 +70,7 @@ const enum AppCssClass {
   WIN = 'win',
   WIN_TITLE = 'win__title',
   WIN_TEXT = 'win__text',
+  WIN_TEXT_LOSE = 'win__text_lose',
   WIN_POSITION = 'win__position',
   WIN_HOME = 'win__home',
 

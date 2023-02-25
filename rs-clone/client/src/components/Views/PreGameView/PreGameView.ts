@@ -7,6 +7,8 @@ import Difficulties from '../../../enums/difficulties';
 import Player from '../../../enums/player';
 import GameType from '../../../enums/game-type';
 import './pregame-view.scss';
+import User from '../../User/User';
+import Server from '../../Server/Server';
 
 class PreGameView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
@@ -14,6 +16,8 @@ class PreGameView extends AbstractView {
   private _board = new Board(this.difficult, Player.ally);
   private gameType: string;
   private boardContainer!: HTMLElement;
+  private _server: Server;
+  private _user: User;
 
   private readonly SHUFFLE_BUTTON_TEXT = 'Перемешать';
   private readonly SHUFFLE_TEXT = 'ПКМ для поворота';
@@ -30,9 +34,11 @@ class PreGameView extends AbstractView {
     },
   };
 
-  constructor(gameType: string) {
+  constructor(gameType: string, server: Server, user: User) {
     super();
     this.gameType = gameType;
+    this._server = server;
+    this._user = user;
     this.createComponent();
   }
 
@@ -144,10 +150,16 @@ class PreGameView extends AbstractView {
       return ol;
     }
 
-    //Переделать в роутинг
     function startGame(pregameView: PreGameView) {
       pregameView._component.remove();
-      document.body.append(new GameView(pregameView._board, pregameView.gameType).getComponent());
+      document.body.append(
+        new GameView(
+          pregameView._board,
+          pregameView.gameType,
+          pregameView._server,
+          pregameView._user
+        ).getComponent()
+      );
     }
   }
 }

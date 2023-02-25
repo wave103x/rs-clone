@@ -20,8 +20,10 @@
   &__title {
     position: absolute;
     top: -30%;
+    // padding: 0;
+    // margin: 0;
     z-index: 1001;
-    width: 300%;
+    // width: 300%;
 
     color: $main-yellow;
     font-size: 4rem;
@@ -33,6 +35,9 @@
     font-size: 1.2rem;
     line-height: 2rem;
     text-align: center;
+    &_lose {
+      color: #5d5d5d;
+    }
   }
 
   &__position {
@@ -43,8 +48,13 @@
   &__home {
     display: block;
     text-align: center;
+    cursor: pointer;
     font-size: 1.1rem;
     color: rgba(49, 109, 201, 1);
     margin-bottom: 1rem;
+    transition: 0.2s;
+    &:hover {
+      color: $dark-blue;
+    }
   }
 }

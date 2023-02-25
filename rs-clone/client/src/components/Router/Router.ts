@@ -5,6 +5,8 @@ import Leaderboard from '../Views/Leaderboard/Leaderboard';
 import LoginPage from '../LoginPage/loginPage';
 import AuthPage from '../AuthPage/AuthPage';
 import GameType from '../../enums/game-type';
+import User from '../User/User';
+import Server from '../Server/Server';
 
 export default class Routing {
   private _header: Header;
@@ -12,16 +14,27 @@ export default class Routing {
   private _leaderboard: Leaderboard;
   private _authPage: AuthPage;
   private _loginPage: LoginPage;
+  private _server: Server;
+  private _user: User;
 
-
-  constructor(header: Header, startView: StartView, leaders: Leaderboard, auth: AuthPage, login: LoginPage) {
+  constructor(
+    header: Header,
+    startView: StartView,
+    leaders: Leaderboard,
+    auth: AuthPage,
+    login: LoginPage,
+    server: Server,
+    user: User
+  ) {
     this._header = header;
     this._startView = startView;
     this._leaderboard = leaders;
     this._authPage = auth;
     this._loginPage = login;
+    this._server = server;
+    this._user = user;
 
-    document.addEventListener('pageChange', this.changePages.bind(this))
+    document.addEventListener('pageChange', this.changePages.bind(this));
   }
 
   private changePages(event: Event) {
@@ -37,6 +50,8 @@ export default class Routing {
         this._startView.hide();
         const game = document.querySelector('.game');
         game?.remove();
+        const win = document.querySelector('.win');
+        win?.remove();
         const pregame = document.querySelector('.pregame');
         pregame?.remove();
         this._authPage.hide();
@@ -56,11 +71,15 @@ export default class Routing {
         this._header.setHeading('');
         break;
       case 'pregame-solo':
-        document.body.append(new PreGameView(GameType.solo).getComponent());
+        document.body.append(
+          new PreGameView(GameType.solo, this._server, this._user).getComponent()
+        );
         this._header.setHeading('Против машины');
         break;
       case 'pregame-pvp':
-        document.body.append(new PreGameView(GameType.online).getComponent());
+        document.body.append(
+          new PreGameView(GameType.online, this._server, this._user).getComponent()
+        );
         this._header.setHeading('Против человека');
         break;
       case 'leaders':
