@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     // static associate(models) {
     //   // define association here
     // }
+    static associate({ winner }) {
+      this.hasMany(winner, { foreignKey: 'user_id' });
+    }
   }
   user.init({
     login: {

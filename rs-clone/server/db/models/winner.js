@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     // static associate(models) {
     //   // define association here
     // }
+    static associate({ user }) {
+      this.belongsTo(user);
+    }
   }
   winner.init({
     userId: {
