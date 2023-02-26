@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const { user } = require('../../db/models');
 
-
 const generateAccessToken = (id) => {
   const payload = { id };
   const accessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '24h' });
@@ -27,8 +26,6 @@ const saveToken = async (id, refreshToken) => {
 };
 
 const signUpUser = async (req, res) => {
-  // const [...dataArray] = req.fields
-
   try {
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
@@ -65,10 +62,14 @@ const signUpUser = async (req, res) => {
 };
 
 const signInUser = async (req, res) => {
+  console.log('hey=>>>>>>>>>>>>>');
   try {
     const {
       login, password,
     } = req.body;
+    console.log('====================================');
+    console.log(login, password);
+    console.log('====================================');
     const currentUser = await user.findOne({ where: { login } });
     if (!currentUser) {
       return res.status(401).json({ message: `Пользователь с логином ${login} не существует` });
@@ -80,10 +81,13 @@ const signInUser = async (req, res) => {
     const tokens = generateAccessToken(currentUser.id);
     await saveToken(currentUser.id, tokens.refreshToken);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    console.log('====================================');
+    console.log({ currentUser });
+    console.log('====================================');
     return res.status(201)
       .json({ id: currentUser.id, nickName: currentUser.nickName, image: currentUser.image });
   } catch (e) {
-    console.log(e);
+    console.log('!!!!', e.message);
     res.send({ message: 'Ошибка входа' });
   }
 };

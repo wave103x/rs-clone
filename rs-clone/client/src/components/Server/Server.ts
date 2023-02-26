@@ -41,6 +41,7 @@ export default class Server {
     }
   }
   async signInUser(formData: string): Promise <TUser | number | undefined> {
+
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNIN}`, {
         method: 'POST',

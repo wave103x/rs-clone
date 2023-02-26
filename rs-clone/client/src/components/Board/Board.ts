@@ -34,7 +34,6 @@ class Board extends AbstractView {
   //Протестить для легкой
   constructor(difficult: string, player: string, matrix?: number[][], squadron?: Squadron) {
     super();
-
     this.difficult = difficult;
     this.player = player;
 
