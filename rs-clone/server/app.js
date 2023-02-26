@@ -33,8 +33,12 @@ async function connect() {
     console.error('Unable to connect to the database:', error);
   }
 }
+console.log('*********************');
+console.log(process.env.DB_NAME);
+console.log('*********************');
 
 connect();
+
 const corsOptions = {
   origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
