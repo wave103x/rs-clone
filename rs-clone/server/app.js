@@ -15,12 +15,18 @@ require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASS,
+  // process.env.DB_NAME,
+  // process.env.DB_USER,
+  // process.env.DB_PASS,
+  'clone_38aq',
+  'clone_38aq_user',
+  'EM4REnz1xuvBlHIj6oDMZqiy8O6L1kTR',
 
   {
-    host: process.env.HOST,
+    // host: process.env.HOST,
+    host: 'postgres://dpg-cft1v3arrk0c834202g0-a',
+    // host: '127.0.0.1',
+    // host: 'localhost',
     port: 5432,
     dialect: 'postgres',
   },
@@ -29,7 +35,11 @@ const sequelize = new Sequelize(
 async function connect() {
   try {
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.', process.env.DB_NAME, process.env.DB_USER);
+    console.log(
+      'Connection has been established successfully.',
+      process.env.DB_NAME,
+      process.env.DB_USER,
+    );
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
