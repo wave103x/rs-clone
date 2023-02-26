@@ -21,6 +21,7 @@ const sequelize = new Sequelize(
 
   {
     host: process.env.HOST,
+    port: 5432,
     dialect: 'postgres',
   },
 );
@@ -35,6 +36,9 @@ async function connect() {
 }
 console.log('*********************');
 console.log(process.env.DB_NAME);
+console.log(process.env.DB_USER);
+console.log(process.env.DB_PASS);
+console.log(process.env.HOST);
 console.log('*********************');
 
 connect();
