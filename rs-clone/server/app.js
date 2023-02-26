@@ -20,7 +20,7 @@ const sequelize = new Sequelize(
   process.env.DB_PASS,
 
   {
-    host: 'dpg-cft1v3arrk0c834202g0-a.frankfurt-postgres.render.com?ssl=true',
+    host: process.env.HOST,
     dialect: 'postgres',
   },
 );
