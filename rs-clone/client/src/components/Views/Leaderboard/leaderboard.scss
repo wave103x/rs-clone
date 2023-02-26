@@ -6,10 +6,9 @@
   margin: 0 auto;
 }
 
-
 .leader-table__line {
   display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 30px 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
   text-align: center;
   align-items: center;
@@ -53,7 +52,6 @@
   transition: 0.2s;
   transform: scale(1);
   transform-origin: left center;
-
 }
 
 .controls-label {

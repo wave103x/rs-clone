@@ -48,12 +48,11 @@
     align-items: center;
     margin-top: 4rem;
   }
-
 }
 
 @media (max-width: 576px) {
-  .first-view__button-div {
-    transform: scale(0.7);
+  .first-view__logo {
+    transform: scale(0.8);
   }
   .header__buttons {
     gap: 1rem;
