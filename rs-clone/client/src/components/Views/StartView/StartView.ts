@@ -11,6 +11,7 @@ class StartView extends View {
   private readonly BUTTON_NAME_PVP = 'Против человека';
   private readonly EVENT_CLICK = 'click';
   protected _component = document.createElement(AppTag.DIV);
+  private _leftBtn = this.createBtn(this.SOLO);
 
   constructor() {
     super();
@@ -26,15 +27,15 @@ class StartView extends View {
     logo.src = require('../../../assets/icons/logo-main.svg') as string;
     logo.className = AppCssClass.FIRST_VIEW_LOGO;
 
-    const leftBtn = this.createBtn(this.SOLO);
+    this._leftBtn = this.createBtn(this.SOLO);
     const rightBtn = this.createBtn(this.PVP);
 
-    leftBtn.addEventListener(this.EVENT_CLICK, this.toSoloGameBtnHandler.bind(this))
-    rightBtn.addEventListener(this.EVENT_CLICK, this.toPVPGameBtnHandler.bind(this))
+    this._leftBtn.addEventListener(this.EVENT_CLICK, this.toSoloGameBtnHandler.bind(this))
+    // rightBtn.addEventListener(this.EVENT_CLICK, this.toPVPGameBtnHandler.bind(this))
     const buttons = document.createElement(AppTag.DIV);
 
     buttons.className = AppCssClass.FIRST_VIEW_BUTTONS;
-    buttons.append(leftBtn, rightBtn);
+    buttons.append(this._leftBtn, rightBtn);
 
     this._component.append(h1, logo, buttons);
   }
@@ -72,12 +73,20 @@ class StartView extends View {
         break;
       case this.PVP:
         btn.textContent = this.BUTTON_NAME_PVP;
+        btn.classList.add(AppCssClass.BUTTON_DISABLED);
         img.src = require('../../../assets/icons/pvp.svg') as string;
         img.classList.add(AppCssClass.BUTTON_DIV_IMG, AppCssClass.BUTTON_DIV_IMG_RIGHT);
         break;
     }
     div.append(btn, img);
     return div;
+  }
+
+  lockBtn() {
+    this._leftBtn.classList.add(AppCssClass.BUTTON_DISABLED);
+  }
+  unlockBtn() {
+    this._leftBtn.classList.remove(AppCssClass.BUTTON_DISABLED);
   }
 }
 

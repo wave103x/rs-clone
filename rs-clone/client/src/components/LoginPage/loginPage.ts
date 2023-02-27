@@ -40,10 +40,14 @@ export default class LoginPage extends View {
   sendForm(event: Event) {
     event.preventDefault();
     if (this.form instanceof HTMLFormElement) {
-      const dataObj = JSON.stringify(Object.fromEntries(new FormData(this.form)));
-      this.server.signInUser(dataObj).then((response) => {
+      const dataObj = new FormData(this.form);
+      this.server.signInUser(dataObj)
+      .then((response) => {
+        console.log('====================================');
+        console.log(response);
+        console.log('====================================');
         switch (response) {
-          case 400: {
+          case 402: {
             this.passWordSpan.innerHTML = 'Неверный пароль';
             break;
           }
@@ -52,9 +56,11 @@ export default class LoginPage extends View {
             break;
           }
           default: {
-            this._component.classList.add('hidden');
-            if (response && typeof response !== 'number') {
-              this._user.update(response.nickName, response.id);
+            this.hide();
+            // this._component.classList.add('hidden');
+            if (response && typeof response !== 'number' && response.image) {
+              this._user.update(response.nickName, response.id, response.image);
+
             }
             break;
           }

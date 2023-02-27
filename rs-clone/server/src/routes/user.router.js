@@ -1,6 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const router = require('express').Router();
 const { check } = require('express-validator');
+const multer = require('multer');
+
+const upload = multer({ dest: '../avatars/' });
 const {
   getUser, signUpUser, signInUser, getAllUsers, logOut,
 } = require('../controllers/userController');

@@ -7,13 +7,21 @@ import AppTag from '../../../enums/app-tag';
 import Difficulties from '../../../enums/difficulties';
 import Player from '../../../enums/player';
 import GameType from '../../../enums/game-type';
-
 import BoardData from '../../Board/BoardData';
 import BoardDataType from '../../../types/BoardDataType';
 
 import './game-view.scss';
+import AppEndPoint from '../../../enums/app-endpoint';
+import { ClientToServerEvents, ServerToClientEvents } from '../../../interfaces/Socket';
+
+import User from '../../User/User';
+import Server from '../../Server/Server';
 
 class GameView extends AbstractView {
+  public time = new Date(0);
+  public server: Server;
+  public user: User;
+
   protected _component = document.createElement(AppTag.DIV);
 
   private _board: Board;
@@ -23,20 +31,30 @@ class GameView extends AbstractView {
   private _turnAnons = document.createElement(AppTag.P);
   private playerTurns = document.createElement(AppTag.P);
   private enemyTurns = document.createElement(AppTag.P);
-  private time = new Date(0);
   private timer!: NodeJS.Timer;
   private readonly PLAYER_TURN = 'Стреляйте!';
   private readonly ENEMY_TURN = 'Враг атакует';
 
-  constructor(board: Board, gameType: string) {
+  constructor(
+    board: Board,
+    gameType: string,
+    server: Server,
+    user: User,
+    turn?: boolean,
+    enemyBoard?: Board
+  ) {
+
     super();
     this._board = board;
     this.gameType = gameType;
+    this.server = server;
+    this.user = user;
 
     if (gameType === GameType.solo) {
       this._enemyBoard = new Board(this._board.difficult, Player.enemy);
     } else {
       //Таблица врага
+      //Получить матрицу и сквадрон
     }
     this.createComponent();
   }
@@ -58,15 +76,12 @@ class GameView extends AbstractView {
   protected createComponent(): void {
     this._component.classList.add(AppCssClass.GAME);
 
+    //Переделать на рандом ход
     this._turnAnons.textContent = this.PLAYER_TURN;
     const stats = this.createStats();
 
     this._component.append(createContainer(this._board), stats);
-
-    //Переделать под таблицу игрока
-    if (this._enemyBoard) {
-      this._component.append(createContainer(this._enemyBoard, GameType.solo));
-    }
+    this._component.append(createContainer(this._enemyBoard, this.gameType));
 
     const game = new Game(this._board, this._enemyBoard, this.gameType, this);
     game.start();
@@ -78,7 +93,7 @@ class GameView extends AbstractView {
       let boardName: string = '';
       switch (gameType) {
         case undefined:
-          boardName = 'You'; //имя игрока
+          boardName = 'Вы'; //имя игрока
           break;
         case GameType.solo:
           boardName = 'Компьютер';
@@ -145,7 +160,7 @@ class GameView extends AbstractView {
     return container;
   }
 
-  private setTime(stop?: true) {
+  public setTime(stop?: true) {
     if (stop) {
       clearInterval(this.timer);
     }
@@ -153,6 +168,7 @@ class GameView extends AbstractView {
       this.time.getSeconds() < 10 ? '0' : ''
     }${this.time.getSeconds()}`;
   }
+
 }
 
 export default GameView;

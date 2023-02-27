@@ -16,6 +16,7 @@ const enum AppCssClass {
   FIRST_VIEW_LOGO = 'first-view__logo',
   FIRST_VIEW_BUTTONS = 'fist-view__buttons',
   BUTTON_DIV_IMG = 'button-div__img',
+  BUTTON_DISABLED = 'button-div__disabled',
   BUTTON_DIV_IMG_LEFT = 'button-div__img_left',
   BUTTON_DIV_IMG_RIGHT = 'button-div__img_right',
   BUTTON_DIV = 'first-view__button-div',
@@ -23,15 +24,22 @@ const enum AppCssClass {
   BUTTON_BIG = 'button_big',
   BUTTON_BLUE = 'button_blue',
 
+
   PREGAME = 'pregame',
   BOARD_CONTAINER = 'pregame__board-container',
   BOARD_CONTAINER_TEXT = 'pregame__board-text',
   CONTROL_CONTAINER = 'pregame__control-container',
   CONTROL_HEADER = 'pregame__header',
+  DIFFICULT_CONTAINER = "pregame__difficult-container",
   DIFFICULT = 'pregame__difficult',
   DIFFICULT_ACTIVE = 'pregame__difficult_active',
   DIFFICULT_HEADER = 'pregame__difficult-header',
   DIFFICULT_FEATURES = 'pregame__difficult-features',
+
+  LOAD_BLOCK = "load-block",
+  LOAD_BLOCK_CONTAINER = "load-block__container",
+  LOAD_BLOCK_IMG = "load-block__img",
+  LOAD_BLOCK_TITLE = "load-block__title",
 
   BOARD_MARKUP = 'board__markup',
   BOARD_MARKUP_EASY = 'board__markup_easy',
@@ -70,6 +78,7 @@ const enum AppCssClass {
   WIN = 'win',
   WIN_TITLE = 'win__title',
   WIN_TEXT = 'win__text',
+  WIN_TEXT_LOSE = 'win__text_lose',
   WIN_POSITION = 'win__position',
   WIN_HOME = 'win__home',
 

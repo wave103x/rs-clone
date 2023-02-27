@@ -4,7 +4,8 @@ const { user } = require('../../db/models');
 const postWinner = async (req, res) => {
   const {
     score, time, aliveCells, mode,
-  } = req.body;
+  } = req.fields;
+
   const { id } = req.params;
 
   try {
@@ -35,14 +36,13 @@ const postWinner = async (req, res) => {
           const updatedWinner = await winner.findOne({
             where: { userId: Number(id), mode },
           });
-          console.log(updatedWinner);
           return res.status(201)
             .json(updatedWinner);
         }
       }
       res.sendStatus(400);
     } else {
-      const newWinner = winner.create({
+      const newWinner = await winner.create({
         userId: id, score, time, aliveCells, mode,
       });
 
@@ -58,22 +58,30 @@ const postWinner = async (req, res) => {
 const getWinners = async (req, res) => {
   const { mode } = req.params;
   try {
-    if (mode === 'fff' || mode === 'sss') {
+    if (mode === 'solo' || mode === 'online') {
       const allWinners = await winner.findAll({
         where: { mode },
         order: [
-          ['score', 'DESC'],
-          ['alive_cells', 'ASC'],
+          ['score', 'ASC'],
+          ['alive_cells', 'DESC'],
         ],
+        include: [{
+          model: user,
+          attributes: ['nickName'],
+        }],
       });
       return res.status(201)
         .json(allWinners);
     } if (mode === 'all') {
       const allWinners = await winner.findAll({
         order: [
-          ['score', 'DESC'],
-          ['alive_cells', 'ASC'],
+          ['score', 'ASC'],
+          ['alive_cells', 'DESC'],
         ],
+        include: [{
+          model: user,
+          attributes: ['nickName'],
+        }],
       });
       return res.status(201)
         .json(allWinners);

@@ -7,6 +7,14 @@ import Difficulties from '../../../enums/difficulties';
 import Player from '../../../enums/player';
 import GameType from '../../../enums/game-type';
 import './pregame-view.scss';
+import User from '../../User/User';
+import Server from '../../Server/Server';
+import AppEndPoint from '../../../enums/app-endpoint';
+import { io, Socket } from "socket.io-client";
+import SocketService from '../../../services/socketService';
+
+import AppAttribute from '../../../enums/app-attribute';
+
 
 class PreGameView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
@@ -14,7 +22,10 @@ class PreGameView extends AbstractView {
   private _board = new Board(this.difficult, Player.ally);
   private gameType: string;
   private boardContainer!: HTMLElement;
+  private _server: Server;
+  private _user: User;
 
+  private readonly LOAD_TEXT = 'Поиск соперника';
   private readonly SHUFFLE_BUTTON_TEXT = 'Перемешать';
   private readonly SHUFFLE_TEXT = 'ПКМ для поворота';
   private readonly CONTROL_TEXT = 'Режим игры';
@@ -30,9 +41,11 @@ class PreGameView extends AbstractView {
     },
   };
 
-  constructor(gameType: string) {
+  constructor(gameType: string, server: Server, user: User) {
     super();
     this.gameType = gameType;
+    this._server = server;
+    this._user = user;
     this.createComponent();
   }
 
@@ -74,10 +87,29 @@ class PreGameView extends AbstractView {
     controlHeader.classList.add(AppCssClass.CONTROL_HEADER);
     controlHeader.innerText = this.CONTROL_TEXT;
 
-    const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
+    controlContainer.append(controlHeader);
 
-    const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
-    normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+    const difficultContainer = document.createElement(AppTag.DIV);
+    difficultContainer.classList.add(AppCssClass.DIFFICULT_CONTAINER);
+
+    if (this.gameType === GameType.solo) {
+      const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
+
+      const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
+      normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+
+      difficultContainer.append(easyDifficult, normalDifficult);
+    } else {
+      const randomEnemy = createDifficult(
+        { name: 'Случайный противник', features: [] },
+        Difficulties.normal,
+        this
+      );
+      randomEnemy.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+      difficultContainer.append(randomEnemy);
+    }
+
+    controlContainer.append(difficultContainer);
 
     const buttonPlay = document.createElement(AppTag.BUTTON);
     buttonPlay.classList.add(AppCssClass.BUTTON_BIG, AppCssClass.BUTTON);
@@ -86,13 +118,13 @@ class PreGameView extends AbstractView {
       startGame(this);
     });
 
-    controlContainer.append(controlHeader, easyDifficult, normalDifficult, buttonPlay);
+    controlContainer.append(buttonPlay);
 
     return controlContainer;
 
     function createDifficult(
       features: { name: string; features: string[] },
-      difficult: Difficulties,
+      difficult: string,
       control: PreGameView
     ): HTMLElement {
       const difficultBlock = document.createElement(AppTag.BUTTON);
@@ -100,10 +132,11 @@ class PreGameView extends AbstractView {
       difficultBlock.classList.add(AppCssClass.DIFFICULT);
       difficultBlock.addEventListener('click', toggleDifficult);
 
-      difficultBlock.append(
-        createDifficultHeader(features.name),
-        creteDifficultFeatures(features.features)
-      );
+      difficultBlock.append(createDifficultHeader(features.name));
+
+      if (features.features.length != 0) {
+        difficultBlock.append(creteDifficultFeatures(features.features));
+      }
 
       return difficultBlock;
 
@@ -144,12 +177,49 @@ class PreGameView extends AbstractView {
       return ol;
     }
 
-    //Переделать в роутинг
+
     function startGame(pregameView: PreGameView) {
-      pregameView._component.remove();
-      document.body.append(new GameView(pregameView._board, pregameView.gameType).getComponent());
+      if (pregameView.gameType === GameType.online) {
+        const loadBlock = pregameView.createLoadingBlock();
+        document.body.append(loadBlock);
+      } else {
+        pregameView._component.remove();
+        document.body.append(
+          new GameView(
+            pregameView._board,
+            pregameView.gameType,
+            pregameView._server,
+            pregameView._user
+          ).getComponent()
+        );
+
+      }
+
     }
   }
+
+  private createLoadingBlock(): HTMLElement {
+    const container = document.createElement(AppTag.DIV);
+    container.classList.add(AppCssClass.LOAD_BLOCK_CONTAINER);
+
+    const block = document.createElement(AppTag.DIV);
+    block.classList.add(AppCssClass.LOAD_BLOCK);
+
+    container.append(block);
+
+    const img = new Image();
+    img.classList.add(AppCssClass.LOAD_BLOCK_IMG);
+    img.src = require('../../../assets/icons/load-ship.svg') as string;
+
+    const title = document.createElement(AppTag.P);
+    title.classList.add(AppCssClass.LOAD_BLOCK_TITLE);
+    title.innerText = this.LOAD_TEXT;
+
+    block.append(img, title);
+
+    return container;
+  }
+
 }
 
 export default PreGameView;

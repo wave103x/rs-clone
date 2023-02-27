@@ -6,13 +6,10 @@ import Header from "../Views/Header/Header";
 
 export default class Server {
 
-  async postUser(formData: string): Promise <TUser | number | undefined> {
+  async postUser(formData: FormData): Promise <TUser | number | undefined> {
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNUP}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
         body: formData,
       });
@@ -42,13 +39,11 @@ export default class Server {
       }
     }
   }
-  async signInUser(formData: string): Promise <TUser | number | undefined> {
+  async signInUser(formData: FormData): Promise <TUser | number | undefined> {
+
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNIN}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
         body: formData,
       });
@@ -59,7 +54,7 @@ export default class Server {
             console.log('201 OK');
             return data;
           }
-          case 400: {
+          case 402: {
             console.log('400 Неверный пароль');
             return response.status;
           }
@@ -70,7 +65,6 @@ export default class Server {
         }
         // return;
       });
-      return undefined;
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -88,11 +82,8 @@ export default class Server {
       headers: headers,
     }
     try {
-      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`, options);
-      const data = await response.json()
-      console.log('====================================');
-      console.log('logout', response);
-      console.log('====================================');
+      const response: Response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`, options);
+
       return response
     } catch (error) {
 
@@ -116,17 +107,21 @@ export default class Server {
     }
   }
 
-  async postWinner(dataObj: TWinnerObj, id: number): Promise <TWinnerObj | number | undefined> {
+  async postWinner(dataObj: TWinnerObj): Promise <TWinnerObj | number | undefined> {
+    const formData = new FormData()
+    formData.append('score', dataObj.score.toString())
+    formData.append('time', dataObj.time.toString())
+    formData.append('aliveCells', dataObj.aliveCells.toString())
+    formData.append('mode', dataObj.mode.toString())
     try {
-      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.POSTWINNER + id}`, {
+      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.POSTWINNER + dataObj.userId}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
-        body: JSON.stringify({...dataObj}),
+        body: formData,
       });
       const data = await response.json();
+
+
       switch (response.status) {
         case 201: {
           console.log('201 OK');
@@ -150,7 +145,7 @@ async getWinnersByMode(mode: string): Promise <TWinnerObj[] | number | undefined
     const data = await response.json();
     switch (response.status) {
       case 201: {
-        console.log('201 OK');
+        // console.log('201 OK');
         return data;
       }
       case 400: {

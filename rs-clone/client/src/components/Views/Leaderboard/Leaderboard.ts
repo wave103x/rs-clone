@@ -4,51 +4,61 @@ import Header from '../Header/Header';
 import AppCssClass from '../../../enums/app-css-class';
 import AppTag from '../../../enums/app-tag';
 import './leaderboard.scss';
+import Server from '../../Server/Server';
+import GameType from '../../../enums/game-type';
+import TWinnerObj from '../../../types/TWinnerObj';
+
 
 class Leaderboard extends View {
   protected _component = document.createElement(AppTag.DIV);
   private _table = document.createElement(AppTag.DIV);
-  private _tempData: string[][];
-  private _tempData2: string[][];
   private _currentSort: LeaderSorts = {};
   private _gameDifficlulty = document.createElement(AppTag.DIV);
   private _gameMode = document.createElement(AppTag.DIV);
+  private _server: Server;
 
-  constructor() {
+  constructor(server: Server) {
     super();
+    this._server = server;
     this.createComponent();
 
-    this._tempData = [
-      ['1', 'Igrok1', '21', '2:44', '3', 'Solo'],
-      ['2', 'Igrok2', '21', '2:44', '3', 'Solo'],
-      ['3', 'Igrok3', '21', '2:44', '3', 'Solo'],
-      ['4', 'Igrok4', '21', '2:44', '3', 'Solo'],
-      ['5', 'Igrok5', '21', '2:44', '3', 'Solo'],
-      ['6', 'Igrok6', '21', '2:44', '3', 'Solo'],
-    ];
-    this._tempData2 = [
-      ['1', 'Igrok1', '21', '2:44', '3', 'PVP'],
-      ['2', 'Igrok2', '21', '2:44', '3', 'PVP'],
-      ['3', 'Igrok3', '21', '2:44', '3', 'PVP'],
-      ['4', 'Igrok4', '21', '2:44', '3', 'PVP'],
-      ['5', 'Igrok5', '21', '2:44', '3', 'PVP'],
-      ['1', 'Igrok6', '21', '2:44', '3', 'PVP'],
-    ];
-
-    this._tempData.forEach((elem) => {
-      this.createRaw(elem);
+    this._server.getWinnersByMode(GameType.solo).then((res) => {
+      if (typeof res !== 'number' && typeof res !== 'undefined') {
+        res.forEach((elem, index) => this.createRaw(elem, index));
+      }
     });
   }
 
-  createRaw(data: string[]) {
+  createRaw(data: TWinnerObj, number: number) {
     const line = document.createElement(AppTag.DIV);
     line.className = 'leader-table__line leader-table__line_body';
-    data.forEach((elem) => {
-      const cell = document.createElement(AppTag.DIV);
-      cell.textContent = elem;
-      cell.className = 'leader-table__cell';
-      line.append(cell);
-    });
+
+    const num = document.createElement(AppTag.DIV);
+    num.textContent = number.toString();
+    num.className = 'leader-table__cell';
+
+    const player = document.createElement(AppTag.DIV);
+    player.textContent = data.user?.nickName || 'player';
+    player.className = 'leader-table__cell';
+
+    const turns = document.createElement(AppTag.DIV);
+    turns.textContent = data.score.toString();
+    turns.className = 'leader-table__cell';
+
+    const time = document.createElement(AppTag.DIV);
+    time.textContent = data.time.toString();
+    time.className = 'leader-table__cell';
+
+    const aliveCells = document.createElement(AppTag.DIV);
+    aliveCells.textContent = data.aliveCells.toString();
+    aliveCells.className = 'leader-table__cell';
+
+    const mode = document.createElement(AppTag.DIV);
+    mode.textContent = data.mode.toString();
+    mode.className = 'leader-table__cell';
+
+
+    line.append(num, player, turns, time, aliveCells, mode);
     this._table.append(line);
   }
 
@@ -70,9 +80,9 @@ class Leaderboard extends View {
     const easy = this.createRadio('Лёгкий', 'game-difficulty', 'easy');
     const classic = this.createRadio('Классика', 'game-difficulty', 'classic');
     const hard = this.createRadio('Особый', 'game-difficulty', 'hard');
-    this._gameDifficlulty.append(allDiffs, easy, classic, hard);
+    this._gameDifficlulty.append(allDiffs, easy, classic);
 
-    controls.append(this._gameMode, this._gameDifficlulty);
+    controls.append(this._gameMode);
 
     this._table.className = 'leader-table';
 
@@ -120,17 +130,24 @@ class Leaderboard extends View {
   private radioHandler(name: 'game-mode' | 'game-difficulty', value: string) {
     this._currentSort[name] = value;
     this._table.innerHTML = '';
-    if (this._currentSort['game-mode'] === 'pvp') {
-      this._gameDifficlulty.classList.add('line-disabled');
-      this._currentSort['game-difficulty'] = '';
-      this._tempData2.forEach((elem) => {
-        this.createRaw(elem);
-      });
-    } else {
-      this._gameDifficlulty.classList.remove('line-disabled');
-      this._tempData.forEach((elem) => {
-        this.createRaw(elem);
-      });
+
+    switch (this._currentSort['game-mode']) {
+      case 'pvp':
+        this._server.getWinnersByMode(GameType.online).then((res) => {
+          if (typeof res !== 'number' && typeof res !== 'undefined') {
+            res.forEach((elem, index) => this.createRaw(elem, index));
+          }
+        });
+        this._gameDifficlulty.classList.add('line-disabled')
+        break;
+      case 'solo':
+        this._server.getWinnersByMode(GameType.solo).then((res) => {
+          if (typeof res !== 'number' && typeof res !== 'undefined') {
+            res.forEach((elem, index) => this.createRaw(elem, index));
+          }
+        });
+        this._gameDifficlulty.classList.remove('line-disabled')
+
     }
   }
 }

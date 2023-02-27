@@ -8,14 +8,17 @@ import WinView from '../Views/WinView/WinView';
 import Computer from '../Computer/Computer';
 import './cell.scss';
 import GameView from '../Views/GameView/GameView';
+import { io, Socket } from "socket.io-client";
+import TWinnerObj from '../../types/TWinnerObj';
+import AppEndPoint from '../../enums/app-endpoint';
 
 class Game {
-  private readonly DRUG_LOCK = 'remove';
-  //private readonly DRUG_UNLOCK = 'add';
   end = false;
 
   private _firstPlayer: Board;
   private _secondPlayer: Board;
+  private _playerNum = 0;
+  private _enemyNum = 0;
   private _gameType: string;
   private computer!: Computer;
   private _playerTurns: number = 0;
@@ -23,7 +26,9 @@ class Game {
   private _gameView: GameView;
 
   private readonly winText = ['Победа!', 'Поражение!'];
+  private readonly DRUG_LOCK = 'remove';
 
+  //Передавать первый ход
   constructor(firstPlayer: Board, secondPlayer: Board, gameType: string, gameView: GameView) {
     this._firstPlayer = firstPlayer;
     this._secondPlayer = secondPlayer;
@@ -36,13 +41,17 @@ class Game {
       ship.changeDruggable(this.DRUG_LOCK);
     }
 
-    if ((this._gameType = GameType.solo))
+    if ((this._gameType = GameType.solo)) {
       this.computer = new Computer(this._secondPlayer.difficult, this._firstPlayer, this);
+    } else {
+      // Обработчик события на принятие координат
+    }
 
+    //Назначение хода
     this._secondPlayer.playerTurn = true;
     this._firstPlayer.switchBlock();
-
     this.addListeners();
+
   }
 
   makeHitOrMiss(board: Board, coords: number[]): number[][] | undefined {
@@ -58,6 +67,8 @@ class Game {
       default:
         return undefined;
     }
+
+    //Отправить координаты
   }
 
   private addListeners(): void {
@@ -130,6 +141,7 @@ class Game {
       }, 800);
     } else if (this._secondPlayer.playerTurn === false) {
       //Код для онлайна
+      //При
     }
   }
 
@@ -246,31 +258,75 @@ class Game {
     const enemySquadron = Object.keys(this._secondPlayer.squadron).length;
     let winBlock: WinView | undefined;
     let text: string = '';
+    let record: boolean = false;
+
     if (yourSquadron === 0 || enemySquadron === 0) {
+      let position: number = 0;
       this.end = true;
-      if (this.computer) {
-        if (enemySquadron === 0) {
-          //console.log('Вы победили');
-          text = this.winText[0];
-        } else if (yourSquadron === 0) {
-          //Машина одержала верх над человеком
-          //console.log('Машина одержала верх над человеком');
-          text = this.winText[1];
+      this._gameView.setTime(true);
+      if (enemySquadron === 0) {
+        let aliveCells: number = 0;
+        text = this.winText[0];
+
+        for (let i = 0; i < this._firstPlayer.matrix.length; i++) {
+          for (let j = 0; j < this._firstPlayer.matrix[i].length; j++) {
+            if (this._firstPlayer.matrix[i][j] === CellConditions.ship) aliveCells++;
+          }
+        }
+
+        const winnerObj: TWinnerObj = {
+          userId: this._gameView.user.getId(),
+          score: this._playerTurns,
+          time: this._gameView.time.getTime(),
+          aliveCells: aliveCells,
+          mode: this._gameType,
+        };
+
+
+        this._gameView.server.postWinner(winnerObj)
+        .then((data) => {
+          if (typeof data !== 'number' && typeof data !== 'undefined') {
+            record = true;
+            this._gameView.server.getWinnersByMode(this._gameType).then((data) => {
+              if (Array.isArray(data)) {
+                position = data.findIndex((el) => el.userId === winnerObj.userId) + 1;
+                winBlock = new WinView(text, record, position);
+
+                if (winBlock) document.body.append(winBlock.getComponent());
+              }
+            });
+          }
+          winBlock = new WinView(text, record, position);
+          if (winBlock) document.body.append(winBlock.getComponent());
+
+        });
+
+      } else {
+        text = this.winText[1];
+        if (this.computer) {
           for (let ship in this._secondPlayer.squadron)
             this._secondPlayer.squadron[ship].showShip();
+        } else {
         }
+        winBlock = new WinView(text, record, position);
+        if (winBlock) document.body.append(winBlock.getComponent());
+
+      }
+    }
+  }
+  testSocket() {
+    const socket = io(AppEndPoint.HOST);
+    socket.on('player-number', num => {
+      if(num === -1) {
+        alert('Извините, мест нет')
       } else {
-        if (enemySquadron === 0) {
-          //Вы победили
-          text = this.winText[0];
-        } else if (yourSquadron === 0) {
-          //Ваш оппонент победил
-          text = this.winText[1];
+        this._playerNum = parseInt(num);
+        if(this._playerNum === 1) {
         }
       }
-      winBlock = new WinView(text);
-      if (winBlock) document.body.append(winBlock.getComponent());
-    }
+    })
+    socket.emit('hello')
+
   }
 }
 

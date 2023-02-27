@@ -53,6 +53,10 @@
 }
 
 @media (max-width: 768px) {
+  .pregame__board-container {
+    align-items: center;
+  }
+
   .board__markup {
     width: 330px;
     height: 330px;
@@ -75,7 +79,7 @@
 
   .board_easy {
     width: 180px;
-    height: 1800px;
+    height: 180px;
   }
 
   .board_img {
@@ -85,4 +89,26 @@
 
 .placing-error {
   outline: 2px solid rgba(255, 68, 0, 0.6);
+}
+
+@media (max-width: 400px) {
+  .board__markup {
+    width: 320px;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .board__markup_easy {
+    width: 210px;
+    height: 210px;
+  }
+
+  .board__empty-block {
+    display: none;
+  }
+
+  .board__markup_easy .board__empty-block {
+    display: flex;
+  }
 }
