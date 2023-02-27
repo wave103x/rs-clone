@@ -279,7 +279,7 @@ class Game {
 
         const winnerObj: TWinnerObj = {
           userId: this._gameView.user.getId(),
-          score: this._playerTurns,
+          score: this._playerTurns + 47,
           time: this._gameView.time.getTime(),
           aliveCells: aliveCells,
           mode: this._gameType,
@@ -291,13 +291,19 @@ class Game {
           console.log('1', data);
           if (typeof data !== 'number' && typeof data !== 'undefined') {
             record = true;
+            console.log(record)
             this._gameView.server.getWinnersByMode(this._gameType).then((data) => {
               console.log('2', data);
               if (Array.isArray(data)) {
-                position = data.findIndex((el) => el === winnerObj) + 1;
+                position = data.findIndex((el) => el.userId === winnerObj.userId) + 1;
+                winBlock = new WinView(text, record, position);
+                if (winBlock) document.body.append(winBlock.getComponent());
               }
             });
           }
+          winBlock = new WinView(text, record, position);
+          if (winBlock) document.body.append(winBlock.getComponent());
+
         });
       } else {
         text = this.winText[1];
@@ -307,9 +313,12 @@ class Game {
         } else {
           //человек
         }
+        winBlock = new WinView(text, record, position);
+        if (winBlock) document.body.append(winBlock.getComponent());
+
       }
-      winBlock = new WinView(text, record, position);
-      if (winBlock) document.body.append(winBlock.getComponent());
+      // winBlock = new WinView(text, record, position);
+      // if (winBlock) document.body.append(winBlock.getComponent());
     }
   }
   testSocket() {
