@@ -6,13 +6,11 @@ import Header from "../Views/Header/Header";
 
 export default class Server {
 
-  async postUser(formData: string): Promise <TUser | number | undefined> {
+  async postUser(formData: FormData): Promise <TUser | number | undefined> {
+
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNUP}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
         body: formData,
       });
@@ -70,7 +68,6 @@ export default class Server {
         }
         // return;
       });
-      return undefined;
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -88,7 +85,8 @@ export default class Server {
       headers: headers,
     }
     try {
-      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`, options);
+
+      const response: Response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`, options);
       return response
     } catch (error) {
 

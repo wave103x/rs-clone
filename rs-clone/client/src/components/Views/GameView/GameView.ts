@@ -7,11 +7,15 @@ import AppTag from '../../../enums/app-tag';
 import Difficulties from '../../../enums/difficulties';
 import Player from '../../../enums/player';
 import GameType from '../../../enums/game-type';
-
 import BoardData from '../../Board/BoardData';
 import BoardDataType from '../../../types/BoardDataType';
 
 import './game-view.scss';
+<<<<<<< HEAD
+=======
+import AppEndPoint from '../../../enums/app-endpoint';
+import { ClientToServerEvents, ServerToClientEvents } from '../../../interfaces/Socket';
+>>>>>>> feat/add-server
 import User from '../../User/User';
 import Server from '../../Server/Server';
 
@@ -160,6 +164,7 @@ class GameView extends AbstractView {
       this.time.getSeconds() < 10 ? '0' : ''
     }${this.time.getSeconds()}`;
   }
+
 }
 
 export default GameView;

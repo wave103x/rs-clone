@@ -1,9 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 require('dotenv').config();
+const cloudinary = require('cloudinary').v2;
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const { user } = require('../../db/models');
+
 
 const generateAccessToken = (id) => {
   const payload = { id };
@@ -14,7 +17,6 @@ const generateAccessToken = (id) => {
 
 const saveToken = async (id, refreshToken) => {
   const currentUser = await user.findOne({ where: { id } });
-  console.log(currentUser);
   if (currentUser.refreshToken) {
     const newToken = await user.update(
       { refreshToken },
@@ -25,14 +27,18 @@ const saveToken = async (id, refreshToken) => {
 };
 
 const signUpUser = async (req, res) => {
+  // const [...dataArray] = req.fields
+
   try {
-    const errors = validationResult(req);
+    const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'Ошибка при регистрации' });
     }
     const {
       login, nickName, password,
-    } = req.body;
+    } = req.fields;
+    const { image } = req.files;
+    const result = await cloudinary.uploader.upload(image.path, { upload_preset: 'Avatars' });
     const currentUser = await user.findOne({ where: { login } });
     const currentUserNick = await user.findAll({ where: { nickName } });
     if (currentUser) {
@@ -41,16 +47,19 @@ const signUpUser = async (req, res) => {
       return res.status(403).json({ message: `Никнейм ${nickName} занят` });
     }
     const hashPassword = await bcrypt.hash(password, 15);
-    const newUser = await user.create({ login, nickName, password: hashPassword });
+
+    const newUser = await user.create({
+      login, nickName, password: hashPassword, image: result.url,
+    });
 
     const tokens = generateAccessToken(newUser.id);
 
     await saveToken(newUser.id, tokens.refreshToken);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
-      .json({ id: newUser.id, nickname: newUser.nickName });
-  } catch (e) {
-    console.log(e);
+      .json({ id: newUser.id, nickName: newUser.nickName, image: newUser.image });
+  } catch (error) {
+    console.log(error);
     res.send({ message: 'Ошибка при регистрации' });
   }
 };
@@ -72,7 +81,7 @@ const signInUser = async (req, res) => {
     await saveToken(currentUser.id, tokens.refreshToken);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
     return res.status(201)
-      .json({ id: currentUser.id, nickName: currentUser.nickName });
+      .json({ id: currentUser.id, nickName: currentUser.nickName, image: currentUser.image });
   } catch (e) {
     console.log(e);
     res.send({ message: 'Ошибка входа' });
@@ -98,7 +107,7 @@ const getUser = async (req, res) => {
       try {
         const currentUser = await user.findOne({ where: { id: Number(id) } });
         return res.status(201)
-          .json({ id: currentUser.id, nickName: currentUser.nickName });
+          .json({ id: currentUser.id, nickName: currentUser.nickName, image: currentUser.image });
       } catch (error) {
         console.log(error);
         res.sendStatus(500);

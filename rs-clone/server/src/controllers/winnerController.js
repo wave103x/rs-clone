@@ -38,17 +38,15 @@ const postWinner = async (req, res) => {
           const updatedWinner = await winner.findOne({
             where: { userId: Number(id), mode },
           });
-          return res.status(201).json(updatedWinner);
+          return res.status(201)
+            .json(updatedWinner);
         }
       }
       return res.status(201).json(existedWinner);
     } else {
       const newWinner = await winner.create({
-        userId: id,
-        score,
-        time,
-        aliveCells,
-        mode,
+
+        userId: id, score, time, aliveCells, mode,
       });
 
       return res.status(201).json(newWinner);
@@ -62,12 +60,12 @@ const postWinner = async (req, res) => {
 const getWinners = async (req, res) => {
   const { mode } = req.params;
   try {
-    if (mode === "solo" || mode === "online") {
+    if (mode === 'solo' || mode === 'online') {
       const allWinners = await winner.findAll({
         where: { mode },
         order: [
-          ["score", "ASC"],
-          ["alive_cells", "DESC"],
+          ['score', 'ASC'],
+          ['alive_cells', 'DESC'],
         ],
         include: [{
           model: user,
@@ -79,8 +77,9 @@ const getWinners = async (req, res) => {
     if (mode === "all") {
       const allWinners = await winner.findAll({
         order: [
-          ["score", "ASC"],
-          ["alive_cells", "DESC"],
+
+          ['score', 'ASC'],
+          ['alive_cells', 'DESC'],
         ],
         include: [{
           model: user,
