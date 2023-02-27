@@ -28,10 +28,16 @@ const enum AppCssClass {
   BOARD_CONTAINER_TEXT = 'pregame__board-text',
   CONTROL_CONTAINER = 'pregame__control-container',
   CONTROL_HEADER = 'pregame__header',
+  DIFFICULT_CONTAINER = "pregame__difficult-container",
   DIFFICULT = 'pregame__difficult',
   DIFFICULT_ACTIVE = 'pregame__difficult_active',
   DIFFICULT_HEADER = 'pregame__difficult-header',
   DIFFICULT_FEATURES = 'pregame__difficult-features',
+
+  LOAD_BLOCK = "load-block",
+  LOAD_BLOCK_CONTAINER = "load-block__container",
+  LOAD_BLOCK_IMG = "load-block__img",
+  LOAD_BLOCK_TITLE = "load-block__title",
 
   BOARD_MARKUP = 'board__markup',
   BOARD_MARKUP_EASY = 'board__markup_easy',

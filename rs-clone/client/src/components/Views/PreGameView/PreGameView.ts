@@ -9,9 +9,13 @@ import GameType from '../../../enums/game-type';
 import './pregame-view.scss';
 import User from '../../User/User';
 import Server from '../../Server/Server';
+
 import AppEndPoint from '../../../enums/app-endpoint';
 import { io, Socket } from "socket.io-client";
 import SocketService from '../../../services/socketService';
+
+import AppAttribute from '../../../enums/app-attribute';
+
 
 class PreGameView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
@@ -22,6 +26,7 @@ class PreGameView extends AbstractView {
   private _server: Server;
   private _user: User;
 
+  private readonly LOAD_TEXT = 'Поиск соперника';
   private readonly SHUFFLE_BUTTON_TEXT = 'Перемешать';
   private readonly SHUFFLE_TEXT = 'ПКМ для поворота';
   private readonly CONTROL_TEXT = 'Режим игры';
@@ -85,13 +90,16 @@ class PreGameView extends AbstractView {
 
     controlContainer.append(controlHeader);
 
+    const difficultContainer = document.createElement(AppTag.DIV);
+    difficultContainer.classList.add(AppCssClass.DIFFICULT_CONTAINER);
+
     if (this.gameType === GameType.solo) {
       const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
 
       const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
       normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
 
-      controlContainer.append(easyDifficult, normalDifficult);
+      difficultContainer.append(easyDifficult, normalDifficult);
     } else {
       const randomEnemy = createDifficult(
         { name: 'Случайный противник', features: [] },
@@ -99,14 +107,15 @@ class PreGameView extends AbstractView {
         this
       );
       randomEnemy.classList.add(AppCssClass.DIFFICULT_ACTIVE);
-      controlContainer.append(randomEnemy);
+      difficultContainer.append(randomEnemy);
     }
+
+    controlContainer.append(difficultContainer);
 
     const buttonPlay = document.createElement(AppTag.BUTTON);
     buttonPlay.classList.add(AppCssClass.BUTTON_BIG, AppCssClass.BUTTON);
     buttonPlay.innerText = this.PLAY_BUTTON_TEXT;
     buttonPlay.addEventListener('click', () => {
-      testSocket(this)
       startGame(this);
     });
 
@@ -171,24 +180,11 @@ class PreGameView extends AbstractView {
 
 
     function startGame(pregameView: PreGameView) {
-      // if (false) {
-        //TODO:
-        //Экран ожидания
-        //Открытие подключения
-        //зарандомить чей первый ход на сервере
-        //Отправить чей первый ход (у одного будет первый игрок, у другого второй игрок)
-        //Отправить объект таблицы
-        //Когда все данные получены - создать GameView и убрать экран ожидания
-        // const connectSockets = async() => {
-        //   const socket = await SocketService.connect(AppEndPoint.HOST).catch((error) => {
-        //     console.log(error);
-        //   })
-        // }
+      if (pregameView.gameType === GameType.online) {
+        const loadBlock = pregameView.createLoadingBlock();
+        document.body.append(loadBlock);
+      } else {
         pregameView._component.remove();
-        //Передать сокет
-        //Передать первый ход
-        //Передать вражескую таблицу
-
         document.body.append(
           new GameView(
             pregameView._board,
@@ -197,43 +193,31 @@ class PreGameView extends AbstractView {
             pregameView._user
           ).getComponent()
         );
-      // } else {
-      // }
-      // pregameView._component.remove();
 
-      // document.body.append(
-      //   new GameView(
-      //     pregameView._board,
-      //     pregameView.gameType,
-      //     pregameView._server,
-      //     pregameView._user
-      //   ).getComponent()
-      // );
-    }
-    function testSocket(pregameView: PreGameView) {
-      let clientRoom: number;
-      let user = pregameView._user;
-      let board = pregameView._board;
-      const socket = io(AppEndPoint.HOST);
-      let shipsArray = [];
-      for (let ship in board.squadron) {
-        shipsArray.push({name: ship, shipInfo: board.squadron[ship].shipInfo})
       }
-      // console.log('====================================');
-      // console.log(user, shipsArray);
-      // console.log('====================================');
-      socket.emit('newPlayer', JSON.stringify(user), JSON.stringify(shipsArray))
-
-      // socket.on('connect', () => {
-
-      // })
-      console.log(`gameStarted${user.getId()}`)
-    socket.on(`gameStarted${user.getId()}`, (id, array, turn) => {
-    //  console.log('====================================');
-    //  console.log(`gameStarted${user.getId()}`, id, array, turn);
-    //  console.log('====================================');;
-      })
     }
+  }
+
+  private createLoadingBlock(): HTMLElement {
+    const container = document.createElement(AppTag.DIV);
+    container.classList.add(AppCssClass.LOAD_BLOCK_CONTAINER);
+
+    const block = document.createElement(AppTag.DIV);
+    block.classList.add(AppCssClass.LOAD_BLOCK);
+
+    container.append(block);
+
+    const img = new Image();
+    img.classList.add(AppCssClass.LOAD_BLOCK_IMG);
+    img.src = require('../../../assets/icons/load-ship.svg') as string;
+
+    const title = document.createElement(AppTag.P);
+    title.classList.add(AppCssClass.LOAD_BLOCK_TITLE);
+    title.innerText = this.LOAD_TEXT;
+
+    block.append(img, title);
+
+    return container;
   }
 
 }
