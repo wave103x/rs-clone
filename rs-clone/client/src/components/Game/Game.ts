@@ -35,75 +35,8 @@ class Game {
     this._gameType = gameType;
     this._gameView = gameView;
     this.testSocket()
-
-    const yourSquadron = Object.keys(this._firstPlayer.squadron).length;
-    const enemySquadron = (Object.keys(this._secondPlayer.squadron).length = 0);
-    let winBlock: WinView | undefined;
-    let text: string = '';
-    let win: boolean = false;
-    if (yourSquadron === 0 || enemySquadron === 0) {
-      let position: number = 0;
-      this.end = true;
-      this._gameView.setTime(true);
-      // if (this.computer) {
-      //   if (enemySquadron === 0) {
-      //     this._gameView.server.postWinner(, this._gameView.user.getId());
-      //     win = true;
-      //     text = this.winText[0];
-      //   } else if (yourSquadron === 0) {
-      //     text = this.winText[1];
-      //     for (let ship in this._secondPlayer.squadron)
-      //       this._secondPlayer.squadron[ship].showShip();
-      //   }
-      // } else {
-      //   if (enemySquadron === 0) {
-      //     win = true;
-      //     text = this.winText[0];
-      //   } else if (yourSquadron === 0) {
-      //     //Ваш оппонент победил
-      //     text = this.winText[1];
-      //   }
-      // }
-      if (enemySquadron === 0) {
-        let aliveCells: number = 0;
-        for (let i = 0; i < this._firstPlayer.matrix.length; i++) {
-          for (let j = 0; j < this._firstPlayer.matrix[i].length; j++) {
-            if (this._firstPlayer.matrix[i][j] === CellConditions.ship) aliveCells++;
-          }
-        }
-        const winnerObj: TWinnerObj = {
-          userId: this._gameView.user.getId(),
-          score: this._playerTurns,
-          time: this._gameView.time.getTime(),
-          aliveCells: aliveCells,
-          mode: this._gameType,
-        };
-        this._gameView.server.postWinner(winnerObj, this._gameView.user.getId()).then((data) => {
-          if (typeof data !== 'number' && typeof data !== 'undefined') {
-            win = true;
-            this._gameView.server.getWinnersByMode(this._gameType).then((data) => {
-              if (Array.isArray(data)) {
-                position = data.findIndex((el) => el.userId === winnerObj.userId) + 1;
-                text = this.winText[0];
-                winBlock = new WinView(text, win, position);
-                if (winBlock) document.body.append(winBlock.getComponent());
-              }
-            });
-          }
-        });
-
-      } else {
-        text = this.winText[1];
-        if (this.computer) {
-          for (let ship in this._secondPlayer.squadron)
-            this._secondPlayer.squadron[ship].showShip();
-        } else {
-          //человек
-        }
-      }
-      // winBlock = new WinView(text, win, position);
-      // if (winBlock) document.body.append(winBlock.getComponent());
-    }
+    this._secondPlayer.squadron = {}
+    this.checkWin()
   }
 
   start(): void {
@@ -120,7 +53,6 @@ class Game {
     //Назначение хода
     this._secondPlayer.playerTurn = true;
     this._firstPlayer.switchBlock();
-
     this.addListeners();
 
   }
@@ -353,10 +285,14 @@ class Game {
           mode: this._gameType,
         };
 
-        this._gameView.server.postWinner(winnerObj, this._gameView.user.getId()).then((data) => {
+
+        this._gameView.server.postWinner(winnerObj)
+        .then((data) => {
+          console.log('1', data);
           if (typeof data !== 'number' && typeof data !== 'undefined') {
             record = true;
             this._gameView.server.getWinnersByMode(this._gameType).then((data) => {
+              console.log('2', data);
               if (Array.isArray(data)) {
                 position = data.findIndex((el) => el === winnerObj) + 1;
               }

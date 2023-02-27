@@ -2,9 +2,14 @@ const { winner } = require('../../db/models');
 const { user } = require('../../db/models');
 
 const postWinner = async (req, res) => {
+  console.log('====================================');
+  console.log('hey');
+  console.log('====================================');
   const {
     score, time, aliveCells, mode,
-  } = req.body;
+  } = req.fields;
+  console.log(req.fields);
+  console.log('====================================');
   const { id } = req.params;
 
   try {

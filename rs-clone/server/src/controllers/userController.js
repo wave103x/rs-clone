@@ -62,14 +62,10 @@ const signUpUser = async (req, res) => {
 };
 
 const signInUser = async (req, res) => {
-  console.log('hey=>>>>>>>>>>>>>');
   try {
     const {
       login, password,
-    } = req.body;
-    console.log('====================================');
-    console.log(login, password);
-    console.log('====================================');
+    } = req.fields;
     const currentUser = await user.findOne({ where: { login } });
     if (!currentUser) {
       return res.status(401).json({ message: `Пользователь с логином ${login} не существует` });
@@ -81,9 +77,6 @@ const signInUser = async (req, res) => {
     const tokens = generateAccessToken(currentUser.id);
     await saveToken(currentUser.id, tokens.refreshToken);
     res.cookie('refresh', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-    console.log('====================================');
-    console.log({ currentUser });
-    console.log('====================================');
     return res.status(201)
       .json({ id: currentUser.id, nickName: currentUser.nickName, image: currentUser.image });
   } catch (e) {

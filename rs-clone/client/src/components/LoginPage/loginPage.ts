@@ -40,7 +40,7 @@ export default class LoginPage extends View {
   sendForm(event: Event) {
     event.preventDefault();
     if (this.form instanceof HTMLFormElement) {
-      const dataObj = JSON.stringify(Object.fromEntries(new FormData(this.form)));
+      const dataObj = new FormData(this.form);
       this.server.signInUser(dataObj)
       .then((response) => {
         console.log('====================================');

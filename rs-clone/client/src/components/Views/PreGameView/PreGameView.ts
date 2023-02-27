@@ -219,9 +219,9 @@ class PreGameView extends AbstractView {
       for (let ship in board.squadron) {
         shipsArray.push({name: ship, shipInfo: board.squadron[ship].shipInfo})
       }
-      console.log('====================================');
-      console.log(user, shipsArray);
-      console.log('====================================');
+      // console.log('====================================');
+      // console.log(user, shipsArray);
+      // console.log('====================================');
       socket.emit('newPlayer', JSON.stringify(user), JSON.stringify(shipsArray))
 
       // socket.on('connect', () => {
@@ -229,9 +229,9 @@ class PreGameView extends AbstractView {
       // })
       console.log(`gameStarted${user.getId()}`)
     socket.on(`gameStarted${user.getId()}`, (id, array, turn) => {
-     console.log('====================================');
-     console.log(`gameStarted${user.getId()}`, id, array, turn);
-     console.log('====================================');;
+    //  console.log('====================================');
+    //  console.log(`gameStarted${user.getId()}`, id, array, turn);
+    //  console.log('====================================');;
       })
     }
   }

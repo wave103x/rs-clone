@@ -40,14 +40,11 @@ export default class Server {
       }
     }
   }
-  async signInUser(formData: string): Promise <TUser | number | undefined> {
+  async signInUser(formData: FormData): Promise <TUser | number | undefined> {
 
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNIN}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
         body: formData,
       });
@@ -110,17 +107,22 @@ export default class Server {
     }
   }
 
-  async postWinner(dataObj: TWinnerObj, id: number): Promise <TWinnerObj | number | undefined> {
+  async postWinner(dataObj: TWinnerObj): Promise <TWinnerObj | number | undefined> {
+    const formData = new FormData()
+    formData.append('score', dataObj.score.toString())
+    formData.append('time', dataObj.time.toString())
+    formData.append('aliveCells', dataObj.aliveCells.toString())
+    formData.append('mode', dataObj.mode.toString())
+    console.log(formData)
     try {
-      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.POSTWINNER + id}`, {
+      const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.POSTWINNER + dataObj.userId}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
-        body: JSON.stringify({...dataObj}),
+        body: formData,
       });
       const data = await response.json();
+
+
       switch (response.status) {
         case 201: {
           console.log('201 OK');

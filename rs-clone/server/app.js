@@ -47,14 +47,6 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(cors(corsOptions));
-app.use(express.urlencoded({ extended: true }));
-app.use(formidable());
-app.use(express.json());
-app.use(cookieParser());
-app.use('/api', userRouter);
-app.use('/api/winners', winnerRouter);
-
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { corsOptions },
@@ -72,8 +64,6 @@ function connected(socket) {
     if (playerMap.size === 0) {
       console.log('First player joined');
       const userObj = JSON.parse(user);
-      console.log(userObj);
-      console.log('====================================');
       playerMap.set(userObj, board);
       console.log(playerMap);
       // socket.on('newPlayer', (user, board) => {
@@ -87,10 +77,7 @@ function connected(socket) {
     } else if (playerMap.size === 1) {
       console.log('Second player joined');
       const userObj = JSON.parse(user);
-      console.log(userObj);
-      console.log('====================================');
       playerMap.set(userObj, board);
-      console.log(playerMap);
       // socket.on('newPlayer', (user, board) => {
       //   const userObj = JSON.parse(user);
       //   console.log('====================================');
@@ -101,9 +88,6 @@ function connected(socket) {
       // });
       const mapKeysArray = Array.from(playerMap.keys());
       const mapValuesArray = Array.from(playerMap.values());
-      console.log('====================================');
-      console.log(mapKeysArray, `gameStarted${mapKeysArray[0]._id}`);
-      console.log('====================================');
       const dataObj = {
         // 1: [2, 'f'],
         // mapKeysArray[0]._id: [mapKeysArray[1], mapValuesArray[1], 0],
@@ -114,9 +98,6 @@ function connected(socket) {
     } else if (playerMap.size > 1) {
       console.log('Too much');
     }
-    // for (let user of playerMap.keys()) {
-    //   socket.emit(`gameStarted${user.id}`,)
-    // }
   });
 
   socket.on('disconnect', () => {
@@ -125,6 +106,13 @@ function connected(socket) {
     // playerMap = new Map();
   });
 }
+app.use(cors(corsOptions));
+app.use(express.urlencoded({ extended: true }));
+app.use(formidable());
+app.use(express.json());
+app.use(cookieParser());
+app.use('/api', userRouter);
+app.use('/api/winners', winnerRouter);
 
 io.on('connect', connected);
 server.listen(PORT, () => console.log('Success'));
