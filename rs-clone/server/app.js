@@ -25,7 +25,7 @@ const sequelize = new Sequelize(
   {
     // host: process.env.HOST,
     // host: 'postgres://dpg-cft1v3arrk0c834202g0-a',
-    host: 'postgres://qzumqqvs:0CCNyfUL1gSdbhXtIMe8KgSkrV-TgCd3@dumbo.db.elephantsql.com/qzumqqvs',
+    host: 'dumbo.db.elephantsql.com',
     // host: '127.0.0.1',
     // host: 'localhost',
     port: 5432,
@@ -45,12 +45,12 @@ async function connect() {
     console.error('Unable to connect to the database:', error);
   }
 }
-console.log('*********************');
-console.log(process.env.DB_NAME);
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASS);
-console.log(process.env.HOST);
-console.log('*********************');
+// console.log('*********************');
+// console.log(process.env.DB_NAME);
+// console.log(process.env.DB_USER);
+// console.log(process.env.DB_PASS);
+// console.log(process.env.HOST);
+// console.log('*********************');
 
 connect();
 
