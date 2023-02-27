@@ -7,7 +7,6 @@ import Header from "../Views/Header/Header";
 export default class Server {
 
   async postUser(formData: FormData): Promise <TUser | number | undefined> {
-
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.SIGNUP}`, {
         method: 'POST',
@@ -114,7 +113,6 @@ export default class Server {
     formData.append('time', dataObj.time.toString())
     formData.append('aliveCells', dataObj.aliveCells.toString())
     formData.append('mode', dataObj.mode.toString())
-    console.log(formData)
     try {
       const response = await fetch(`${AppEndPoint.HOST + AppEndPoint.POSTWINNER + dataObj.userId}`, {
         method: 'POST',

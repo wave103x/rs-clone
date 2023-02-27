@@ -276,7 +276,7 @@ class Game {
 
         const winnerObj: TWinnerObj = {
           userId: this._gameView.user.getId(),
-          score: this._playerTurns + 47,
+          score: this._playerTurns,
 
           time: this._gameView.time.getTime(),
           aliveCells: aliveCells,
@@ -286,12 +286,9 @@ class Game {
 
         this._gameView.server.postWinner(winnerObj)
         .then((data) => {
-          console.log('1', data);
           if (typeof data !== 'number' && typeof data !== 'undefined') {
             record = true;
-            console.log(record)
             this._gameView.server.getWinnersByMode(this._gameType).then((data) => {
-              console.log('2', data);
               if (Array.isArray(data)) {
                 position = data.findIndex((el) => el.userId === winnerObj.userId) + 1;
                 winBlock = new WinView(text, record, position);
@@ -329,9 +326,6 @@ class Game {
       } else {
         this._playerNum = parseInt(num);
         if(this._playerNum === 1) {
-          console.log('====================================');
-          console.log('you are enemy');
-          console.log('====================================');
         }
       }
     })
