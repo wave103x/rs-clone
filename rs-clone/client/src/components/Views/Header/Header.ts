@@ -68,10 +68,6 @@ class Header extends AbstractView {
 
     const svg = new Image();
     return this.server.logOut(this.id).then((response) => {
-<<<<<<< HEAD
-      console.log(response)
-=======
->>>>>>> feat/add-server
       if (response && response.status === 200) {
         this.loginBtn.textContent = this.LOGIN_RU;
         svg.src = require('../../../assets/icons/login-icon.svg') as string;

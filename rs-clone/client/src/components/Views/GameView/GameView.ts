@@ -11,11 +11,9 @@ import BoardData from '../../Board/BoardData';
 import BoardDataType from '../../../types/BoardDataType';
 
 import './game-view.scss';
-<<<<<<< HEAD
-=======
+
 import AppEndPoint from '../../../enums/app-endpoint';
 import { ClientToServerEvents, ServerToClientEvents } from '../../../interfaces/Socket';
->>>>>>> feat/add-server
 import User from '../../User/User';
 import Server from '../../Server/Server';
 
