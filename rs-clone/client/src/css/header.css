@@ -1,0 +1,222 @@
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&display=swap");
+.button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 3rem;
+  cursor: pointer;
+  background-color: #fff;
+  color: #316DC9;
+  border: none;
+  transition: 0.2s;
+}
+.button:hover {
+  background-color: #D6E3F6;
+}
+.button_big {
+  padding: 1.5rem 2rem;
+  font-size: 1.25rem;
+}
+.button_blue {
+  background-color: #316DC9;
+  color: #fff;
+}
+.button_blue:hover {
+  background-color: #1E4C8F;
+}
+.button_secondary {
+  background-color: transparent;
+}
+.button_disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+html,
+button {
+  font-family: "Unbounded", "Verdana", sans-serif;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-image: radial-gradient(farthest-corner at 0 0, #89f7fe, #66a6ff);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  position: relative;
+  flex-basis: 100%;
+  flex-grow: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.registration {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3960784314);
+  top: 0;
+  left: 0;
+  font-size: 62.5%;
+  z-index: 1;
+}
+.registration__form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  width: 70vw;
+  font-size: 1.6em;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+  padding: 1.5em 1.8em;
+  border-radius: 1.6em;
+}
+.registration .form__input-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+.registration .form__input-block.hidden {
+  display: none;
+}
+.registration .form__span {
+  font-size: 0.5rem;
+  color: red;
+}
+.registration .form__label {
+  font-family: "Unbounded", cursive;
+  font-size: 1em;
+}
+.registration .form__input {
+  height: 30px;
+  background: #ffffff;
+  padding-left: 0.5em;
+  border: 1px solid #dedede;
+  border-radius: 5px;
+}
+.registration .form__input[type=file] {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  display: block;
+  height: 6rem;
+}
+.registration .button {
+  font-size: 0.8rem;
+  max-width: 12rem;
+  text-align: center;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .registration__form {
+    width: 27vw;
+    min-width: 300px;
+    gap: 1.5em;
+    padding: 2.5em 3rem;
+    border-radius: 1.6rem;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.wrapper {
+  max-width: 95%;
+  padding-top: 2rem;
+  margin: 0 auto;
+}
+
+.logo {
+  width: 100%;
+  max-width: 8rem;
+}
+
+.header__buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 3rem;
+}
+
+.header__btn {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+  align-items: center;
+  background-color: unset;
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: color 0.2s;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+.header__btn:hover {
+  color: rgb(33, 116, 172);
+}
+
+.acc-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  margin-top: 0.5rem;
+  top: 100%;
+  will-change: opacity;
+  opacity: 1;
+  transition: 0.1s;
+  pointer-events: auto;
+  padding: 1rem 1.5rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  gap: 1rem;
+}
+
+.acc-menu__login-name {
+  margin: 0;
+}
+
+.acc-menu__button {
+  border: none;
+  background-color: unset;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #316DC9;
+}
+.acc-menu__button:hover {
+  color: #1E4C8F;
+}
+
+.acc-menu_hidden {
+  opacity: 0;
+  pointer-events: none;
+}/*# sourceMappingURL=header.css.map */

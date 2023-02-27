@@ -1,0 +1,31 @@
+.button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 3rem;
+  cursor: pointer;
+  background-color: #fff;
+  color: $main-blue;
+  border: none;
+  transition: 0.2s;
+  &:hover {
+    background-color: $light-blue;
+  }
+  &_big {
+    padding: 1.5rem 2rem;
+    font-size: 1.25rem;
+  }
+  &_blue {
+    background-color: $main-blue;
+    color: #fff;
+    &:hover {
+      background-color: $dark-blue;
+    }
+  }
+  &_secondary {
+    background-color: transparent;
+  }
+  &_disabled {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+}

@@ -1,0 +1,54 @@
+.registration {
+  font-size: 62.5%;
+}
+.registration__form {
+  background: #ffffff;
+  width: 70vw;
+  font-size: 1.6em;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+  padding: 1.5em 1.8em;
+  border-radius: 1.6em;
+}
+.registration .form__input-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+.registration .form__label {
+  font-family: "Unbounded", cursive;
+  font-size: 1em;
+}
+.registration .form__input {
+  height: 30px;
+  background: #ffffff;
+  padding-left: 0.5em;
+  border: 1px solid #dedede;
+  border-radius: 5px;
+}
+.registration .form__input[type=file] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  display: block;
+}
+.registration .button {
+  font-size: 0.8rem;
+  max-width: 12rem;
+  text-align: center;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .registration__form {
+    width: 27vw;
+    min-width: 300px;
+    gap: 1.5em;
+    padding: 2.5em 3rem;
+    border-radius: 1.6rem;
+  }
+}/*# sourceMappingURL=registrationPage.css.map */

@@ -1,0 +1,68 @@
+@import '../../../sass/main.scss';
+
+.win {
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  padding: 1.5rem;
+  width: 300px;
+  border-radius: 1rem;
+
+  &__title {
+    position: absolute;
+    top: -30%;
+    // padding: 0;
+    // margin: 0;
+    z-index: 1001;
+    // width: 300%;
+
+    color: $main-yellow;
+    font-size: 4rem;
+    text-align: center;
+    text-shadow: $text-shadow-big;
+  }
+
+  &__text {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    text-align: center;
+    &_lose {
+      color: #5d5d5d;
+    }
+  }
+
+  &__position {
+    display: block;
+    font-weight: 500;
+  }
+
+  &__home {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: rgba(49, 109, 201, 1);
+    margin-bottom: 1rem;
+    transition: 0.2s;
+    &:hover {
+      color: $dark-blue;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .win {
+    width: 200px;
+
+  }
+}
