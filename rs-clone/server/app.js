@@ -18,14 +18,14 @@ const sequelize = new Sequelize(
   // process.env.DB_NAME,
   // process.env.DB_USER,
   // process.env.DB_PASS,
-  'qzumqqvs',
-  'qzumqqvs',
-  '0CCNyfUL1gSdbhXtIMe8KgSkrV-TgCd3',
+  'clone_38aq',
+  'clone_38aq_user',
+  'EM4REnz1xuvBlHIj6oDMZqiy8O6L1kTR',
 
   {
     // host: process.env.HOST,
     // host: 'postgres://dpg-cft1v3arrk0c834202g0-a',
-    host: 'dumbo.db.elephantsql.com',
+    host: 'dpg-cft1v3arrk0c834202g0-a?ssl=true',
     // host: '127.0.0.1',
     // host: 'localhost',
     port: 5432,
