@@ -8,20 +8,20 @@ class WinView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
 
   private text: string;
-  private win: boolean;
+  private record: boolean;
   private position: number;
 
   private readonly POSITION_TEXT = 'Ваш результат в таблице лидеров ';
-  private readonly LOOSE_TEXT = 'Случай, когда машина победила человека..';
+  private readonly LOOSE_TEXT = 'Ну, бывает...';
+  private readonly WIN_TEXT = 'В прошлый раз ты был удачливее.';
   private readonly BUTTON_TEXT = 'Посмотреть';
   private readonly LINK_TEXT = 'В начало';
   private readonly EVENT_CLICK = 'click';
 
-  //Добавить параметры статистики для запросов
-  constructor(text: string, win: boolean, position: number) {
+  constructor(text: string, record: boolean, position: number) {
     super();
     this.position = position;
-    this.win = win;
+    this.record = record;
     this.text = text;
     this.createComponent();
   }
@@ -50,12 +50,12 @@ class WinView extends AbstractView {
 
     this._component.append(title);
 
-    if (this.win) {
+    if (this.record) {
       this._component.append(this.createPositionText());
     } else {
       const text = document.createElement(AppTag.P);
-      text.textContent = this.LOOSE_TEXT;
       text.classList.add(AppCssClass.WIN_TEXT, AppCssClass.WIN_TEXT_LOSE);
+      text.textContent = this.text === 'Поражение!' ? this.LOOSE_TEXT : this.WIN_TEXT;
       this._component.append(text);
     }
 

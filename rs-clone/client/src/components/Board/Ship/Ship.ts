@@ -12,6 +12,7 @@ class Ship {
   public hitsCount: number = 0;
   public decksCoords: number[][];
   public bottomShipBlock!: HTMLElement;
+  public board: Board;
 
   private readonly EVENT_RIGHT_CLICK = 'contextmenu';
   private readonly EVENT_DRAGSTART = 'dragstart';
@@ -23,7 +24,6 @@ class Ship {
   private readonly UNSET = 'unset';
 
   private _component!: HTMLElement;
-  private board: Board;
   private shipName: string;
 
   constructor(board: Board, coords: ShipInfo, shipName: string) {

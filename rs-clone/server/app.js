@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
@@ -75,25 +76,74 @@ app.use('/api/winners', winnerRouter);
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: {
-    origin: true,
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  },
+  cors: { corsOptions },
 });
 // Multer
+// eslint-disable-next-line prefer-const
+let playerMap = new Map();
+let clientNumber = 0;
+let roomNumber;
+const gameBoard = null;
 
-const connections = [null, null];
-io.on('connection', (socket) => {
-  io.emit('message', 'User 111 connected');
-  let playerIndex = -1;
-  for (const i in connections) {
-    if (connections[i] === null) {
-      playerIndex = i;
-      break;
+function connected(socket) {
+  clientNumber += 1;
+  socket.on('newPlayer', (user, board) => {
+    if (playerMap.size === 0) {
+      console.log('First player joined');
+      const userObj = JSON.parse(user);
+      console.log(userObj);
+      console.log('====================================');
+      playerMap.set(userObj, board);
+      console.log(playerMap);
+      // socket.on('newPlayer', (user, board) => {
+      //   const userObj = JSON.parse(user);
+      //   console.log('====================================');
+      //   console.log(userObj);
+      //   console.log('====================================');
+      //   playerMap.set(userObj, board);
+      //   console.log(playerMap);
+      // });
+    } else if (playerMap.size === 1) {
+      console.log('Second player joined');
+      const userObj = JSON.parse(user);
+      console.log(userObj);
+      console.log('====================================');
+      playerMap.set(userObj, board);
+      console.log(playerMap);
+      // socket.on('newPlayer', (user, board) => {
+      //   const userObj = JSON.parse(user);
+      //   console.log('====================================');
+      //   console.log(userObj);
+      //   console.log('====================================');
+      //   playerMap.set(userObj, board);
+      //   console.log(playerMap);
+      // });
+      const mapKeysArray = Array.from(playerMap.keys());
+      const mapValuesArray = Array.from(playerMap.values());
+      console.log('====================================');
+      console.log(mapKeysArray, `gameStarted${mapKeysArray[0]._id}`);
+      console.log('====================================');
+      const dataObj = {
+        // 1: [2, 'f'],
+        // mapKeysArray[0]._id: [mapKeysArray[1], mapValuesArray[1], 0],
+        // mapKeysArray[1]._id: [mapKeysArray[0], mapValuesArray[0], 1],
+      };
+      socket.emit(`gameStarted${mapKeysArray[0]._id}`, mapKeysArray[1], mapValuesArray[1], 0);
+      socket.emit(`gameStarted${mapKeysArray[1]._id}`, mapKeysArray[0], mapValuesArray[0], 1);
+    } else if (playerMap.size > 1) {
+      console.log('Too much');
     }
-  }
-  if (playerIndex === -1) return;
-  socket.emit('player-number', playerIndex);
-  console.log(`a user ${playerIndex} connected`);
-});
+    // for (let user of playerMap.keys()) {
+    //   socket.emit(`gameStarted${user.id}`,)
+    // }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+    clientNumber -= 1;
+    // playerMap = new Map();
+  });
+}
+
+io.on('connect', connected);
 server.listen(PORT, () => console.log('Success'));

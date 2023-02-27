@@ -9,6 +9,9 @@ import GameType from '../../../enums/game-type';
 import './pregame-view.scss';
 import User from '../../User/User';
 import Server from '../../Server/Server';
+import AppEndPoint from '../../../enums/app-endpoint';
+import { io, Socket } from "socket.io-client";
+import SocketService from '../../../services/socketService';
 
 class PreGameView extends AbstractView {
   protected _component = document.createElement(AppTag.DIV);
@@ -80,25 +83,40 @@ class PreGameView extends AbstractView {
     controlHeader.classList.add(AppCssClass.CONTROL_HEADER);
     controlHeader.innerText = this.CONTROL_TEXT;
 
-    const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
+    controlContainer.append(controlHeader);
 
-    const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
-    normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+    if (this.gameType === GameType.solo) {
+      const easyDifficult = createDifficult(this.difficultInfo.easy, Difficulties.easy, this);
+
+      const normalDifficult = createDifficult(this.difficultInfo.normal, Difficulties.normal, this);
+      normalDifficult.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+
+      controlContainer.append(easyDifficult, normalDifficult);
+    } else {
+      const randomEnemy = createDifficult(
+        { name: 'Случайный противник', features: [] },
+        Difficulties.normal,
+        this
+      );
+      randomEnemy.classList.add(AppCssClass.DIFFICULT_ACTIVE);
+      controlContainer.append(randomEnemy);
+    }
 
     const buttonPlay = document.createElement(AppTag.BUTTON);
     buttonPlay.classList.add(AppCssClass.BUTTON_BIG, AppCssClass.BUTTON);
     buttonPlay.innerText = this.PLAY_BUTTON_TEXT;
     buttonPlay.addEventListener('click', () => {
+      testSocket(this)
       startGame(this);
     });
 
-    controlContainer.append(controlHeader, easyDifficult, normalDifficult, buttonPlay);
+    controlContainer.append(buttonPlay);
 
     return controlContainer;
 
     function createDifficult(
       features: { name: string; features: string[] },
-      difficult: Difficulties,
+      difficult: string,
       control: PreGameView
     ): HTMLElement {
       const difficultBlock = document.createElement(AppTag.BUTTON);
@@ -106,10 +124,11 @@ class PreGameView extends AbstractView {
       difficultBlock.classList.add(AppCssClass.DIFFICULT);
       difficultBlock.addEventListener('click', toggleDifficult);
 
-      difficultBlock.append(
-        createDifficultHeader(features.name),
-        creteDifficultFeatures(features.features)
-      );
+      difficultBlock.append(createDifficultHeader(features.name));
+
+      if (features.features.length != 0) {
+        difficultBlock.append(creteDifficultFeatures(features.features));
+      }
 
       return difficultBlock;
 
@@ -150,18 +169,73 @@ class PreGameView extends AbstractView {
       return ol;
     }
 
+
     function startGame(pregameView: PreGameView) {
-      pregameView._component.remove();
-      document.body.append(
-        new GameView(
-          pregameView._board,
-          pregameView.gameType,
-          pregameView._server,
-          pregameView._user
-        ).getComponent()
-      );
+      // if (false) {
+        //TODO:
+        //Экран ожидания
+        //Открытие подключения
+        //зарандомить чей первый ход на сервере
+        //Отправить чей первый ход (у одного будет первый игрок, у другого второй игрок)
+        //Отправить объект таблицы
+        //Когда все данные получены - создать GameView и убрать экран ожидания
+        // const connectSockets = async() => {
+        //   const socket = await SocketService.connect(AppEndPoint.HOST).catch((error) => {
+        //     console.log(error);
+        //   })
+        // }
+        pregameView._component.remove();
+        //Передать сокет
+        //Передать первый ход
+        //Передать вражескую таблицу
+
+        document.body.append(
+          new GameView(
+            pregameView._board,
+            pregameView.gameType,
+            pregameView._server,
+            pregameView._user
+          ).getComponent()
+        );
+      // } else {
+      // }
+      // pregameView._component.remove();
+
+      // document.body.append(
+      //   new GameView(
+      //     pregameView._board,
+      //     pregameView.gameType,
+      //     pregameView._server,
+      //     pregameView._user
+      //   ).getComponent()
+      // );
+    }
+    function testSocket(pregameView: PreGameView) {
+      let clientRoom: number;
+      let user = pregameView._user;
+      let board = pregameView._board;
+      const socket = io(AppEndPoint.HOST);
+      let shipsArray = [];
+      for (let ship in board.squadron) {
+        shipsArray.push({name: ship, shipInfo: board.squadron[ship].shipInfo})
+      }
+      console.log('====================================');
+      console.log(user, shipsArray);
+      console.log('====================================');
+      socket.emit('newPlayer', JSON.stringify(user), JSON.stringify(shipsArray))
+
+      // socket.on('connect', () => {
+
+      // })
+      console.log(`gameStarted${user.getId()}`)
+    socket.on(`gameStarted${user.getId()}`, (id, array, turn) => {
+     console.log('====================================');
+     console.log(`gameStarted${user.getId()}`, id, array, turn);
+     console.log('====================================');;
+      })
     }
   }
+
 }
 
 export default PreGameView;

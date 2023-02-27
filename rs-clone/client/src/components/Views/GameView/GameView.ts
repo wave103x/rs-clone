@@ -35,7 +35,15 @@ class GameView extends AbstractView {
   private readonly PLAYER_TURN = 'Стреляйте!';
   private readonly ENEMY_TURN = 'Враг атакует';
 
-  constructor(board: Board, gameType: string, server: Server, user: User) {
+  //Добавить сокет в конструктор
+  constructor(
+    board: Board,
+    gameType: string,
+    server: Server,
+    user: User,
+    turn?: boolean,
+    enemyBoard?: Board
+  ) {
     super();
     this._board = board;
     this.gameType = gameType;
@@ -46,6 +54,7 @@ class GameView extends AbstractView {
       this._enemyBoard = new Board(this._board.difficult, Player.enemy);
     } else {
       //Таблица врага
+      //Получить матрицу и сквадрон
     }
     this.createComponent();
   }
@@ -67,15 +76,12 @@ class GameView extends AbstractView {
   protected createComponent(): void {
     this._component.classList.add(AppCssClass.GAME);
 
+    //Переделать на рандом ход
     this._turnAnons.textContent = this.PLAYER_TURN;
     const stats = this.createStats();
 
     this._component.append(createContainer(this._board), stats);
-
-    //Переделать под таблицу игрока
-    if (this._enemyBoard) {
-      this._component.append(createContainer(this._enemyBoard, GameType.solo));
-    }
+    this._component.append(createContainer(this._enemyBoard, this.gameType));
 
     const game = new Game(this._board, this._enemyBoard, this.gameType, this);
     game.start();
