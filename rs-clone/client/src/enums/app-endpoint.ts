@@ -1,5 +1,5 @@
 enum AppEndPoint {
-  HOST = 'https://clons.onrender.com',
+  HOST = 'http://localhost:3001',
   GETUSER = "/api",
   SIGNUP = "/api/signUp",
   SIGNIN = "/api/signIn",
