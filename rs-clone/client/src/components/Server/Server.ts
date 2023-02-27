@@ -145,7 +145,7 @@ async getWinnersByMode(mode: string): Promise <TWinnerObj[] | number | undefined
     const data = await response.json();
     switch (response.status) {
       case 201: {
-        console.log('201 OK');
+        // console.log('201 OK');
         return data;
       }
       case 400: {

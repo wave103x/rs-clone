@@ -21,7 +21,7 @@ class Game {
   private _enemyNum = 0;
   private _gameType: string;
   private computer!: Computer;
-  private _playerTurns: number = 28;
+  private _playerTurns: number = 0;
   private _enemyTurns: number = 0;
   private _gameView: GameView;
 
@@ -277,7 +277,6 @@ class Game {
         const winnerObj: TWinnerObj = {
           userId: this._gameView.user.getId(),
           score: this._playerTurns,
-
           time: this._gameView.time.getTime(),
           aliveCells: aliveCells,
           mode: this._gameType,
@@ -308,14 +307,11 @@ class Game {
           for (let ship in this._secondPlayer.squadron)
             this._secondPlayer.squadron[ship].showShip();
         } else {
-          //человек
         }
         winBlock = new WinView(text, record, position);
         if (winBlock) document.body.append(winBlock.getComponent());
 
       }
-      // winBlock = new WinView(text, record, position);
-      // if (winBlock) document.body.append(winBlock.getComponent());
     }
   }
   testSocket() {

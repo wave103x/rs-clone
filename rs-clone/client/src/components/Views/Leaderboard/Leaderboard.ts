@@ -80,9 +80,9 @@ class Leaderboard extends View {
     const easy = this.createRadio('Лёгкий', 'game-difficulty', 'easy');
     const classic = this.createRadio('Классика', 'game-difficulty', 'classic');
     const hard = this.createRadio('Особый', 'game-difficulty', 'hard');
-    this._gameDifficlulty.append(allDiffs, easy, classic, hard);
+    this._gameDifficlulty.append(allDiffs, easy, classic);
 
-    controls.append(this._gameMode, this._gameDifficlulty);
+    controls.append(this._gameMode);
 
     this._table.className = 'leader-table';
 

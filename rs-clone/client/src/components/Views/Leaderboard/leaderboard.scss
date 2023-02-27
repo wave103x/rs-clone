@@ -8,7 +8,7 @@
 
 .leader-table__line {
   display: grid;
-  grid-template-columns: 30px 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 40px 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
   text-align: center;
   align-items: center;
@@ -28,6 +28,7 @@
   color: #fff;
   font-weight: 500;
   font-size: 1.25rem;
+  overflow-x: auto;
 }
 
 .leader-table__head-cell {

@@ -16,12 +16,14 @@ const enum AppCssClass {
   FIRST_VIEW_LOGO = 'first-view__logo',
   FIRST_VIEW_BUTTONS = 'fist-view__buttons',
   BUTTON_DIV_IMG = 'button-div__img',
+  BUTTON_DISABLED = 'button-div__disabled',
   BUTTON_DIV_IMG_LEFT = 'button-div__img_left',
   BUTTON_DIV_IMG_RIGHT = 'button-div__img_right',
   BUTTON_DIV = 'first-view__button-div',
   BUTTON = 'button',
   BUTTON_BIG = 'button_big',
   BUTTON_BLUE = 'button_blue',
+
 
   PREGAME = 'pregame',
   BOARD_CONTAINER = 'pregame__board-container',
