@@ -21,7 +21,7 @@ class Game {
   private _enemyNum = 0;
   private _gameType: string;
   private computer!: Computer;
-  private _playerTurns: number = 0;
+  private _playerTurns: number = 28;
   private _enemyTurns: number = 0;
   private _gameView: GameView;
 
@@ -34,7 +34,6 @@ class Game {
     this._secondPlayer = secondPlayer;
     this._gameType = gameType;
     this._gameView = gameView;
-
   }
 
   start(): void {
@@ -260,11 +259,11 @@ class Game {
     let winBlock: WinView | undefined;
     let text: string = '';
     let record: boolean = false;
+
     if (yourSquadron === 0 || enemySquadron === 0) {
       let position: number = 0;
       this.end = true;
       this._gameView.setTime(true);
-
       if (enemySquadron === 0) {
         let aliveCells: number = 0;
         text = this.winText[0];
@@ -278,6 +277,7 @@ class Game {
         const winnerObj: TWinnerObj = {
           userId: this._gameView.user.getId(),
           score: this._playerTurns + 47,
+
           time: this._gameView.time.getTime(),
           aliveCells: aliveCells,
           mode: this._gameType,
@@ -295,6 +295,7 @@ class Game {
               if (Array.isArray(data)) {
                 position = data.findIndex((el) => el.userId === winnerObj.userId) + 1;
                 winBlock = new WinView(text, record, position);
+
                 if (winBlock) document.body.append(winBlock.getComponent());
               }
             });
@@ -303,6 +304,7 @@ class Game {
           if (winBlock) document.body.append(winBlock.getComponent());
 
         });
+
       } else {
         text = this.winText[1];
         if (this.computer) {
@@ -334,6 +336,7 @@ class Game {
       }
     })
     socket.emit('hello')
+
   }
 }
 

@@ -3,7 +3,10 @@ type TWinnerObj = {
   score: number,
   time: number,
   aliveCells: number,
-  mode: string
+  mode: string,
+  user?: {
+    nickName: string,
+  }
 }
 
 export default TWinnerObj;

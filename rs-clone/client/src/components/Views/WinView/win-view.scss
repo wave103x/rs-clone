@@ -19,7 +19,7 @@
 
   &__title {
     position: absolute;
-    top: -38%;
+    top: -30%;
     // padding: 0;
     // margin: 0;
     z-index: 1001;
@@ -63,5 +63,6 @@
 @media (max-width: 768px) {
   .win {
     width: 200px;
+
   }
 }

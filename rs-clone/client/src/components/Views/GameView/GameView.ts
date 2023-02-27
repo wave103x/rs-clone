@@ -13,6 +13,7 @@ import BoardDataType from '../../../types/BoardDataType';
 import './game-view.scss';
 import AppEndPoint from '../../../enums/app-endpoint';
 import { ClientToServerEvents, ServerToClientEvents } from '../../../interfaces/Socket';
+
 import User from '../../User/User';
 import Server from '../../Server/Server';
 
@@ -34,7 +35,6 @@ class GameView extends AbstractView {
   private readonly PLAYER_TURN = 'Стреляйте!';
   private readonly ENEMY_TURN = 'Враг атакует';
 
-  //Добавить сокет в конструктор
   constructor(
     board: Board,
     gameType: string,
@@ -43,6 +43,7 @@ class GameView extends AbstractView {
     turn?: boolean,
     enemyBoard?: Board
   ) {
+
     super();
     this._board = board;
     this.gameType = gameType;

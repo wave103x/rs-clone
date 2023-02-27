@@ -22,6 +22,7 @@ class WinView extends AbstractView {
     super();
     this.position = position;
     this.record = record;
+
     this.text = text;
     this.createComponent();
   }
@@ -56,6 +57,7 @@ class WinView extends AbstractView {
       const text = document.createElement(AppTag.P);
       text.classList.add(AppCssClass.WIN_TEXT, AppCssClass.WIN_TEXT_LOSE);
       text.textContent = this.text === 'Поражение!' ? this.LOOSE_TEXT : this.WIN_TEXT;
+
       this._component.append(text);
     }
 

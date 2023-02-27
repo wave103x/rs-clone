@@ -60,6 +60,7 @@ export default class LoginPage extends View {
             // this._component.classList.add('hidden');
             if (response && typeof response !== 'number' && response.image) {
               this._user.update(response.nickName, response.id, response.image);
+
             }
             break;
           }

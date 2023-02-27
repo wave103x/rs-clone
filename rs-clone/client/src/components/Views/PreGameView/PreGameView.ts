@@ -9,7 +9,6 @@ import GameType from '../../../enums/game-type';
 import './pregame-view.scss';
 import User from '../../User/User';
 import Server from '../../Server/Server';
-
 import AppEndPoint from '../../../enums/app-endpoint';
 import { io, Socket } from "socket.io-client";
 import SocketService from '../../../services/socketService';
@@ -195,6 +194,7 @@ class PreGameView extends AbstractView {
         );
 
       }
+
     }
   }
 

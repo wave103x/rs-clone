@@ -84,6 +84,7 @@ export default class Server {
     }
     try {
       const response: Response = await fetch(`${AppEndPoint.HOST + AppEndPoint.LOGOUT + `/${id}`}`, options);
+
       return response
     } catch (error) {
 
