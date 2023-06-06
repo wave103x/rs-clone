@@ -1,0 +1,42 @@
+@import './base/typography';
+@import './base/vars';
+@import './elements/button';
+
+html,
+button {
+  font-family: 'Unbounded', 'Verdana', sans-serif;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-image: radial-gradient(farthest-corner at 0 0, #89f7fe, #66a6ff);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  position: relative;
+  flex-basis: 100%;
+  flex-grow: 1;
+}
+.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+@import '../components/AuthPage/authPage.scss';
