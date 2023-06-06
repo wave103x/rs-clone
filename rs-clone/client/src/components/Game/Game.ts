@@ -8,17 +8,13 @@ import WinView from '../Views/WinView/WinView';
 import Computer from '../Computer/Computer';
 import './cell.scss';
 import GameView from '../Views/GameView/GameView';
-import { io, Socket } from "socket.io-client";
 import TWinnerObj from '../../types/TWinnerObj';
-import AppEndPoint from '../../enums/app-endpoint';
 
 class Game {
   end = false;
 
   private _firstPlayer: Board;
   private _secondPlayer: Board;
-  private _playerNum = 0;
-  private _enemyNum = 0;
   private _gameType: string;
   private computer!: Computer;
   private _playerTurns: number = 0;
@@ -313,20 +309,6 @@ class Game {
 
       }
     }
-  }
-  testSocket() {
-    const socket = io(AppEndPoint.HOST);
-    socket.on('player-number', num => {
-      if(num === -1) {
-        alert('Извините, мест нет')
-      } else {
-        this._playerNum = parseInt(num);
-        if(this._playerNum === 1) {
-        }
-      }
-    })
-    socket.emit('hello')
-
   }
 }
 
